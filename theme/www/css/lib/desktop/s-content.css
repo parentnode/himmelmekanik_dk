@@ -1,0 +1,20 @@
+#content {position: relative;}
+#content .scene {position: relative; padding: 50px 0;}
+
+
+/* BASIC CONTENT */
+#content .scene .link {cursor: pointer;}
+#content .scene a {color: #888888;}
+#content .scene h1,
+#content .scene h2,
+#content .scene h3,
+#content .scene h4,
+#content .scene h5,
+#content .scene h6,
+#content .scene p {width: 500px; margin: 0 auto;}
+#content .scene hr {border: none; border-top: 1px solid #888888; margin: 30px 0 50px; padding: 0;}
+#content .scene p.note {font-style: italic;}
+
+#content .scene ul.info {display: none;}
+
+#content div.audioplayer {background-color: orange;}
