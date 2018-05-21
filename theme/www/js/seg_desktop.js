@@ -21,6 +21,8 @@ Util.debugURL = function(url) {
 	return document.domain.match(/(\.local|\.proxy)$/);
 }
 Util.nodeId = function(node, include_path) {
+	console.log("Util.nodeId IS DEPRECATED. Use commas in u.bug in stead.");
+	console.log(arguments.callee.caller);
 	try {
 		if(!include_path) {
 			return node.id ? node.nodeName+"#"+node.id : (node.className ? node.nodeName+"."+node.className : (node.name ? node.nodeName + "["+node.name+"]" : node.nodeName));
@@ -42,7 +44,8 @@ Util.nodeId = function(node, include_path) {
 Util.exception = function(name, _arguments, _exception) {
 	u.bug("Exception in: " + name + " (" + _exception + ")");
 	u.bug("Invoked with arguments:");
-	u.xInObject(_arguments);
+	console.log(_arguments);
+	console.log(_exception);
 	u.bug("Called from:");
 	if(_arguments.callee.caller.name) {
 		u.bug("arguments.callee.caller.name:" + _arguments.callee.caller.name)
@@ -51,7 +54,7 @@ Util.exception = function(name, _arguments, _exception) {
 		u.bug("arguments.callee.caller:" + _arguments.callee.caller.toString().substring(0, 250));
 	}
 }
-Util.bug = function(message, corner, color) {
+Util.bug = function() {
 	if(u.debugURL()) {
 		if(!u.bug_console_only) {
 			if(typeof(console) == "object") {
@@ -92,7 +95,10 @@ Util.bug = function(message, corner, color) {
 			u.ae(debug_div, "div", {"style":"color: " + color, "html": message});
 		}
 		else if(typeof(console) == "object") {
-			console.log(message);
+			var i;
+			for(i = 0; i < arguments.length; i++) {
+				console.log(arguments[i]);
+			}
 		}
 	}
 }
@@ -929,22 +935,31 @@ u.containsOrIs = function(node, scope) {
 /*u-easings.js*/
 u.easings = new function() {
 	this["ease-in"] = function(progress) {
-		return Math.pow((progress*this.duration) / this.duration, 3);
+		return Math.pow((progress), 3);
 	}
 	this["linear"] = function(progress) {
 		return progress;
 	}
 	this["ease-out"] = function(progress) {
-		return 1 - Math.pow(1 - ((progress*this.duration) / this.duration), 3);
+		return 1 - Math.pow(1 - ((progress)), 3);
 	}
 	this["linear"] = function(progress) {
-		return (progress*this.duration) / this.duration;
+		return (progress);
 	}
 	this["ease-in-out"] = function(progress) {
-		if((progress*this.duration) > (this.duration / 2)) {
-			return 1 - Math.pow(1 - ((progress*this.duration) / this.duration), 3);
+		if(progress > 0.5) {
+			return 1 - Math.pow(1 - ((progress)), 2);
 		}
-		return Math.pow((progress*this.duration) / this.duration, 3);
+		return Math.pow((progress), 2);
+	}
+	this["ease-out-slow"] = function(progress) {
+		return 1 - Math.pow(1 - ((progress)), 2);
+	}
+	this["ease-in-slow"] = function(progress) {
+		return Math.pow((progress), 2);
+	}
+	this["ease-in-fast"] = function(progress) {
+		return Math.pow((progress), 4);
 	}
 }
 
@@ -3548,6 +3563,56 @@ u.navigation = function(_options) {
 }
 
 
+/*u-period.js*/
+Util.period = function(format, time) {
+	var seconds = 0;
+	if(typeof(time) == "object") {
+		var argument;
+		for(argument in time) {
+			switch(argument) {
+				case "seconds"		: seconds = time[argument]; break;
+				case "milliseconds" : seconds = Number(time[argument])/1000; break;
+				case "minutes"		: seconds = Number(time[argument])*60; break;
+				case "hours"		: seconds = Number(time[argument])*60*60 ; break;
+				case "days"			: seconds = Number(time[argument])*60*60*24; break;
+				case "months"		: seconds = Number(time[argument])*60*60*24*(365/12); break;
+				case "years"		: seconds = Number(time[argument])*60*60*24*365; break;
+			}
+		}
+	}
+	var tokens = /y|n|o|O|w|W|c|d|e|D|g|h|H|l|m|M|r|s|S|t|T|u|U/g;
+	var chars = new Object();
+	chars.y = 0; 
+	chars.n = 0; 
+	chars.o = (chars.n > 9 ? "" : "0") + chars.n; 
+	chars.O = 0; 
+	chars.w = 0; 
+	chars.W = 0; 
+	chars.c = 0; 
+	chars.d = 0; 
+	chars.e = 0; 
+	chars.D = Math.floor(((seconds/60)/60)/24);
+	chars.g = Math.floor((seconds/60)/60)%24;
+	chars.h = (chars.g > 9 ? "" : "0") + chars.g;
+	chars.H = Math.floor((seconds/60)/60);
+	chars.l = Math.floor(seconds/60)%60;
+	chars.m = (chars.l > 9 ? "" : "0") + chars.l;
+	chars.M = Math.floor(seconds/60);
+	chars.r = Math.floor(seconds)%60;
+	chars.s = (chars.r > 9 ? "" : "0") + chars.r;
+	chars.S = Math.floor(seconds);
+	chars.t = Math.round((seconds%1)*10);
+	chars.T = Math.round((seconds%1)*100);
+	chars.T = (chars.T > 9 ? "": "0") + Math.round(chars.T);
+	chars.u = Math.round((seconds%1)*1000);
+	chars.u = (chars.u > 9 ? chars.u > 99 ? "" : "0" : "00") + Math.round(chars.u);
+	chars.U = Math.round(seconds*1000);
+	return format.replace(tokens, function (_) {
+		return _ in chars ? chars[_] : _.slice(1, _.length - 1);
+	});
+};
+
+
 /*u-preloader.js*/
 u.preloader = function(node, files, _options) {
 	var callback_preloader_loaded = "loaded";
@@ -3953,18 +4018,20 @@ u.scrollTo = function(node, _options) {
 	var scroll_to_x = 0;
 	var scroll_to_y = 0;
 	var to_node = false;
+	node._force_scroll_to = false;
 	if(typeof(_options) == "object") {
 		var _argument;
 		for(_argument in _options) {
 			switch(_argument) {
-				case "callback"             : node.callback_scroll_to           = _options[_argument]; break;
-				case "callback_cancelled"   : node.callback_scroll_cancelled    = _options[_argument]; break;
+				case "callback"             : node.callback_scroll_to            = _options[_argument]; break;
+				case "callback_cancelled"   : node.callback_scroll_cancelled     = _options[_argument]; break;
 				case "offset_y"             : offset_y                           = _options[_argument]; break;
 				case "offset_x"             : offset_x                           = _options[_argument]; break;
-				case "node"              : to_node                               = _options[_argument]; break;
+				case "node"                 : to_node                            = _options[_argument]; break;
 				case "x"                    : scroll_to_x                        = _options[_argument]; break;
 				case "y"                    : scroll_to_y                        = _options[_argument]; break;
 				case "scrollIn"             : scrollIn                           = _options[_argument]; break;
+				case "force"                : node._force_scroll_to              = _options[_argument]; break;
 			}
 		}
 	}
@@ -3990,14 +4057,28 @@ u.scrollTo = function(node, _options) {
 	node._y_scroll_direction = node._to_y - u.scrollY();
 	node._scroll_to_x = u.scrollX();
 	node._scroll_to_y = u.scrollY();
+	node.ignoreWheel = function(event) {
+		u.e.kill(event);
+	}
+	if(node._force_scroll_to) {
+		u.e.addEvent(node, "wheel", node.ignoreWheel);
+	}
 	node.scrollToHandler = function(event) {
 		u.t.resetTimer(this.t_scroll);
 		this.t_scroll = u.t.setTimer(this, this._scrollTo, 50);
 	}
 	u.e.addEvent(node, "scroll", node.scrollToHandler);
 	node.cancelScrollTo = function() {
+		if(!this._force_scroll_to) {
+			u.t.resetTimer(this.t_scroll);
+			u.e.removeEvent(this, "scroll", this.scrollToHandler);
+			this._scrollTo = null;
+		}
+	}
+	node.scrollToFinished = function() {
 		u.t.resetTimer(this.t_scroll);
 		u.e.removeEvent(this, "scroll", this.scrollToHandler);
+		u.e.removeEvent(this, "wheel", this.ignoreWheel);
 		this._scrollTo = null;
 	}
 	node.IEScrollFix = function(s_x, s_y) {
@@ -4031,7 +4112,7 @@ u.scrollTo = function(node, _options) {
 				this._scroll_to_y = this._to_y;
 			}
 			if(this._scroll_to_x == this._to_x && this._scroll_to_y == this._to_y) {
-				this.cancelScrollTo();
+				this.scrollToFinished();
 				this.scrollTo(this._to_x, this._to_y);
 				if(typeof(this[this.callback_scroll_to]) == "function") {
 					this[this.callback_scroll_to]();
@@ -4948,7 +5029,7 @@ u.setupMediaControls = function(player, _options) {
 	if(player._custom_controls || !_options) {
 		player.media.removeAttribute("controls");
 	}
-	else{
+	else {
 		player.media.controls = player._controls;
 	}
 	if(!player._custom_controls && player.controls) {
@@ -5079,6 +5160,7 @@ u.setupMediaControls = function(player, _options) {
 	}
 }
 u.detectMediaAutoplay = function(player) {
+	u.bug("detectMediaAutoplay:", player);
 	if(!u.media_autoplay_detection) {
 		u.media_autoplay_detection = [player];
 		u.test_autoplay = document.createElement("video");
@@ -5102,7 +5184,7 @@ u.detectMediaAutoplay = function(player) {
 			u.media_can_autoplay_muted = true;
 			this.check();
 		}
-		u.test_autoplay.notplaying = function(event) {
+		u.test_autoplay.notplaying = function() {
 			u.media_can_autoplay = false;
 			u.test_autoplay.muted = true;
 			var promise = u.test_autoplay.play();
@@ -5146,14 +5228,285 @@ u.detectMediaAutoplay = function(player) {
 			);
 		}
 	}
-	else if(u.media_can_autoplay_muted !== undefined && u.media_can_autoplay !== undefined) {
-		u.media_autoplay_detection.push(player)
+	else if(u.media_autoplay_detection !== true) {
+		u.media_autoplay_detection.push(player);
 	}
 	else if(typeof(player.ready) == "function") {
 		u.t.setTimer(player, "ready", 20);
 	}
 }
 
+
+/*u-scrollto.js*/
+u.scrollTo = function(node, _options) {
+	node.callback_scroll_to = "scrolledTo";
+	node.callback_scroll_cancelled = "scrolledToCancelled";
+	var offset_y = 0;
+	var offset_x = 0;
+	var scroll_to_x = 0;
+	var scroll_to_y = 0;
+	var to_node = false;
+	node._force_scroll_to = false;
+	if(typeof(_options) == "object") {
+		var _argument;
+		for(_argument in _options) {
+			switch(_argument) {
+				case "callback"             : node.callback_scroll_to            = _options[_argument]; break;
+				case "callback_cancelled"   : node.callback_scroll_cancelled     = _options[_argument]; break;
+				case "offset_y"             : offset_y                           = _options[_argument]; break;
+				case "offset_x"             : offset_x                           = _options[_argument]; break;
+				case "node"                 : to_node                            = _options[_argument]; break;
+				case "x"                    : scroll_to_x                        = _options[_argument]; break;
+				case "y"                    : scroll_to_y                        = _options[_argument]; break;
+				case "scrollIn"             : scrollIn                           = _options[_argument]; break;
+				case "force"                : node._force_scroll_to              = _options[_argument]; break;
+			}
+		}
+	}
+	if(to_node) {
+		node._to_x = u.absX(to_node);
+		node._to_y = u.absY(to_node);
+	}
+	else {
+		node._to_x = scroll_to_x;
+		node._to_y = scroll_to_y;
+	}
+	node._to_x = offset_x ? node._to_x - offset_x : node._to_x;
+	node._to_y = offset_y ? node._to_y - offset_y : node._to_y;
+	if(node._to_y > (node == window ? document.body.scrollHeight : node.scrollHeight)-u.browserH()) {
+		node._to_y = (node == window ? document.body.scrollHeight : node.scrollHeight)-u.browserH();
+	}
+	if(node._to_x > (node == window ? document.body.scrollWidth : node.scrollWidth)-u.browserW()) {
+		node._to_x = (node == window ? document.body.scrollWidth : node.scrollWidth)-u.browserW();
+	}
+	node._to_x = node._to_x < 0 ? 0 : node._to_x;
+	node._to_y = node._to_y < 0 ? 0 : node._to_y;
+	node._x_scroll_direction = node._to_x - u.scrollX();
+	node._y_scroll_direction = node._to_y - u.scrollY();
+	node._scroll_to_x = u.scrollX();
+	node._scroll_to_y = u.scrollY();
+	node.ignoreWheel = function(event) {
+		u.e.kill(event);
+	}
+	if(node._force_scroll_to) {
+		u.e.addEvent(node, "wheel", node.ignoreWheel);
+	}
+	node.scrollToHandler = function(event) {
+		u.t.resetTimer(this.t_scroll);
+		this.t_scroll = u.t.setTimer(this, this._scrollTo, 50);
+	}
+	u.e.addEvent(node, "scroll", node.scrollToHandler);
+	node.cancelScrollTo = function() {
+		if(!this._force_scroll_to) {
+			u.t.resetTimer(this.t_scroll);
+			u.e.removeEvent(this, "scroll", this.scrollToHandler);
+			this._scrollTo = null;
+		}
+	}
+	node.scrollToFinished = function() {
+		u.t.resetTimer(this.t_scroll);
+		u.e.removeEvent(this, "scroll", this.scrollToHandler);
+		u.e.removeEvent(this, "wheel", this.ignoreWheel);
+		this._scrollTo = null;
+	}
+	node.IEScrollFix = function(s_x, s_y) {
+		if(!u.browser("ie")) {
+			return false;
+		}
+		else if((s_y == this._scroll_to_y && (s_x == this._scroll_to_x+1 || s_x == this._scroll_to_x-1)) ||	(s_x == this._scroll_to_x && (s_y == this._scroll_to_y+1 || s_y == this._scroll_to_y-1))) {
+			return true;
+		}
+	}
+	node._scrollTo = function(start) {
+		var s_x = u.scrollX();
+		var s_y = u.scrollY();
+		if((s_y == this._scroll_to_y && s_x == this._scroll_to_x) || this.IEScrollFix(s_x, s_y)) {
+			if(this._x_scroll_direction > 0 && this._to_x > s_x) {
+				this._scroll_to_x = Math.ceil(s_x + (this._to_x - s_x)/4);
+			}
+			else if(this._x_scroll_direction < 0 && this._to_x < s_x) {
+				this._scroll_to_x = Math.floor(s_x - (s_x - this._to_x)/4);
+			}
+			else {
+				this._scroll_to_x = this._to_x;
+			}
+			if(this._y_scroll_direction > 0 && this._to_y > s_y) {
+				this._scroll_to_y = Math.ceil(s_y + (this._to_y - s_y)/4);
+			}
+			else if(this._y_scroll_direction < 0 && this._to_y < s_y) {
+				this._scroll_to_y = Math.floor(s_y - (s_y - this._to_y)/4);
+			}
+			else {
+				this._scroll_to_y = this._to_y;
+			}
+			if(this._scroll_to_x == this._to_x && this._scroll_to_y == this._to_y) {
+				this.scrollToFinished();
+				this.scrollTo(this._to_x, this._to_y);
+				if(typeof(this[this.callback_scroll_to]) == "function") {
+					this[this.callback_scroll_to]();
+				}
+				return;
+			}
+			this.scrollTo(this._scroll_to_x, this._scroll_to_y);
+		}
+		else {
+			this.cancelScrollTo();
+			if(typeof(this[this.callback_scroll_cancelled]) == "function") {
+				this[this.callback_scroll_cancelled]();
+			}
+		}	
+	}
+	node._scrollTo();
+}
+
+/*beta-u-fontsready.js*/
+u.fontsReady = function(node, fonts, _options) {
+	var callback_loaded = "fontsLoaded";
+	var callback_timeout = "fontsNotLoaded";
+	var max_time = 3000;
+	if(typeof(_options) == "object") {
+		var _argument;
+		for(_argument in _options) {
+			switch(_argument) {
+				case "callback"					: callback_loaded		= _options[_argument]; break;
+				case "timeout"					: callback_timeout		= _options[_argument]; break;
+				case "max"						: max_time				= _options[_argument]; break;
+			}
+		}
+	}
+	window["_man_fonts_"] = window["_man_fonts_"] || {};
+	window["_man_fonts_"].fontApi = document.fonts && typeof(document.fonts.check) == "function" ? true : false;
+	window["_man_fonts_"].fonts = window["_man_fonts_"].fonts || {};
+	var font, node, i;
+	if(typeof(fonts.length) == "undefined") {
+		font = fonts;
+		fonts = new Array();
+		fonts.push(font);
+	}
+	var loadkey = u.randomString(8);
+	if(window["_man_fonts_"].fontApi) {
+		window["_man_fonts_"+loadkey] = {};
+		window["_man_fonts_"+loadkey].t_timeout = u.t.setTimer(window["_man_fonts_"+loadkey], "checkFontsStatus", max_time);
+	}
+	else {
+		window["_man_fonts_"+loadkey] = u.ae(document.body, "div");
+		window["_man_fonts_"+loadkey].basenodes = {};
+	}
+	window["_man_fonts_"+loadkey].nodes = [];
+	window["_man_fonts_"+loadkey].loadkey = loadkey;
+	window["_man_fonts_"+loadkey].callback_node = node;
+	window["_man_fonts_"+loadkey].callback_name = callback_loaded;
+	window["_man_fonts_"+loadkey].callback_timeout = callback_timeout;
+	window["_man_fonts_"+loadkey].max_time = max_time;
+	window["_man_fonts_"+loadkey].start_time = new Date().getTime();
+	for(i = 0; font = fonts[i]; i++) {
+		font.style = font.style || "normal";
+		font.weight = font.weight || "400";
+		font.size = font.size || "16px";
+		font.status = "waiting";
+		font.id = u.normalize(font.family+font.style+font.weight);
+		if(!window["_man_fonts_"].fonts[font.id]) {
+			window["_man_fonts_"].fonts[font.id] = font;
+		}
+		if(window["_man_fonts_"].fontApi) {
+			node = {};
+		}
+		else {
+			if(!window["_man_fonts_"+loadkey].basenodes[font.style+font.weight]) {
+				window["_man_fonts_"+loadkey].basenodes[font.style+font.weight] = u.ae(window["_man_fonts_"+loadkey], "span", {"html":"I'm waiting for your fonts to load!","style":"font-family: Times !important; font-style: "+font.style+" !important; font-weight: "+font.weight+" !important; font-size: "+font.size+" !important; line-height: 1em !important; opacity: 0 !important;"});
+			}
+			node = u.ae(window["_man_fonts_"+loadkey], "span", {"html":"I'm waiting for your fonts to load!","style":"font-family: '"+font.family+"', Times !important; font-style: "+font.style+" !important; font-weight: "+font.weight+" !important; font-size: "+font.size+" !important; line-height: 1em !important; opacity: 0 !important;"});
+		}
+		node.font_size = font.size;
+		node.font_family = font.family;
+		node.font_weight = font.weight;
+		node.font_style = font.style;
+		node.font_id = font.id;
+		node.loadkey = loadkey;
+		window["_man_fonts_"+loadkey].nodes.push(node);
+	}
+	window["_man_fonts_"+loadkey].checkFontsAPI = function() {
+		var i, node, font_string;
+		for(i = 0; node = this.nodes[i]; i++) {
+			if(window["_man_fonts_"].fonts[node.font_id] && window["_man_fonts_"].fonts[node.font_id].status == "waiting") {
+				font_string = node.font_style + " " + node.font_weight + " " + node.font_size + " " + node.font_family;
+				document.fonts.load(font_string).then(function(fontFaceSetEvent) {
+					if(fontFaceSetEvent && fontFaceSetEvent.length && fontFaceSetEvent[0].status == "loaded") {
+						window["_man_fonts_"].fonts[this.font_id].status = "loaded";
+					}
+					else {
+						window["_man_fonts_"].fonts[this.font_id].status = "failed";
+					}
+					if(window["_man_fonts_"+this.loadkey] && typeof(window["_man_fonts_"+this.loadkey].checkFontsStatus) == "function") {
+						window["_man_fonts_"+this.loadkey].checkFontsStatus();
+					}
+				}.bind(node));
+			}
+			else {
+			}
+		}
+		if(typeof(this.checkFontsStatus) == "function") {
+			this.checkFontsStatus();
+		}
+	}
+	window["_man_fonts_"+loadkey].checkFontsStatus = function(event) {
+		var i, node;
+		for(i = 0; node = this.nodes[i]; i++) {
+			if(window["_man_fonts_"].fonts[node.font_id].status == "waiting") {
+				if(this.start_time + this.max_time <= new Date().getTime()) {
+					if(typeof(this.callback_node[this.callback_timeout]) == "function") {
+						this.callback_node[this.callback_timeout]();
+					}
+					else if(typeof(this.callback_node[this.callback_name]) == "function") {
+						this.callback_node[this.callback_name]();
+					}
+					u.t.resetTimer(this.t_timeout);
+					delete window["_man_fonts_"+this.loadkey];
+				}
+				return;
+			}
+		}
+		if(typeof(this.callback_node[this.callback_name]) == "function") {
+			this.callback_node[this.callback_name]();
+		}
+		u.t.resetTimer(this.t_timeout);
+		delete window["_man_fonts_"+this.loadkey];
+	}
+	window["_man_fonts_"+loadkey].checkFontsFallback = function() {
+		var basenode, i, node, loaded = 0;
+		for(i = 0; node = this.nodes[i]; i++) {
+			basenode = this.basenodes[node.font_style+node.font_weight];
+			if(node.offsetWidth != basenode.offsetWidth || node.offsetHeight != basenode.offsetHeight) {
+				loaded++;
+			}
+		}
+		if(loaded == this.nodes.length) {
+			if(typeof(this.callback_node[this.callback_name]) == "function") {
+				this.callback_node[this.callback_name]();
+			}
+			this.parentNode.removeChild(this);
+		}
+		else {
+			if(this.start_time + this.max_time > new Date().getTime()) {
+				u.t.setTimer(this, "checkfonts", 30);
+			}
+			else {
+				if(typeof(this.callback_node[this.callback_timeout]) == "function") {
+					this.callback_node[this.callback_timeout]();
+				}
+				else if(typeof(this.callback_node[this.callback_name]) == "function") {
+					this.callback_node[this.callback_name]();
+				}
+			}
+		}
+	}
+	if(window["_man_fonts_"].fontApi) {
+		window["_man_fonts_"+loadkey].checkFontsAPI();
+	}
+	else {
+		window["_man_fonts_"+loadkey].checkFontsFallback();
+	}
+}
 
 /*i-page.js*/
 Util.Objects["page"] = new function() {
@@ -5162,74 +5515,381 @@ Util.Objects["page"] = new function() {
 		page.cN = u.qs("#content", page);
 		page.fN = u.qs("#footer");
 		page.resized = function() {
-			if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
-				page.cN.scene.resized();
+			this.browser_h = u.browserH();
+			this.browser_w = u.browserW();
+			if(this.cN && this.cN.scene && typeof(this.cN.scene.resized) == "function") {
+				this.cN.scene.resized();
 			}
 		}
 		page.scrolled = function() {
-			if(page.cN && page.cN.scene && typeof(page.cN.scene.scrolled) == "function") {
-				page.cN.scene.scrolled();
+			this.scroll_y = u.scrollY();
+			if(this.cN && this.cN.scene && typeof(this.cN.scene.scrolled) == "function") {
+				this.cN.scene.scrolled();
 			}
 		}
 		page.ready = function() {
-			u.bug("page.ready:" + u.nodeId(this));
 			if(!this.is_ready) {
+				u.rc(this, "i:page");
 				this.is_ready = true;
-				u.e.addEvent(window, "resize", page.resized);
-				u.e.addEvent(window, "scroll", page.scrolled);
+				this.cN.scene = u.qs(".scene", this);
+				u.e.addWindowEvent(this, "resize", "resized");
+				u.e.addWindowEvent(this, "scroll", "scrolled");
+				this.resized();
+				this.fontsLoaded = function() {
+					window.scrollTo(0, 0);
+					u.ass(this.cN, {
+						height: "auto"
+					});
+					u.o.front.init(page.cN.scene);
+				}
+				u.fontsReady(this, 
+					{"family":"GT America", "weight":900}
+				);
 			}
 		}
 		page.ready();
 	}
 }
-u.e.addDOMReadyEvent(u.init);
+u.e.addDOMReadyEvent(function() {u.o.page.init(page)});
 
 
 /*i-front.js*/
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
-		scene.resized = function() {
+		scene.resized = function(event) {
+			if(this.div_article) {
+				if(this.div_article.h1) {
+					u.ass(this.div_article, {
+						paddingTop: ((page.browser_h - this.div_article.h1.offsetHeight) / 2) / 1.8 +"px",
+					});
+				}
+			}
+			if(this.side_a) {
+				u.ass(this.side_a, {
+					height: page.browser_h+"px",
+				});
+				if(this.side_a.canvas) {
+					this.side_a.canvas.height = page.browser_h;
+					this.side_a.canvas.width = page.browser_w;
+					this.side_a.center_x = Math.round(page.browser_w/2);
+					this.side_a.center_y = Math.round(page.browser_h/2);
+					this.side_a.radius = this.side_a.center_y - 35;
+					if(this.side_a.is_ready) {
+						window.scrollTo(0,this.side_a.offsetTop);
+					}
+				}
+				if(this.side_a.song_title) {
+					u.ass(this.side_a.song_title, {
+						top: ((page.browser_h - this.side_a.song_title.offsetHeight)/2) + "px"
+					});
+				}
+				if(this.side_a.side_title) {
+					u.ass(this.side_a.side_title, {
+						top: (page.browser_h/4 + 10) + "px"
+					});
+				}
+				if(this.side_a.track_status) {
+					u.ass(this.side_a.track_status, {
+						top: (page.browser_h/4 - 10) + "px"
+					});
+				}
+				if(this.side_a.time_status) {
+					u.ass(this.side_a.time_status, {
+						top: ((page.browser_h/4 * 3) - 10) + "px"
+					});
+				}
+			}
+			if(this.intermezzo) {
+				u.ass(this.intermezzo, {
+					height: page.browser_h+"px",
+				});
+			}
+			if(this.side_b) {
+				u.ass(this.side_b, {
+					height: page.browser_h+"px",
+				});
+			}
+			if(this.finale) {
+				u.ass(this.finale, {
+					height: u.browserH()+"px",
+				});
+			}
 		}
-		scene.scrolled = function() {
+		scene.scrolled = function(event) {
+			u.bug("scene.scrolled:", this);
 		}
 		scene.ready = function() {
-			this.side_a = u.mediaPlayer({type:"audio", playpause:true});
-			u.ae(this, this.side_a);
-			u.ass(this.side_a, {
-				height: u.browserH()+"px",
+			u.rc(this, "i:front");
+			this.div_article = u.qs("div.article", this);
+			this.div_article.h1 = u.qs("h1", this.div_article);
+			this.div_article.nodes = u.qsa("h1,p", this.div_article);
+			var i, node;
+			for(i = 0; i < this.div_article.nodes.length; i++) {
+				node = this.div_article.nodes[i];
+				u.ass(node, {
+					opacity: 0,
+					transform: "translate3D(0, 15px, 0)"
+				});
+			}
+			u.ass(this.div_article, {
+				opacity: 1,
 			});
-			this.intermezzo = u.ae(this, "div");
+			this.side_a = u.ae(this, "div", {class:"side_a"});
+			this.side_a.canvas = u.ae(this.side_a, "canvas", {width:this.offsetWidth, height:page.browser_h});
+			this.side_a.ctx = this.side_a.canvas.getContext("2d");
+			this.intermezzo = u.ae(this, "div", {class:"intermezzo"});
 			u.ae(this.intermezzo, "p", {html:"‘Himmelmekanik’ er mixet som en LP, derfor vender vi lige pladen."});
 			u.ae(this.intermezzo, "p", {html:"Det giver dig lige 10 sekunder til at sætte en tanke i gang."});
-			u.ass(this.intermezzo, {
-				height: u.browserH()+"px",
-			});
-			this.side_b = u.mediaPlayer({type:"audio"});
-			u.ae(this, this.side_b);
-			u.ass(this.side_b, {
-				height: u.browserH()+"px",
-			});
-			this.finale = u.ae(this, "div");
+			u.wc(this.intermezzo, "div", {class:"cell"});
+			u.wc(this.intermezzo, "div", {class:"table"});
+			this.side_b = u.ae(this, "div", {class:"side_b"});
+			this.finale = u.ae(this, "div", {class:"finale"});
 			u.ae(this.finale, "h3", {html:"Tak fordi du tog dig tid til at lytte med."});
 			u.ae(this.finale, "p", {html:'<span class="listen">Lyt igen</span> eller <span class="question">stil mig et spørgsmål, hvis du har lyst</span>.'});
 			u.ae(this.finale, "p", {html:"Bh<br />Fred og Kærlighed Marc Facchini"});
-			u.ass(this.finale, {
-				height: u.browserH()+"px",
+			u.wc(this.finale, "div", {class:"cell"});
+			u.wc(this.finale, "div", {class:"table"});
+			page.resized();
+			this.buildFront();
+		}
+		scene.buildFront = function() {
+			this.current_front_node_i = 0;
+			this.current_front_node = this.div_article.nodes[this.current_front_node_i++];
+			u.a.transition(this.current_front_node, "all 2s ease-in-out");
+			u.ass(this.current_front_node, {
+				opacity: 1,
+				transform: "translate3D(0, 0, 0)"
 			});
+			this.current_front_node = this.div_article.nodes[this.current_front_node_i++];
+			u.a.transition(this.current_front_node, "all 2s ease-in-out " + 500 + "ms");
+			u.ass(this.current_front_node, {
+				opacity: 1,
+				transform: "translate3D(0, 0, 0)"
+			});
+			this.scrolled = function(event) {
+				if(this.side_a.offsetTop - page.browser_h < page.scroll_y) {
+					var progress = ((page.scroll_y + page.browser_h) - this.side_a.offsetTop) / page.browser_h;
+					var current_degree = Math.PI * progress;
+					this.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+					this.side_a.ctx.beginPath();
+					this.side_a.ctx.fillStyle = "#f0bd18";
+					this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, progress*this.side_a.radius*0.025, 0, (2*Math.PI));
+					this.side_a.ctx.fill();
+					this.side_a.ctx.closePath();
+					this.side_a.ctx.beginPath();
+					this.side_a.ctx.lineWidth = 4;
+					this.side_a.ctx.strokeStyle = "#f0bd18";
+					this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, this.side_a.radius, -progress*Math.PI, progress*Math.PI);
+					this.side_a.ctx.stroke();
+					this.side_a.ctx.closePath();
+					if(!this.side_a.is_ready && this.side_a.offsetTop <= page.scroll_y) {
+						this.buildSideA();
+					}
+				}
+				if(this.div_article.nodes.length > this.current_front_node_i) {
+					if(this.div_article.nodes[this.current_front_node_i].offsetTop - page.browser_h < page.scroll_y) {
+						this.current_front_node = this.div_article.nodes[this.current_front_node_i++];
+						u.a.transition(this.current_front_node, "all 2s ease-in-out");
+						u.ass(this.current_front_node, {
+							opacity: 1,
+							transform: "translate3D(0, 0, 0)"
+						});
+					}
+				}
+			}
+			this.is_front_built = true;
 		}
-		scene.ready();
-	}
-}
-
-
-/*i-demo.js*/
-Util.Objects["demo"] = new function() {
-	this.init = function(scene) {
-		scene.resized = function() {
+		scene.buildSideA = function() {
+			if(!this.side_a.is_ready) {
+				this.side_a.is_ready = true;
+				this.side_a.song_title = u.ae(this.side_a, "h2", {class:"song_title", html:"-"});
+				this.side_a.side_title = u.ae(this.side_a, "h3", {class:"side_title", html:"Himmelmekanik, Side A"});
+				this.side_a.track_status = u.ae(this.side_a, "h3", {class:"track_status"});
+				this.side_a.time_status = u.ae(this.side_a, "h3", {class:"time_status"});
+				this.side_a.player = u.mediaPlayer({type:"audio"});
+				this.side_a.player.side_a = this.side_a;
+				this.side_a.player.ready = function() {
+					this.easing = u.easings["ease-in-slow"];
+					this.diagonal_radius = Math.ceil(Math.sqrt(Math.pow(page.browser_w, 2) + Math.pow(page.browser_w, 2)) / 2);
+					this.transitioned = function() {
+						page.cN.scene.is_side_a_built = true;
+						u.a.transition(this.side_a.side_title, "all 0.5s ease-in-out");
+						u.ass(this.side_a.side_title, {
+							opacity: 1
+						});
+					}
+					this.loadGrow = function(progress) {
+						var easing = this.easing(progress);
+						radius = easing*this.diagonal_radius < this.side_a.radius*0.025 ? this.side_a.radius*0.025 : easing*this.diagonal_radius;
+						this.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+						this.side_a.ctx.beginPath();
+						this.side_a.ctx.fillStyle = "#f0bd18";
+						this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, radius, 0, (2*Math.PI));
+						this.side_a.ctx.fill();
+						this.side_a.ctx.closePath();
+						this.side_a.ctx.beginPath();
+						this.side_a.ctx.lineWidth = 4;
+						if(this.diagonal_radius > this.side_a.radius) {
+							this.side_a.ctx.strokeStyle = "#f6d874";
+						}
+						else {
+							this.side_a.ctx.strokeStyle = "#f0bd18";
+						}
+						this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, this.side_a.radius, -1*Math.PI, 1*Math.PI);
+						this.side_a.ctx.stroke();
+						this.side_a.ctx.closePath();
+					}
+					this.loading = function(event) {
+						u.a.requestAnimationFrame(this, "loadGrow", 6000);
+					}
+					this.playing = function(event) {
+						this.is_playing = true;
+					}
+					this.tracks = {
+						"0":{name:"Metamorfose", track:"01", end: "277"},
+						"277":{name:"Damgulanna", track:"02", end: "481"},
+						"481":{name:"Selvom jeg tæller", track:"03", end:"757"},
+						"757":{name:"Malmös søn, under håndvasken", track:"04", end: "973"},
+						"973":{name:"Snekkersten Al Safira", track:"05", end: "1260"},
+					}
+					this.track_keys = Object.keys(this.tracks);
+					this.timeupdate = function(event) {
+						if(this.current_track_i === undefined) {
+							this.current_track_i = 0;
+							this.current_track = this.tracks[this.track_keys[this.current_track_i]];
+							this.side_a.song_title.innerHTML = this.current_track.name;
+							this.side_a.track_status.innerHTML = this.current_track.track + "/10";
+						}
+						else if(this.currentTime > this.current_track.end) {
+							this.current_track_i++;
+							this.current_track = this.tracks[this.track_keys[this.current_track_i]];
+							if(this.current_track_i >= this.track_keys.length) {
+								this.stop();
+								page.cN.scene.buildIntermezzo();
+								delete this.timeupdate;
+								return;
+							}
+							this.side_a.song_title.innerHTML = this.current_track.name;
+							this.side_a.track_status.innerHTML = this.current_track.track + "/10";
+							page.resized();
+						}
+						this.side_a.time_status.innerHTML = u.period("m:s", {seconds: this.currentTime-this.track_keys[this.current_track_i]});
+						this.side_a.updateCanvas(this.currentTime);
+						if(page.cN.scene.is_side_a_built && !this.is_details_shown) {
+							this.is_details_shown = true;
+							u.a.transition(this.side_a.song_title, "all 0.5s ease-in-out");
+							u.ass(this.side_a.song_title, {
+								opacity: 1
+							});
+							u.a.transition(this.side_a.track_status, "all 0.5s ease-in-out");
+							u.ass(this.side_a.track_status, {
+								opacity: 1
+							});
+							u.a.transition(this.side_a.time_status, "all 0.5s ease-in-out");
+							u.ass(this.side_a.time_status, {
+								opacity: 1
+							});
+						}
+					}
+					this.side_a.updateCanvas = function(progress) {
+						this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+						this.ctx.beginPath();
+						this.ctx.rect(0, 0, page.browser_w, page.browser_h);
+						this.ctx.fillStyle = "#f0bd18";
+						this.ctx.fill();
+						this.ctx.closePath();
+						this.ctx.beginPath();
+						this.ctx.lineWidth = 4;
+						this.ctx.strokeStyle = "#f6d874";
+						this.ctx.arc(this.center_x, this.center_y, this.radius, -1*Math.PI, 1*Math.PI);
+						this.ctx.stroke();
+						this.ctx.closePath();
+						this.ctx.beginPath();
+						this.ctx.lineWidth = 4;
+						this.ctx.strokeStyle = "#cc9c00";
+						this.ctx.arc(this.center_x, this.center_y, this.radius, -(Math.PI/2), 2 * (progress / this.player.duration) * Math.PI - (Math.PI/2));
+						this.ctx.stroke();
+						this.ctx.closePath();
+					}
+					this.loadAndPlay("/assets/side-a");
+				}
+				u.ae(this.side_a, this.side_a.player);
+				window.player = this.side_a.player;
+				this.side_a.ignoreWheel = function(event) {
+					u.e.kill(event);
+				}
+				u.e.addEvent(this.side_a, "wheel", this.side_a.ignoreWheel);
+				page.resized();
+			}
 		}
-		scene.scrolled = function() {
+		scene.buildIntermezzo = function() {
+			if(!this.intermezzo.is_ready) {
+				this.intermezzo.is_ready = true;
+				u.a.transition(this.side_a.side_title, "all 0.5s ease-in-out");
+				u.ass(this.side_a.side_title, {
+					opacity: 0
+				});
+				u.a.transition(this.side_a.song_title, "all 0.5s ease-in-out");
+				u.ass(this.side_a.song_title, {
+					opacity: 0
+				});
+				u.a.transition(this.side_a.track_status, "all 0.5s ease-in-out");
+				u.ass(this.side_a.track_status, {
+					opacity: 0
+				});
+				u.a.transition(this.side_a.time_status, "all 0.5s ease-in-out");
+				u.ass(this.side_a.time_status, {
+					opacity: 0
+				});
+				this.intermezzo.easing = u.easings["ease-in"];
+				this.intermezzo.side_a = this.side_a;
+				this.intermezzo.transitioned = function() {
+					delete this.transitioned;
+					u.ass(this, {
+						opacity: 0,
+						display:"block"
+					});
+					u.ass(this.side_a, {
+						display:"none"
+					});
+					u.a.transition(this, "all 0.5s ease-in-out");
+					u.ass(this, {
+						opacity: 1
+					});
+					u.t.setTimer(page.cN.scene, "buildSideB", 10000);
+				}
+				this.intermezzo.undo = function(progress) {
+					progress = 1 - progress;
+					var easing = this.easing(progress);
+					this.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+					this.side_a.ctx.beginPath();
+					this.side_a.ctx.fillStyle = "#f0bd18";
+					this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, easing*this.side_a.player.diagonal_radius, 0, (2*Math.PI));
+					this.side_a.ctx.fill();
+					this.side_a.ctx.closePath();
+					this.side_a.ctx.beginPath();
+					this.side_a.ctx.lineWidth = 4;
+					if(this.diagonal_radius > this.side_a.radius) {
+						this.side_a.ctx.strokeStyle = "#f6d874";
+					}
+					else {
+						this.side_a.ctx.strokeStyle = "#f0bd18";
+					}
+					this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, this.side_a.radius, 0, (2 * easing) * Math.PI);
+					this.side_a.ctx.stroke();
+					this.side_a.ctx.closePath();
+					this.side_a.ctx.beginPath();
+					this.side_a.ctx.lineWidth = 4;
+					this.side_a.ctx.strokeStyle = "#cc9c00";
+					this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, this.side_a.radius, -(Math.PI/2), (2 * easing * Math.PI) - (Math.PI/2));
+					this.side_a.ctx.stroke();
+					this.side_a.ctx.closePath();
+				}
+				u.a.requestAnimationFrame(this.intermezzo, "undo", 2000);
+			}
 		}
-		scene.ready = function() {
+		scene.buildSideB = function() {
+			console.log("buildSideB");
 		}
 		scene.ready();
 	}

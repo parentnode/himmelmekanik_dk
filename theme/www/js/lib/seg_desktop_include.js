@@ -16,6 +16,7 @@ document.write('<script type="text/javascript" src="/js/manipulator/src/u-init.j
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-keyboard.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-math.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-navigation.js"></script>');
+document.write('<script type="text/javascript" src="/js/manipulator/src/u-period.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-preloader.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-request.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-scrollto.js"></script>');
@@ -31,8 +32,10 @@ document.write('<script type="text/javascript" src="/js/manipulator/src/u-url.js
 // document.write('<script type="text/javascript" src="/js/manipulator/v0_9_2/src/u-googleanalytics.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/src/u-media.js"></script>');
 
+document.write('<script type="text/javascript" src="/js/manipulator/src/u-scrollto.js"></script>');
+document.write('<script type="text/javascript" src="/js/manipulator/src/beta-u-fontsready.js"></script>');
+
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-page.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-front.js"></script>');
-document.write('<script type="text/javascript" src="/js/lib/desktop/i-demo.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-login.js"></script>');
 

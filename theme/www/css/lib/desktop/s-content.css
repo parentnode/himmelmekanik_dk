@@ -1,5 +1,5 @@
-#content {position: relative;}
-#content .scene {position: relative; padding: 50px 0;}
+#content {position: relative; height: 0; overflow: hidden;}
+#content .scene {position: relative; padding: 0;}
 
 
 /* BASIC CONTENT */
@@ -11,10 +11,75 @@
 #content .scene h4,
 #content .scene h5,
 #content .scene h6,
-#content .scene p {width: 500px; margin: 0 auto;}
-#content .scene hr {border: none; border-top: 1px solid #888888; margin: 30px 0 50px; padding: 0;}
-#content .scene p.note {font-style: italic;}
+#content .scene p {width: 700px; margin: 0 auto; text-align: center;}
 
-#content .scene ul.info {display: none;}
+#content .scene h1,
+#content .scene h2 {color: #f0bd18;}
 
-#content div.audioplayer {background-color: orange;}
+
+h1 {padding: 0 50px; font-size: 60px; line-height: 1.05em;}
+h2 {padding: 0 50px 30px; font-size: 30px; line-height: 1.1em;}
+h3 {padding: 0 50px 10px; font-size: 20px; line-height: 1.25em;}
+
+p {padding: 0 50px 40px; font-size: 22px; line-height: 36px;} 
+
+
+
+/*#content .scene div.article {padding: 0 0 100px;}*/
+#content .scene div.article ul.info {display: none;}
+#content .scene div.article div.articlebody {padding: 100px 0;}
+
+#content .scene div.article h1 span,
+#content .scene div.article p span {display: inline-block;}
+
+
+#content .scene div.side_a {position: relative;
+/*	background-color: #f0bd18;*/
+}
+#content .scene div.side_a canvas {width: 100%;}
+#content .scene div.side_a h2.song_title {
+	position: absolute;
+	font-size: 70px;
+	color: #ffffff;
+	opacity: 0;
+	left: 0;
+	width: 100%;
+	padding: 0;
+	text-align: center;
+}
+#content .scene div.side_a h3.side_title,
+#content .scene div.side_a h3.track_status,
+#content .scene div.side_a h3.time_status {
+	position: absolute;
+	opacity: 0;
+	font-size: 14px;
+	color: #f6d874;
+	padding: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+
+}
+
+
+#content .scene div.audioplayer {width: 100%; height: 100%;}
+
+#content .scene div.intermezzo {
+	display: none;
+}
+#content .scene div.intermezzo div.table {display: table; width: 100%; height: 100%;}
+#content .scene div.intermezzo div.cell {display: table-cell; vertical-align: middle;}
+
+#content .scene div.intermezzo p {padding-top: 20px; padding-bottom: 20px;}
+
+
+#content .scene div.side_b {background-color: #f0bd18;
+	display: none;
+}
+
+#content .scene div.finale {
+	display: none;
+}
+
+#content .scene div.finale div.table {display: table; width: 100%; height: 100%;}
+#content .scene div.finale div.cell {display: table-cell; vertical-align: middle;}
