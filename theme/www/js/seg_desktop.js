@@ -812,10 +812,16 @@ Util.hasClass = u.hc = function(node, classname) {
 Util.addClass = u.ac = function(node, classname, dom_update) {
 	try {
 		if(classname) {
-			var regexp = new RegExp("(^|\\s)" + classname + "(\\s|$)");
-			if(!regexp.test(node.className)) {
-				node.className += node.className ? " " + classname : classname;
+			if(node.classList){
+				node.classList.add(classname);
 				dom_update === false ? false : node.offsetTop;
+			}
+			else {
+				var regexp = new RegExp("(^|\\s)" + classname + "(\\s|$)");
+				if(!regexp.test(node.className)) {
+					node.className += node.className ? " " + classname : classname;
+					dom_update === false ? false : node.offsetTop;
+				}
 			}
 			return node.className;
 		}
@@ -828,10 +834,15 @@ Util.addClass = u.ac = function(node, classname, dom_update) {
 Util.removeClass = u.rc = function(node, classname, dom_update) {
 	try {
 		if(classname) {
-			var regexp = new RegExp("(\\b)" + classname + "(\\s|$)", "g");
-			node.className = node.className.replace(regexp, " ").trim().replace(/[\s]{2}/g, " ");
-			dom_update === false ? false : node.offsetTop;
-			return node.className;
+			if(node.classList.contains(classname)) {
+				node.classList.remove(classname);
+			}
+			else {
+				var regexp = new RegExp("(\\b)" + classname + "(\\s|$)", "g");
+				node.className = node.className.replace(regexp, " ").trim().replace(/[\s]{2}/g, " ");
+				dom_update === false ? false : node.offsetTop;
+				return node.className;
+			}
 		}
 	}
 	catch(exception) {
@@ -841,21 +852,37 @@ Util.removeClass = u.rc = function(node, classname, dom_update) {
 }
 Util.toggleClass = u.tc = function(node, classname, _classname, dom_update) {
 	try {
-		var regexp = new RegExp("(^|\\s)" + classname + "(\\s|$|\:)");
-		if(regexp.test(node.className)) {
-			u.rc(node, classname, false);
-			if(_classname) {
-				u.ac(node, _classname, false);
+		if(node.classList) {
+			if(node.classList.contains(classname)) {
+				node.classList.remove(classname);
+				if(_classname) {
+					node.classList.add(_classname);
+				}
+			}
+			else {
+				node.classList.add(classname);
+				if(_classname) {
+					node.classList.remove(_classname);
+				}
 			}
 		}
 		else {
-			u.ac(node, classname, false);
-			if(_classname) {
-				u.rc(node, _classname, false);
+			var regexp = new RegExp("(^|\\s)" + classname + "(\\s|$|\:)");
+			if(regexp.test(node.className)) {
+				u.rc(node, classname, false);
+				if(_classname) {
+					u.ac(node, _classname, false);
+				}
 			}
+			else {
+				u.ac(node, classname, false);
+				if(_classname) {
+					u.rc(node, _classname, false);
+				}
+			}
+			dom_update === false ? false : node.offsetTop;
+			return node.className;
 		}
-		dom_update === false ? false : node.offsetTop;
-		return node.className;
 	}
 	catch(exception) {
 		u.exception("u.tc", arguments, exception);
@@ -1410,42 +1437,6 @@ u.e.removeWindowEndEvent = function(node, id) {
 	window["_Onend_node_"+ id]["_Onend_callback_"+id] = null;
 	window["_Onend_node_"+ id] = null;
 	window["_Onend_callback_"+ id] = null;
-}
-u.e.addWindowResizeEvent = function(node, action) {
-	var id = u.randomString();
-	window["_Onresize_node_"+ id] = node;
-	if(typeof(action) == "function") {
-		eval('window["_Onresize_callback_' + id + '"] = function(event) {window["_Onresize_node_'+ id + '"]._Onresize_callback_'+id+' = '+action+'; window["_Onresize_node_'+ id + '"]._Onresize_callback_'+id+'(event);};');
-	} 
-	else {
-		eval('window["_Onresize_callback_' + id + '"] = function(event) {if(typeof(window["_Onresize_node_'+ id + '"]["'+action+'"]) == "function") {window["_Onresize_node_'+id+'"]["'+action+'"](event);}};');
-	}
-	u.e.addEvent(window, "resize", window["_Onresize_callback_" + id]);
-	return id;
-}
-u.e.removeWindowResizeEvent = function(node, id) {
-	u.e.removeEvent(window, "resize", window["_Onresize_callback_"+id]);
-	window["_Onresize_node_"+id]["_Onresize_callback_"+id] = null;
-	window["_Onresize_node_"+id] = null;
-	window["_Onresize_callback_"+id] = null;
-}
-u.e.addWindowScrollEvent = function(node, action) {
-	var id = u.randomString();
-	window["_Onscroll_node_"+ id] = node;
-	if(typeof(action) == "function") {
-		eval('window["_Onscroll_callback_' + id + '"] = function(event) {window["_Onscroll_node_'+ id + '"]._Onscroll_callback_'+id+' = '+action+'; window["_Onscroll_node_'+ id + '"]._Onscroll_callback_'+id+'(event);};');
-	} 
-	else {
-		eval('window["_Onscroll_callback_' + id + '"] = function(event) {if(typeof(window["_Onscroll_node_'+ id + '"]["'+action+'"]) == "function") {window["_Onscroll_node_'+id+'"]["'+action+'"](event);}};');
-	}
-	u.e.addEvent(window, "scroll", window["_Onscroll_callback_" + id]);
-	return id;
-}
-u.e.removeWindowScrollEvent = function(node, id) {
-	u.e.removeEvent(window, "scroll", window["_Onscroll_callback_"+id]);
-	window["_Onscroll_node_"+id]["_Onscroll_callback_"+id] = null;
-	window["_Onscroll_node_"+id] = null;
-	window["_Onscroll_callback_"+id] = null;
 }
 
 
@@ -5536,6 +5527,27 @@ Util.Objects["page"] = new function() {
 				u.e.addWindowEvent(this, "scroll", "scrolled");
 				this.resized();
 				this.fontsLoaded = function() {
+					u.textscaler(this, {
+						"min_width":600,
+						"max_width":1600,
+						"unit":"px",
+						"h1":{
+							"min_size":40,
+							"max_size":110
+						},
+						"h2":{
+							"min_size":30,
+							"max_size":80
+						},
+						"h3":{
+							"min_size":12,
+							"max_size":18
+						},
+						"p":{
+							"min_size":14,
+							"max_size":32
+						},
+					})
 					window.scrollTo(0, 0);
 					u.ass(this.cN, {
 						height: "auto"
@@ -5557,14 +5569,14 @@ u.e.addDOMReadyEvent(function() {u.o.page.init(page)});
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function(event) {
-			if(this.div_article) {
+			if(this.div_article && this.div_article.is_active) {
 				if(this.div_article.h1) {
 					u.ass(this.div_article, {
 						paddingTop: ((page.browser_h - this.div_article.h1.offsetHeight) / 2) / 1.8 +"px",
 					});
 				}
 			}
-			if(this.side_a) {
+			if(this.side_a && this.side_a.is_active) {
 				u.ass(this.side_a, {
 					height: page.browser_h+"px",
 				});
@@ -5599,13 +5611,43 @@ Util.Objects["front"] = new function() {
 					});
 				}
 			}
-			if(this.intermezzo) {
-				u.ass(this.intermezzo, {
+			if(this.side_b && this.side_b.is_active) {
+				u.ass(this.side_b, {
 					height: page.browser_h+"px",
 				});
+				if(this.side_b.canvas) {
+					this.side_b.canvas.height = page.browser_h;
+					this.side_b.canvas.width = page.browser_w;
+					this.side_b.center_x = Math.round(page.browser_w/2);
+					this.side_b.center_y = Math.round(page.browser_h/2);
+					this.side_b.radius = this.side_b.center_y - 35;
+					if(this.side_b.is_ready) {
+						window.scrollTo(0,this.side_b.offsetTop);
+					}
+				}
+				if(this.side_b.song_title) {
+					u.ass(this.side_b.song_title, {
+						top: ((page.browser_h - this.side_b.song_title.offsetHeight)/2) + "px"
+					});
+				}
+				if(this.side_b.side_title) {
+					u.ass(this.side_b.side_title, {
+						top: (page.browser_h/4 + 10) + "px"
+					});
+				}
+				if(this.side_b.track_status) {
+					u.ass(this.side_b.track_status, {
+						top: (page.browser_h/4 - 10) + "px"
+					});
+				}
+				if(this.side_b.time_status) {
+					u.ass(this.side_b.time_status, {
+						top: ((page.browser_h/4 * 3) - 10) + "px"
+					});
+				}
 			}
-			if(this.side_b) {
-				u.ass(this.side_b, {
+			if(this.intermezzo) {
+				u.ass(this.intermezzo, {
 					height: page.browser_h+"px",
 				});
 			}
@@ -5649,6 +5691,7 @@ Util.Objects["front"] = new function() {
 			u.ae(this.finale, "p", {html:"Bh<br />Fred og Kærlighed Marc Facchini"});
 			u.wc(this.finale, "div", {class:"cell"});
 			u.wc(this.finale, "div", {class:"table"});
+			this.div_article.is_active = true;
 			page.resized();
 			this.buildFront();
 		}
@@ -5702,25 +5745,51 @@ Util.Objects["front"] = new function() {
 		scene.buildSideA = function() {
 			if(!this.side_a.is_ready) {
 				this.side_a.is_ready = true;
+				this.side_a.is_active = true;
 				this.side_a.song_title = u.ae(this.side_a, "h2", {class:"song_title", html:"-"});
 				this.side_a.side_title = u.ae(this.side_a, "h3", {class:"side_title", html:"Himmelmekanik, Side A"});
 				this.side_a.track_status = u.ae(this.side_a, "h3", {class:"track_status"});
 				this.side_a.time_status = u.ae(this.side_a, "h3", {class:"time_status"});
+				u.ass(this.div_article, {
+					"display": "none"
+				});
+				this.side_a.stopplayer = u.mediaPlayer({type:"audio"});
+				u.ac(this.side_a.stopplayer, "stopplayer");
 				this.side_a.player = u.mediaPlayer({type:"audio"});
 				this.side_a.player.side_a = this.side_a;
 				this.side_a.player.ready = function() {
+					u.bug("player ready:", this);
+					page.cN.scene.div_article.is_active = false;
 					this.easing = u.easings["ease-in-slow"];
 					this.diagonal_radius = Math.ceil(Math.sqrt(Math.pow(page.browser_w, 2) + Math.pow(page.browser_w, 2)) / 2);
 					this.transitioned = function() {
 						page.cN.scene.is_side_a_built = true;
+						delete this.transitioned;
 						u.a.transition(this.side_a.side_title, "all 0.5s ease-in-out");
 						u.ass(this.side_a.side_title, {
 							opacity: 1
 						});
+						this.side_a.stopplayer.load("/assets/stop");
+						this.side_a.playAgain = function(event) {
+							this.player.play();
+						}
+						this.side_a.stopOnInteraction = function(event) {
+							u.bug("ignore input");
+							u.e.kill(event);
+							if(!u.t.valid(this.t_stop)) {
+								this.stopplayer.play(0);
+								this.player.pause();
+								this.t_stop = u.t.setTimer(this, "playAgain", 5000);
+							}
+						}
+						this.side_a.wheel_event_id = u.e.addWindowEvent(this.side_a, "wheel", this.side_a.stopOnInteraction);
+						this.side_a.mousemove_event_id = u.e.addWindowEvent(this.side_a, "mousemove", this.side_a.stopOnInteraction);
+						this.side_a.blur_event_id = u.e.addWindowEvent(this.side_a, "blur", this.side_a.stopOnInteraction);
+						console.log("this.side_a.mousemove_event_id:" + this.side_a.mousemove_event_id);
 					}
 					this.loadGrow = function(progress) {
 						var easing = this.easing(progress);
-						radius = easing*this.diagonal_radius < this.side_a.radius*0.025 ? this.side_a.radius*0.025 : easing*this.diagonal_radius;
+						var radius = easing*this.diagonal_radius < this.side_a.radius*0.025 ? this.side_a.radius*0.025 : easing*this.diagonal_radius;
 						this.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
 						this.side_a.ctx.beginPath();
 						this.side_a.ctx.fillStyle = "#f0bd18";
@@ -5740,9 +5809,11 @@ Util.Objects["front"] = new function() {
 						this.side_a.ctx.closePath();
 					}
 					this.loading = function(event) {
+						delete this.loading;
 						u.a.requestAnimationFrame(this, "loadGrow", 6000);
 					}
 					this.playing = function(event) {
+						u.bug("Playing", event);
 						this.is_playing = true;
 					}
 					this.tracks = {
@@ -5814,17 +5885,18 @@ Util.Objects["front"] = new function() {
 					this.loadAndPlay("/assets/side-a");
 				}
 				u.ae(this.side_a, this.side_a.player);
+				u.ae(this.side_a, this.side_a.stopplayer);
 				window.player = this.side_a.player;
-				this.side_a.ignoreWheel = function(event) {
-					u.e.kill(event);
-				}
-				u.e.addEvent(this.side_a, "wheel", this.side_a.ignoreWheel);
 				page.resized();
 			}
 		}
 		scene.buildIntermezzo = function() {
 			if(!this.intermezzo.is_ready) {
 				this.intermezzo.is_ready = true;
+				this.intermezzo.is_active = true;
+				u.e.removeWindowEvent(this.side_a, "wheel", this.side_a.wheel_event_id);
+				u.e.removeWindowEvent(this.side_a, "mousemove", this.side_a.mousemove_event_id);
+				u.e.removeWindowEvent(this.side_a, "blur", this.side_a.blur_event_id);
 				u.a.transition(this.side_a.side_title, "all 0.5s ease-in-out");
 				u.ass(this.side_a.side_title, {
 					opacity: 0
@@ -5852,13 +5924,14 @@ Util.Objects["front"] = new function() {
 					u.ass(this.side_a, {
 						display:"none"
 					});
+					page.cN.scene.side_a.is_active = false;
 					u.a.transition(this, "all 0.5s ease-in-out");
 					u.ass(this, {
 						opacity: 1
 					});
-					u.t.setTimer(page.cN.scene, "buildSideB", 10000);
+					u.t.setTimer(this, "undoIntermezzo", 10000);
 				}
-				this.intermezzo.undo = function(progress) {
+				this.intermezzo.undoSideA = function(progress) {
 					progress = 1 - progress;
 					var easing = this.easing(progress);
 					this.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
@@ -5885,11 +5958,166 @@ Util.Objects["front"] = new function() {
 					this.side_a.ctx.stroke();
 					this.side_a.ctx.closePath();
 				}
-				u.a.requestAnimationFrame(this.intermezzo, "undo", 2000);
+				u.a.requestAnimationFrame(this.intermezzo, "undoSideA", 2000);
+				this.intermezzo.undoIntermezzo = function(progress) {
+					this.transitioned = function(event) {
+						page.cN.scene.buildSideB();
+					}
+					u.a.transition(this, "all 0.3s ease-in");
+					u.ass(this, {
+						opacity: 0
+					});
+				}
 			}
 		}
 		scene.buildSideB = function() {
-			console.log("buildSideB");
+			if(!this.side_b.is_ready) {
+				this.side_b.is_ready = true;
+				this.side_b.is_active = true;
+				this.side_b.song_title = u.ae(this.side_b, "h2", {class:"song_title", html:"-"});
+				this.side_b.side_title = u.ae(this.side_b, "h3", {class:"side_title", html:"Himmelmekanik, Side B"});
+				this.side_b.track_status = u.ae(this.side_b, "h3", {class:"track_status"});
+				this.side_b.time_status = u.ae(this.side_b, "h3", {class:"time_status"});
+				u.ass(this.intermezzo, {
+					"display": "none"
+				});
+				u.ass(this.side_b, {
+					opacity: 1
+				});
+				this.side_b.stopplayer = u.mediaPlayer({type:"audio"});
+				u.ac(this.side_b.stopplayer, "stopplayer");
+				this.side_b.player = u.mediaPlayer({type:"audio"});
+				this.side_b.player.side_b = this.side_b;
+				this.side_b.player.ready = function() {
+					u.bug("player ready:", this);
+					this.easing = u.easings["ease-in-slow"];
+					this.diagonal_radius = Math.ceil(Math.sqrt(Math.pow(page.browser_w, 2) + Math.pow(page.browser_w, 2)) / 2);
+					this.transitioned = function() {
+						page.cN.scene.is_side_b_built = true;
+						delete this.transitioned;
+						u.a.transition(this.side_b.side_title, "all 0.5s ease-in-out");
+						u.ass(this.side_b.side_title, {
+							opacity: 1
+						});
+						this.side_b.stopplayer.load("/assets/stop");
+						this.side_b.playAgain = function(event) {
+							this.player.play();
+						}
+						this.side_b.stopOnInteraction = function(event) {
+							u.bug("ignore input");
+							u.e.kill(event);
+							if(!u.t.valid(this.t_stop)) {
+								this.stopplayer.play(0);
+								this.player.pause();
+								this.t_stop = u.t.setTimer(this, "playAgain", 5000);
+							}
+						}
+						this.side_b.wheel_event_id = u.e.addWindowEvent(this.side_b, "wheel", this.side_b.stopOnInteraction);
+						this.side_b.mousemove_event_id = u.e.addWindowEvent(this.side_b, "mousemove", this.side_b.stopOnInteraction);
+						this.side_b.blur_event_id = u.e.addWindowEvent(this.side_b, "blur", this.side_b.stopOnInteraction);
+					}
+					this.loadGrow = function(progress) {
+						var easing = this.easing(progress);
+						var radius = easing*this.diagonal_radius < this.side_b.radius*0.025 ? this.side_b.radius*0.025 : easing*this.diagonal_radius;
+						this.side_b.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+						this.side_b.ctx.beginPath();
+						this.side_b.ctx.fillStyle = "#f0bd18";
+						this.side_b.ctx.arc(this.side_b.center_x, this.side_b.center_y, radius, 0, (2*Math.PI));
+						this.side_b.ctx.fill();
+						this.side_b.ctx.closePath();
+						this.side_b.ctx.beginPath();
+						this.side_b.ctx.lineWidth = 4;
+						if(this.diagonal_radius > this.side_b.radius) {
+							this.side_b.ctx.strokeStyle = "#f6d874";
+						}
+						else {
+							this.side_b.ctx.strokeStyle = "#f0bd18";
+						}
+						this.side_b.ctx.arc(this.side_b.center_x, this.side_b.center_y, this.side_b.radius, -1*Math.PI, 1*Math.PI);
+						this.side_b.ctx.stroke();
+						this.side_b.ctx.closePath();
+					}
+					this.loading = function(event) {
+						delete this.loading;
+						u.a.requestAnimationFrame(this, "loadGrow", 6000);
+					}
+					this.playing = function(event) {
+						u.bug("Playing", event);
+						this.is_playing = true;
+					}
+					this.tracks = {
+						"0":{name:"Metamorfose", track:"06", end: "277"},
+						"277":{name:"Damgulanna", track:"07", end: "481"},
+						"481":{name:"Selvom jeg tæller", track:"08", end:"757"},
+						"757":{name:"Malmös søn, under håndvasken", track:"09", end: "973"},
+						"973":{name:"Snekkersten Al Safira", track:"10", end: "1260"},
+					}
+					this.track_keys = Object.keys(this.tracks);
+					this.timeupdate = function(event) {
+						if(this.current_track_i === undefined) {
+							this.current_track_i = 0;
+							this.current_track = this.tracks[this.track_keys[this.current_track_i]];
+							this.side_b.song_title.innerHTML = this.current_track.name;
+							this.side_b.track_status.innerHTML = this.current_track.track + "/10";
+						}
+						else if(this.currentTime > this.current_track.end) {
+							this.current_track_i++;
+							this.current_track = this.tracks[this.track_keys[this.current_track_i]];
+							if(this.current_track_i >= this.track_keys.length) {
+								this.stop();
+								page.cN.scene.buildIntermezzo();
+								delete this.timeupdate;
+								return;
+							}
+							this.side_b.song_title.innerHTML = this.current_track.name;
+							this.side_b.track_status.innerHTML = this.current_track.track + "/10";
+							page.resized();
+						}
+						this.side_b.time_status.innerHTML = u.period("m:s", {seconds: this.currentTime-this.track_keys[this.current_track_i]});
+						this.side_b.updateCanvas(this.currentTime);
+						if(page.cN.scene.is_side_b_built && !this.is_details_shown) {
+							this.is_details_shown = true;
+							u.a.transition(this.side_b.song_title, "all 0.5s ease-in-out");
+							u.ass(this.side_b.song_title, {
+								opacity: 1
+							});
+							u.a.transition(this.side_b.track_status, "all 0.5s ease-in-out");
+							u.ass(this.side_b.track_status, {
+								opacity: 1
+							});
+							u.a.transition(this.side_b.time_status, "all 0.5s ease-in-out");
+							u.ass(this.side_b.time_status, {
+								opacity: 1
+							});
+						}
+					}
+					this.side_b.updateCanvas = function(progress) {
+						this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+						this.ctx.beginPath();
+						this.ctx.rect(0, 0, page.browser_w, page.browser_h);
+						this.ctx.fillStyle = "#f0bd18";
+						this.ctx.fill();
+						this.ctx.closePath();
+						this.ctx.beginPath();
+						this.ctx.lineWidth = 4;
+						this.ctx.strokeStyle = "#f6d874";
+						this.ctx.arc(this.center_x, this.center_y, this.radius, -1*Math.PI, 1*Math.PI);
+						this.ctx.stroke();
+						this.ctx.closePath();
+						this.ctx.beginPath();
+						this.ctx.lineWidth = 4;
+						this.ctx.strokeStyle = "#cc9c00";
+						this.ctx.arc(this.center_x, this.center_y, this.radius, -(Math.PI/2), 2 * (progress / this.player.duration) * Math.PI - (Math.PI/2));
+						this.ctx.stroke();
+						this.ctx.closePath();
+					}
+					this.loadAndPlay("/assets/side-b");
+				}
+				u.ae(this.side_b, this.side_b.player);
+				u.ae(this.side_b, this.side_b.stopplayer);
+				window.player = this.side_b.player;
+				page.resized();
+			}
 		}
 		scene.ready();
 	}

@@ -62,6 +62,28 @@ Util.Objects["page"] = new function() {
 				this.fontsLoaded = function() {
 					// u.bug("fontsLoaded");
 
+					u.textscaler(this, {
+						"min_width":600,
+						"max_width":1600,
+						"unit":"px",
+						"h1":{
+							"min_size":40,
+							"max_size":110
+						},
+						"h2":{
+							"min_size":30,
+							"max_size":80
+						},
+						"h3":{
+							"min_size":12,
+							"max_size":18
+						},
+						"p":{
+							"min_size":14,
+							"max_size":32
+						},
+					})
+
 					// Reset any scroll position
 					window.scrollTo(0, 0);
 					u.ass(this.cN, {

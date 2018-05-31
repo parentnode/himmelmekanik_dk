@@ -65,13 +65,13 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .scene h4,
 #content .scene h5,
 #content .scene h6,
-#content .scene p {width: 700px; margin: 0 auto; text-align: center;}
+#content .scene p {width: 70%; margin: 0 auto; text-align: center;}
 #content .scene h1,
-#content .scene h2 {color: #f0bd18;}
+#content .scene h2 {color: #f0bd18; width: 85%;}
 h1 {padding: 0 50px; font-size: 60px; line-height: 1.05em;}
 h2 {padding: 0 50px 30px; font-size: 30px; line-height: 1.1em;}
 h3 {padding: 0 50px 10px; font-size: 20px; line-height: 1.25em;}
-p {padding: 0 50px 40px; font-size: 22px; line-height: 36px;} 
+p {padding: 0 50px 40px; font-size: 22px; line-height: 1.6em;} 
 #content .scene div.article ul.info {display: none;}
 #content .scene div.article div.articlebody {padding: 100px 0;}
 #content .scene div.article h1 span,
@@ -101,7 +101,7 @@ p {padding: 0 50px 40px; font-size: 22px; line-height: 36px;}
 	width: 100%;
 	text-align: center;
 }
-#content .scene div.audioplayer {width: 100%; height: 100%;}
+#content .scene div.audioplayer {width: 50px; height: 50px;}
 #content .scene div.intermezzo {
 	display: none;
 }
