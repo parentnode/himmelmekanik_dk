@@ -30,13 +30,10 @@ input, select, textarea {font-size: 14px; color: #333333;}
 input, textarea {outline: none;}
 a, span {font-size: inherit; font-family: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
 em, strong {font-size: inherit; font-family: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
-h1 {}
-h2 {}
-h3 {}
-h4 {}
-h5 {}
-h6 {}
-p {} 
+h1 {padding: 0 50px; font-size: 60px; line-height: 1.05em;}
+h2 {padding: 0 50px 30px; font-size: 30px; line-height: 1.1em;}
+h3 {padding: 0 50px 10px; font-size: 20px; line-height: 1.25em;}
+p {padding: 0 50px 40px; font-size: 22px; line-height: 1.6em;} 
 ul,
 ol {font-size: 0;}
 li {font-size: 13px; line-height: 1.25em;}
@@ -68,55 +65,50 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .scene p {width: 70%; margin: 0 auto; text-align: center;}
 #content .scene h1,
 #content .scene h2 {color: #f0bd18; width: 85%;}
-h1 {padding: 0 50px; font-size: 60px; line-height: 1.05em;}
-h2 {padding: 0 50px 30px; font-size: 30px; line-height: 1.1em;}
-h3 {padding: 0 50px 10px; font-size: 20px; line-height: 1.25em;}
-p {padding: 0 50px 40px; font-size: 22px; line-height: 1.6em;} 
-#content .scene div.article ul.info {display: none;}
-#content .scene div.article div.articlebody {padding: 100px 0;}
-#content .scene div.article h1 span,
-#content .scene div.article p span {display: inline-block;}
-#content .scene div.side_a {position: relative;
-}
+#content .scene div.audioplayer {width: 50px; height: 50px;}
+#content .scene div.letter ul.info {display: none;}
+#content .scene div.letter div.articlebody {padding: 100px 0;}
+#content .scene div.letter h1 span,
+#content .scene div.letter p span {display: inline-block;}
+#content .scene div.side_a {position: relative;}
 #content .scene div.side_a canvas {width: 100%;}
-#content .scene div.side_a h2.song_title {
-	position: absolute;
-	font-size: 70px;
-	color: #ffffff;
-	opacity: 0;
-	left: 0;
-	width: 100%;
-	padding: 0;
-	text-align: center;
-}
+#content .scene div.side_a h2.song_title {position: absolute; font-size: 70px; color: #ffffff; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
 #content .scene div.side_a h3.side_title,
 #content .scene div.side_a h3.track_status,
-#content .scene div.side_a h3.time_status {
-	position: absolute;
-	opacity: 0;
-	font-size: 14px;
-	color: #f6d874;
-	padding: 0;
-	left: 0;
-	width: 100%;
-	text-align: center;
+#content .scene div.side_a h3.time_status {position: absolute; opacity: 0; font-size: 14px; color: #f6d874; padding: 0; left: 0; width: 100%; text-align: center;}
+#content .scene div.side_a.loading h3.time_status {text-indent: -9999px; height: 30px;
+	background: transparent url(/img/gx_loader.gif) no-repeat center center;
+	background-size: 30px auto;
 }
-#content .scene div.audioplayer {width: 50px; height: 50px;}
+#content .scene div.side_a.requires_action div.play {position: absolute; opacity: 0; font-size: 20px; background: #f0bd18; color: #ffffff; padding: 5px 10px; border-radius: 5px; display: inline-block; width: 120px;
+	text-transform: uppercase; left: 50%; margin-left: -60px; text-align: center; cursor: pointer;
+}
 #content .scene div.intermezzo {
 	display: none;
 }
 #content .scene div.intermezzo div.table {display: table; width: 100%; height: 100%;}
 #content .scene div.intermezzo div.cell {display: table-cell; vertical-align: middle;}
 #content .scene div.intermezzo p {padding-top: 20px; padding-bottom: 20px;}
-#content .scene div.side_b {background-color: #f0bd18;
-	display: none;
+#content .scene div.side_b {position: relative; display: none;}
+#content .scene div.side_b canvas {width: 100%;}
+#content .scene div.side_b h2.song_title {position: absolute; font-size: 70px; color: #ffffff; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
+#content .scene div.side_b h3.side_title,
+#content .scene div.side_b h3.track_status,
+#content .scene div.side_b h3.time_status {position: absolute; opacity: 0; font-size: 14px; color: #f6d874; padding: 0; left: 0; width: 100%; text-align: center;}
+#content .scene div.side_b.loading h3.time_status {text-indent: -9999px; height: 30px;
+	background: transparent url(/img/gx_loader.gif) no-repeat center center;
+	background-size: 30px auto;
+}
+#content .scene div.side_b.requires_action div.play {position: absolute; opacity: 0; font-size: 20px; background: #f0bd18; color: #ffffff; padding: 5px 10px; border-radius: 5px; display: inline-block; width: 120px;
+	text-transform: uppercase; left: 50%; margin-left: -60px; text-align: center; cursor: pointer;
 }
 #content .scene div.finale {
 	display: none;
 }
 #content .scene div.finale div.table {display: table; width: 100%; height: 100%;}
 #content .scene div.finale div.cell {display: table-cell; vertical-align: middle;}
-
+#content .scene div.finale p {padding-top: 20px; padding-bottom: 20px;}
+#content .scene div.finale p span {text-decoration: underline; cursor: pointer;}
 
 /*s-form.css*/
 #content {}

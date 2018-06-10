@@ -1,6 +1,6 @@
 <div class="scene front i:front">
 
-	<div class="article" itemscope itemtype="http://schema.org/Article">
+	<div class="letter" itemscope itemtype="http://schema.org/Article">
 		<h1 itemprop="headline">Himmelmekanik</h1>
 
 		<ul class="info">

@@ -24,14 +24,11 @@ input, textarea {outline: none;}
 a, span {font-size: inherit; font-family: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
 em, strong {font-size: inherit; font-family: inherit; line-height: inherit; color: inherit; text-transform: inherit;}
 
-h1 {}
-h2 {}
-h3 {}
-h4 {}
-h5 {}
-h6 {}
+h1 {padding: 0 50px; font-size: 60px; line-height: 1.05em;}
+h2 {padding: 0 50px 30px; font-size: 30px; line-height: 1.1em;}
+h3 {padding: 0 50px 10px; font-size: 20px; line-height: 1.25em;}
 
-p {} 
+p {padding: 0 50px 40px; font-size: 22px; line-height: 1.6em;} 
 
 
 ul,

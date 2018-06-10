@@ -43,9 +43,11 @@ Util.nodeId = function(node, include_path) {
 }
 Util.exception = function(name, _arguments, _exception) {
 	u.bug("Exception in: " + name + " (" + _exception + ")");
+	console.error(_exception);
 	u.bug("Invoked with arguments:");
 	console.log(_arguments);
 	console.log(_exception);
+	console.trace();
 	u.bug("Called from:");
 	if(_arguments.callee.caller.name) {
 		u.bug("arguments.callee.caller.name:" + _arguments.callee.caller.name)
@@ -309,7 +311,9 @@ Util.Animation = u.a = new function() {
 					if(!animation["__animation_frame_start_"+id]) {
 						animation["__animation_frame_start_"+id] = timestamp;
 					}
-					animation.node[animation.callback]((timestamp-animation["__animation_frame_start_"+id]) / animation.duration);
+					if(fun(animation.node[animation.callback])) {
+						animation.node[animation.callback]((timestamp-animation["__animation_frame_start_"+id]) / animation.duration);
+					}
 				}
 				if(Object.keys(u.a._animationqueue).length) {
 					u.a._requestAnimationId = window._requestAnimationFrame(u.a._animationframe);
@@ -324,7 +328,9 @@ Util.Animation = u.a = new function() {
 	this.finalAnimationFrame = function(id) {
 		var animation = u.a._animationqueue[id];
 		animation["__animation_frame_start_"+id] = false;
-		animation.node[animation.callback](1);
+		if(fun(animation.node[animation.callback])) {
+			animation.node[animation.callback](1);
+		}
 		if(typeof(animation.node.transitioned) == "function") {
 			animation.node.transitioned({});
 		}
@@ -973,6 +979,12 @@ u.easings = new function() {
 	this["linear"] = function(progress) {
 		return (progress);
 	}
+	this["ease-in-out-veryslow"] = function(progress) {
+		if(progress > 0.5) {
+			return 4*Math.pow((progress-1),3)+1;
+		}
+		return 4*Math.pow(progress,3);  
+	}
 	this["ease-in-out"] = function(progress) {
 		if(progress > 0.5) {
 			return 1 - Math.pow(1 - ((progress)), 2);
@@ -984,6 +996,9 @@ u.easings = new function() {
 	}
 	this["ease-in-slow"] = function(progress) {
 		return Math.pow((progress), 2);
+	}
+	this["ease-in-veryslow"] = function(progress) {
+		return Math.pow((progress), 1.5);
 	}
 	this["ease-in-fast"] = function(progress) {
 		return Math.pow((progress), 4);
@@ -5151,7 +5166,6 @@ u.setupMediaControls = function(player, _options) {
 	}
 }
 u.detectMediaAutoplay = function(player) {
-	u.bug("detectMediaAutoplay:", player);
 	if(!u.media_autoplay_detection) {
 		u.media_autoplay_detection = [player];
 		u.test_autoplay = document.createElement("video");
@@ -5222,8 +5236,14 @@ u.detectMediaAutoplay = function(player) {
 	else if(u.media_autoplay_detection !== true) {
 		u.media_autoplay_detection.push(player);
 	}
-	else if(typeof(player.ready) == "function") {
-		u.t.setTimer(player, "ready", 20);
+	else {
+		u.t.setTimer(player, function() {
+			this.can_autoplay = u.media_can_autoplay;
+			this.can_autoplay_muted = u.media_can_autoplay_muted;
+			if(fun(this.ready)){
+				this.ready();
+			}
+		}, 20);
 	}
 }
 
@@ -5569,10 +5589,10 @@ u.e.addDOMReadyEvent(function() {u.o.page.init(page)});
 Util.Objects["front"] = new function() {
 	this.init = function(scene) {
 		scene.resized = function(event) {
-			if(this.div_article && this.div_article.is_active) {
-				if(this.div_article.h1) {
-					u.ass(this.div_article, {
-						paddingTop: ((page.browser_h - this.div_article.h1.offsetHeight) / 2) / 1.8 +"px",
+			if(this.letter && this.letter.is_active) {
+				if(this.letter.h1) {
+					u.ass(this.letter, {
+						paddingTop: ((page.browser_h - this.letter.h1.offsetHeight) / 2) / 1.8 +"px",
 					});
 				}
 			}
@@ -5585,14 +5605,27 @@ Util.Objects["front"] = new function() {
 					this.side_a.canvas.width = page.browser_w;
 					this.side_a.center_x = Math.round(page.browser_w/2);
 					this.side_a.center_y = Math.round(page.browser_h/2);
-					this.side_a.radius = this.side_a.center_y - 35;
+					if(page.browser_h > page.browser_w) {
+						this.side_a.radius = this.side_a.center_x - 35;
+					}
+					else {
+						this.side_a.radius = this.side_a.center_y - 35;
+					}
 					if(this.side_a.is_ready) {
 						window.scrollTo(0,this.side_a.offsetTop);
+					}
+					if(fun(this.scrolled)) {
+						this.scrolled();
 					}
 				}
 				if(this.side_a.song_title) {
 					u.ass(this.side_a.song_title, {
 						top: ((page.browser_h - this.side_a.song_title.offsetHeight)/2) + "px"
+					});
+				}
+				if(this.side_a.song_title_switcher) {
+					u.ass(this.side_a.song_title_switcher, {
+						top: ((page.browser_h - this.side_a.song_title_switcher.offsetHeight)/2) + "px"
 					});
 				}
 				if(this.side_a.side_title) {
@@ -5610,6 +5643,16 @@ Util.Objects["front"] = new function() {
 						top: ((page.browser_h/4 * 3) - 10) + "px"
 					});
 				}
+				if(this.side_a.player && this.side_a.player.bn_play) {
+					u.ass(this.side_a.player.bn_play, {
+						top: ((page.browser_h/4 * 3) - 10) + "px"
+					});
+				}
+			}
+			if(this.intermezzo && this.intermezzo.is_active) {
+				u.ass(this.intermezzo, {
+					height: page.browser_h+"px",
+				});
 			}
 			if(this.side_b && this.side_b.is_active) {
 				u.ass(this.side_b, {
@@ -5624,10 +5667,18 @@ Util.Objects["front"] = new function() {
 					if(this.side_b.is_ready) {
 						window.scrollTo(0,this.side_b.offsetTop);
 					}
+					if(fun(this.scrolled)) {
+						this.scrolled();
+					}
 				}
 				if(this.side_b.song_title) {
 					u.ass(this.side_b.song_title, {
 						top: ((page.browser_h - this.side_b.song_title.offsetHeight)/2) + "px"
+					});
+				}
+				if(this.side_b.song_title_switcher) {
+					u.ass(this.side_b.song_title_switcher, {
+						top: ((page.browser_h - this.side_b.song_title_switcher.offsetHeight)/2) + "px"
 					});
 				}
 				if(this.side_b.side_title) {
@@ -5645,35 +5696,35 @@ Util.Objects["front"] = new function() {
 						top: ((page.browser_h/4 * 3) - 10) + "px"
 					});
 				}
+				if(this.side_b.player && this.side_b.player.bn_play) {
+					u.ass(this.side_b.player.bn_play, {
+						top: ((page.browser_h/4 * 3) - 10) + "px"
+					});
+				}
 			}
-			if(this.intermezzo) {
-				u.ass(this.intermezzo, {
-					height: page.browser_h+"px",
-				});
-			}
-			if(this.finale) {
+			if(this.finale && this.finale.is_active) {
 				u.ass(this.finale, {
 					height: u.browserH()+"px",
 				});
 			}
+			this.diagonal_radius = Math.ceil(Math.sqrt(Math.pow(page.browser_w, 2) + Math.pow(page.browser_w, 2)) / 2);
 		}
 		scene.scrolled = function(event) {
-			u.bug("scene.scrolled:", this);
 		}
 		scene.ready = function() {
 			u.rc(this, "i:front");
-			this.div_article = u.qs("div.article", this);
-			this.div_article.h1 = u.qs("h1", this.div_article);
-			this.div_article.nodes = u.qsa("h1,p", this.div_article);
+			this.letter = u.qs("div.letter", this);
+			this.letter.h1 = u.qs("h1", this.letter);
+			this.letter.nodes = u.qsa("h1,p", this.letter);
 			var i, node;
-			for(i = 0; i < this.div_article.nodes.length; i++) {
-				node = this.div_article.nodes[i];
+			for(i = 0; i < this.letter.nodes.length; i++) {
+				node = this.letter.nodes[i];
 				u.ass(node, {
 					opacity: 0,
 					transform: "translate3D(0, 15px, 0)"
 				});
 			}
-			u.ass(this.div_article, {
+			u.ass(this.letter, {
 				opacity: 1,
 			});
 			this.side_a = u.ae(this, "div", {class:"side_a"});
@@ -5685,33 +5736,78 @@ Util.Objects["front"] = new function() {
 			u.wc(this.intermezzo, "div", {class:"cell"});
 			u.wc(this.intermezzo, "div", {class:"table"});
 			this.side_b = u.ae(this, "div", {class:"side_b"});
+			this.side_b.canvas = u.ae(this.side_b, "canvas", {width:this.offsetWidth, height:page.browser_h});
+			this.side_b.ctx = this.side_b.canvas.getContext("2d");
 			this.finale = u.ae(this, "div", {class:"finale"});
-			u.ae(this.finale, "h3", {html:"Tak fordi du tog dig tid til at lytte med."});
-			u.ae(this.finale, "p", {html:'<span class="listen">Lyt igen</span> eller <span class="question">stil mig et spørgsmål, hvis du har lyst</span>.'});
-			u.ae(this.finale, "p", {html:"Bh<br />Fred og Kærlighed Marc Facchini"});
+			u.ae(this.finale, "p", {html:"Tak fordi du tog dig tid til at lytte med."});
+			u.ae(this.finale, "p", {html:'<span class="listen">Lyt igen</span> eller <span class="question">stil mig et spørgsmål</span>, <br />hvis du har lyst.'});
+			u.ae(this.finale, "p", {html:"Bh<br />Fred og Kærlighed<br />Marc Facchini"});
 			u.wc(this.finale, "div", {class:"cell"});
 			u.wc(this.finale, "div", {class:"table"});
-			this.div_article.is_active = true;
 			page.resized();
-			this.buildFront();
+			this.buildLetter();
 		}
-		scene.buildFront = function() {
-			this.current_front_node_i = 0;
-			this.current_front_node = this.div_article.nodes[this.current_front_node_i++];
-			u.a.transition(this.current_front_node, "all 2s ease-in-out");
-			u.ass(this.current_front_node, {
-				opacity: 1,
-				transform: "translate3D(0, 0, 0)"
-			});
-			this.current_front_node = this.div_article.nodes[this.current_front_node_i++];
-			u.a.transition(this.current_front_node, "all 2s ease-in-out " + 500 + "ms");
-			u.ass(this.current_front_node, {
-				opacity: 1,
-				transform: "translate3D(0, 0, 0)"
-			});
-			this.scrolled = function(event) {
-				if(this.side_a.offsetTop - page.browser_h < page.scroll_y) {
-					var progress = ((page.scroll_y + page.browser_h) - this.side_a.offsetTop) / page.browser_h;
+		scene.buildLetter = function() {
+			if(!this.letter.is_ready) {
+				this.letter.is_ready = true;
+				this.letter.is_active = true;
+				this.current_front_node_i = 0;
+				this.current_front_node = this.letter.nodes[this.current_front_node_i++];
+				u.a.transition(this.current_front_node, "all 2s ease-in-out");
+				u.ass(this.current_front_node, {
+					opacity: 1,
+					transform: "translate3D(0, 0, 0)"
+				});
+				this.current_front_node = this.letter.nodes[this.current_front_node_i++];
+				u.a.transition(this.current_front_node, "all 2s ease-in-out " + 500 + "ms");
+				u.ass(this.current_front_node, {
+					opacity: 1,
+					transform: "translate3d(0, 0, 0)"
+				});
+				this.scrolled = function(event) {
+					if(this.side_a.offsetTop - page.browser_h < page.scroll_y) {
+						var progress = ((page.scroll_y + page.browser_h) - this.side_a.offsetTop) / page.browser_h;
+						var current_degree = Math.PI * progress;
+						this.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+						this.side_a.ctx.beginPath();
+						this.side_a.ctx.fillStyle = "#f0bd18";
+						this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, progress*this.side_a.radius*0.025, 0, (2*Math.PI));
+						this.side_a.ctx.fill();
+						this.side_a.ctx.closePath();
+						this.side_a.ctx.beginPath();
+						this.side_a.ctx.lineWidth = 4;
+						this.side_a.ctx.strokeStyle = "#f0bd18";
+						this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, this.side_a.radius, -progress*Math.PI, progress*Math.PI);
+						this.side_a.ctx.stroke();
+						this.side_a.ctx.closePath();
+						if(this.side_a.offsetTop <= page.scroll_y) {
+							this.buildSideA();
+						}
+					}
+					if(this.letter.nodes.length > this.current_front_node_i) {
+						if(this.letter.nodes[this.current_front_node_i].offsetTop - page.browser_h < page.scroll_y) {
+							this.current_front_node = this.letter.nodes[this.current_front_node_i++];
+							u.a.transition(this.current_front_node, "all 2s ease-in-out");
+							u.ass(this.current_front_node, {
+								opacity: 1,
+								transform: "translate3D(0, 0, 0)"
+							});
+						}
+					}
+				}
+				this.side_a.is_active = true;
+				page.resized();
+			}
+		}
+		scene.buildSideA = function() {
+			if(!this.side_a.is_ready) {
+				this.side_a.is_ready = true;
+				this.letter.is_active = false;
+				u.ass(this.letter, {
+					"display": "none"
+				});
+				this.scrolled = function(event) {
+					var progress = 1;
 					var current_degree = Math.PI * progress;
 					this.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
 					this.side_a.ctx.beginPath();
@@ -5725,164 +5821,193 @@ Util.Objects["front"] = new function() {
 					this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, this.side_a.radius, -progress*Math.PI, progress*Math.PI);
 					this.side_a.ctx.stroke();
 					this.side_a.ctx.closePath();
-					if(!this.side_a.is_ready && this.side_a.offsetTop <= page.scroll_y) {
-						this.buildSideA();
-					}
 				}
-				if(this.div_article.nodes.length > this.current_front_node_i) {
-					if(this.div_article.nodes[this.current_front_node_i].offsetTop - page.browser_h < page.scroll_y) {
-						this.current_front_node = this.div_article.nodes[this.current_front_node_i++];
-						u.a.transition(this.current_front_node, "all 2s ease-in-out");
-						u.ass(this.current_front_node, {
-							opacity: 1,
-							transform: "translate3D(0, 0, 0)"
-						});
-					}
-				}
-			}
-			this.is_front_built = true;
-		}
-		scene.buildSideA = function() {
-			if(!this.side_a.is_ready) {
-				this.side_a.is_ready = true;
-				this.side_a.is_active = true;
 				this.side_a.song_title = u.ae(this.side_a, "h2", {class:"song_title", html:"-"});
-				this.side_a.side_title = u.ae(this.side_a, "h3", {class:"side_title", html:"Himmelmekanik, Side A"});
+				this.side_a.song_title_switcher = u.ae(this.side_a, "h2", {class:"song_title switch", html:"&nbsp;"});
+				this.side_a.song_title_switcher.side_a = this.side_a;
+				u.ass(this.side_a.song_title_switcher, {
+					transform: "translate3d(0, 25px, 0)"
+				});
+				this.side_a.track_title = "Himmelmekanik, Side A";
+				this.side_a.side_title = u.ae(this.side_a, "h3", {class:"side_title", html:this.side_a.track_title});
 				this.side_a.track_status = u.ae(this.side_a, "h3", {class:"track_status"});
 				this.side_a.time_status = u.ae(this.side_a, "h3", {class:"time_status"});
-				u.ass(this.div_article, {
-					"display": "none"
-				});
+				this.side_a.tracks = {
+					"0":{name:"Metamorfose", track:"01", end: "277"},
+					"277":{name:"Damgulanna", track:"02", end: "481"},
+					"481":{name:"Selvom jeg tæller", track:"03", end:"757"},
+					"757":{name:"Malmös søn, under håndvasken", track:"04", end: "973"},
+					"973":{name:"Snekkersten Al Safira", track:"05", end: "1260"},
+				}
+				this.side_a.track_keys = Object.keys(this.side_a.tracks);
+				this.side_a.easing = u.easings["ease-in"];
 				this.side_a.stopplayer = u.mediaPlayer({type:"audio"});
 				u.ac(this.side_a.stopplayer, "stopplayer");
 				this.side_a.player = u.mediaPlayer({type:"audio"});
 				this.side_a.player.side_a = this.side_a;
 				this.side_a.player.ready = function() {
-					u.bug("player ready:", this);
-					page.cN.scene.div_article.is_active = false;
-					this.easing = u.easings["ease-in-slow"];
-					this.diagonal_radius = Math.ceil(Math.sqrt(Math.pow(page.browser_w, 2) + Math.pow(page.browser_w, 2)) / 2);
-					this.transitioned = function() {
-						page.cN.scene.is_side_a_built = true;
-						delete this.transitioned;
-						u.a.transition(this.side_a.side_title, "all 0.5s ease-in-out");
-						u.ass(this.side_a.side_title, {
-							opacity: 1
+					if(!this.can_autoplay) {
+						u.ac(this.side_a, "requires_action");
+						this.bn_play = u.ae(this.side_a, "div", {class:"play", html:"Start"});
+						this.bn_play.player = this;
+						u.e.click(this.bn_play);
+						this.bn_play.clicked = function() {
+							this.player.loadAndPlay("/assets/side-a");
+							u.a.transition(this, "all 2s ease-in-out");
+							u.ass(this, {
+								opacity: 0,
+							});
+						}
+						u.ass(this.bn_play, {
+							top: ((page.browser_h/4 * 3) - 10) + "px",
+							opacity: 0,
+							transform: "translate3d(0, 15px, 0)"
 						});
-						this.side_a.stopplayer.load("/assets/stop");
-						this.side_a.playAgain = function(event) {
-							this.player.play();
-						}
-						this.side_a.stopOnInteraction = function(event) {
-							u.bug("ignore input");
-							u.e.kill(event);
-							if(!u.t.valid(this.t_stop)) {
-								this.stopplayer.play(0);
-								this.player.pause();
-								this.t_stop = u.t.setTimer(this, "playAgain", 5000);
-							}
-						}
-						this.side_a.wheel_event_id = u.e.addWindowEvent(this.side_a, "wheel", this.side_a.stopOnInteraction);
-						this.side_a.mousemove_event_id = u.e.addWindowEvent(this.side_a, "mousemove", this.side_a.stopOnInteraction);
-						this.side_a.blur_event_id = u.e.addWindowEvent(this.side_a, "blur", this.side_a.stopOnInteraction);
-						console.log("this.side_a.mousemove_event_id:" + this.side_a.mousemove_event_id);
-					}
-					this.loadGrow = function(progress) {
-						var easing = this.easing(progress);
-						var radius = easing*this.diagonal_radius < this.side_a.radius*0.025 ? this.side_a.radius*0.025 : easing*this.diagonal_radius;
-						this.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
-						this.side_a.ctx.beginPath();
-						this.side_a.ctx.fillStyle = "#f0bd18";
-						this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, radius, 0, (2*Math.PI));
-						this.side_a.ctx.fill();
-						this.side_a.ctx.closePath();
-						this.side_a.ctx.beginPath();
-						this.side_a.ctx.lineWidth = 4;
-						if(this.diagonal_radius > this.side_a.radius) {
-							this.side_a.ctx.strokeStyle = "#f6d874";
-						}
-						else {
-							this.side_a.ctx.strokeStyle = "#f0bd18";
-						}
-						this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, this.side_a.radius, -1*Math.PI, 1*Math.PI);
-						this.side_a.ctx.stroke();
-						this.side_a.ctx.closePath();
+						u.a.transition(this.bn_play, "all 2s ease-in-out");
+						u.ass(this.bn_play, {
+							opacity: 1,
+							transform: "translate3d(0, 0, 0)"
+						});
 					}
 					this.loading = function(event) {
 						delete this.loading;
-						u.a.requestAnimationFrame(this, "loadGrow", 6000);
+						u.ac(this.side_a, "loading");
+						u.a.requestAnimationFrame(this.side_a, "loadGrow", 6000);
 					}
 					this.playing = function(event) {
-						u.bug("Playing", event);
+						delete this.playing;
+						u.rc(this.side_a, "loading");
 						this.is_playing = true;
 					}
-					this.tracks = {
-						"0":{name:"Metamorfose", track:"01", end: "277"},
-						"277":{name:"Damgulanna", track:"02", end: "481"},
-						"481":{name:"Selvom jeg tæller", track:"03", end:"757"},
-						"757":{name:"Malmös søn, under håndvasken", track:"04", end: "973"},
-						"973":{name:"Snekkersten Al Safira", track:"05", end: "1260"},
-					}
-					this.track_keys = Object.keys(this.tracks);
 					this.timeupdate = function(event) {
 						if(this.current_track_i === undefined) {
 							this.current_track_i = 0;
-							this.current_track = this.tracks[this.track_keys[this.current_track_i]];
-							this.side_a.song_title.innerHTML = this.current_track.name;
-							this.side_a.track_status.innerHTML = this.current_track.track + "/10";
+							this.current_track = this.side_a.tracks[this.side_a.track_keys[this.current_track_i]];
+							this.side_a.updateTitle(this.current_track.name);
+							this.side_a.track_status.innerHTML = this.current_track.track + "/11";
 						}
 						else if(this.currentTime > this.current_track.end) {
 							this.current_track_i++;
-							this.current_track = this.tracks[this.track_keys[this.current_track_i]];
-							if(this.current_track_i >= this.track_keys.length) {
+							this.current_track = this.side_a.tracks[this.side_a.track_keys[this.current_track_i]];
+							if(this.current_track_i >= this.side_a.track_keys.length) {
 								this.stop();
 								page.cN.scene.buildIntermezzo();
 								delete this.timeupdate;
 								return;
 							}
-							this.side_a.song_title.innerHTML = this.current_track.name;
-							this.side_a.track_status.innerHTML = this.current_track.track + "/10";
-							page.resized();
+							this.side_a.updateTitle(this.current_track.name);
+							this.side_a.track_status.innerHTML = this.current_track.track + "/11";
 						}
-						this.side_a.time_status.innerHTML = u.period("m:s", {seconds: this.currentTime-this.track_keys[this.current_track_i]});
+						this.side_a.time_status.innerHTML = u.period("m:s", {seconds: this.currentTime-this.side_a.track_keys[this.current_track_i]});
 						this.side_a.updateCanvas(this.currentTime);
-						if(page.cN.scene.is_side_a_built && !this.is_details_shown) {
-							this.is_details_shown = true;
-							u.a.transition(this.side_a.song_title, "all 0.5s ease-in-out");
-							u.ass(this.side_a.song_title, {
-								opacity: 1
-							});
-							u.a.transition(this.side_a.track_status, "all 0.5s ease-in-out");
-							u.ass(this.side_a.track_status, {
-								opacity: 1
-							});
-							u.a.transition(this.side_a.time_status, "all 0.5s ease-in-out");
-							u.ass(this.side_a.time_status, {
-								opacity: 1
-							});
-						}
-					}
-					this.side_a.updateCanvas = function(progress) {
-						this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
-						this.ctx.beginPath();
-						this.ctx.rect(0, 0, page.browser_w, page.browser_h);
-						this.ctx.fillStyle = "#f0bd18";
-						this.ctx.fill();
-						this.ctx.closePath();
-						this.ctx.beginPath();
-						this.ctx.lineWidth = 4;
-						this.ctx.strokeStyle = "#f6d874";
-						this.ctx.arc(this.center_x, this.center_y, this.radius, -1*Math.PI, 1*Math.PI);
-						this.ctx.stroke();
-						this.ctx.closePath();
-						this.ctx.beginPath();
-						this.ctx.lineWidth = 4;
-						this.ctx.strokeStyle = "#cc9c00";
-						this.ctx.arc(this.center_x, this.center_y, this.radius, -(Math.PI/2), 2 * (progress / this.player.duration) * Math.PI - (Math.PI/2));
-						this.ctx.stroke();
-						this.ctx.closePath();
 					}
 					this.loadAndPlay("/assets/side-a");
+				}
+				this.side_a.loadGrow = function(progress) {
+					var easing = this.easing(progress);
+					var radius = easing*page.cN.scene.diagonal_radius < this.radius*0.025 ? this.radius*0.025 : easing*page.cN.scene.diagonal_radius;
+					this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+					this.ctx.beginPath();
+					this.ctx.fillStyle = "#f0bd18";
+					this.ctx.arc(this.center_x, this.center_y, radius, 0, (2*Math.PI));
+					this.ctx.fill();
+					this.ctx.closePath();
+					this.ctx.beginPath();
+					this.ctx.lineWidth = 4;
+					if(this.radius-5 < radius) {
+						this.ctx.strokeStyle = "#f6d874";
+					}
+					else {
+						this.ctx.strokeStyle = "#f0bd18";
+					}
+					this.ctx.arc(this.center_x, this.center_y, this.radius, -1*Math.PI, 1*Math.PI);
+					this.ctx.stroke();
+					this.ctx.closePath();
+				}
+				this.side_a.transitioned = function() {
+					this.is_built = true;
+					delete this.transitioned;
+					page.cN.scene.scrolled = function() {
+						this.side_a.updateCanvas(this.side_a.player.media.currentTime);
+					}
+					u.a.transition(this.track_status, "all 0.5s ease-in-out");
+					u.ass(this.track_status, {
+						opacity: 1
+					});
+					u.a.transition(this.time_status, "all 0.5s ease-in-out");
+					u.ass(this.time_status, {
+						opacity: 1
+					});
+					u.a.transition(this.side_title, "all 0.5s ease-in-out");
+					u.ass(this.side_title, {
+						opacity: 1
+					});
+					if(this.player.current_track && this.player.current_track.name) {
+						this.updateTitle(this.player.current_track.name);
+					}
+					this.stopplayer.load("/assets/stop");
+					this.wheel_event_id = u.e.addWindowEvent(this, "wheel", this.stopOnInteraction);
+					this.mousemove_event_id = u.e.addWindowEvent(this, "mousemove", this.stopOnInteraction);
+					this.blur_event_id = u.e.addWindowEvent(this, "blur", this.stopOnInteraction);
+					this.key_event_id = u.e.addWindowEvent(this, "keydown", this.stopOnInteraction);
+				}
+				this.side_a.playAgain = function(event) {
+					this.player.play();
+				}
+				this.side_a.stopOnInteraction = function(event) {
+					if(!u.t.valid(this.t_stop)) {
+						this.stopplayer.play(0);
+						this.player.pause();
+						this.t_stop = u.t.setTimer(this, "playAgain", 5000);
+					}
+				}
+				this.side_a.updateCanvas = function(progress) {
+					this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+					this.ctx.beginPath();
+					this.ctx.rect(0, 0, page.browser_w, page.browser_h);
+					this.ctx.fillStyle = "#f0bd18";
+					this.ctx.fill();
+					this.ctx.closePath();
+					this.ctx.beginPath();
+					this.ctx.lineWidth = 4;
+					this.ctx.strokeStyle = "#f6d874";
+					this.ctx.arc(this.center_x, this.center_y, this.radius, -1*Math.PI, 1*Math.PI);
+					this.ctx.stroke();
+					this.ctx.closePath();
+					this.ctx.beginPath();
+					this.ctx.lineWidth = 4;
+					this.ctx.strokeStyle = "#cc9c00";
+					this.ctx.arc(this.center_x, this.center_y, this.radius, -(Math.PI/2), 2 * (progress / this.player.duration) * Math.PI - (Math.PI/2));
+					this.ctx.stroke();
+					this.ctx.closePath();
+				}
+				this.side_a.updateTitle = function(title) {
+					if(this.is_built) {
+						this.song_title_switcher.innerHTML = title;
+						page.resized();	
+						this.song_title_switcher.transitioned = function() {
+							this.side_a.song_title.innerHTML = this.innerHTML;
+							page.resized();
+							u.ass(this.side_a.song_title, {
+								opacity:1,
+								transform: "translate3d(0, 0, 0)"
+							});
+							u.ass(this, {
+								opacity:0,
+								transform: "translate3d(0, " + (this.offsetHeight*0.7) + "px, 0)"
+							});
+						}
+						u.a.transition(this.song_title_switcher, "all 2s ease-in-out");
+						u.ass(this.song_title_switcher, {
+							opacity:1,
+							transform: "translate3d(0,0,0)"
+						});
+						u.a.transition(this.song_title, "all 2s ease-in-out");
+						u.ass(this.song_title, {
+							opacity:0,
+							transform: "translate3d(0, -" + (this.song_title.offsetHeight*0.7) + "px, 0)"
+						});
+					}
 				}
 				u.ae(this.side_a, this.side_a.player);
 				u.ae(this.side_a, this.side_a.stopplayer);
@@ -5897,6 +6022,7 @@ Util.Objects["front"] = new function() {
 				u.e.removeWindowEvent(this.side_a, "wheel", this.side_a.wheel_event_id);
 				u.e.removeWindowEvent(this.side_a, "mousemove", this.side_a.mousemove_event_id);
 				u.e.removeWindowEvent(this.side_a, "blur", this.side_a.blur_event_id);
+				u.e.removeWindowEvent(this.side_a, "keydown", this.side_a.key_event_id);
 				u.a.transition(this.side_a.side_title, "all 0.5s ease-in-out");
 				u.ass(this.side_a.side_title, {
 					opacity: 0
@@ -5919,15 +6045,18 @@ Util.Objects["front"] = new function() {
 					delete this.transitioned;
 					u.ass(this, {
 						opacity: 0,
-						display:"block"
+						display:"block",
+						transform: "translate3d(0, 15px, 0)"
 					});
 					u.ass(this.side_a, {
 						display:"none"
 					});
 					page.cN.scene.side_a.is_active = false;
-					u.a.transition(this, "all 0.5s ease-in-out");
+					page.cN.scene.scrolled = function(){}
+					u.a.transition(this, "all 2s ease-in-out");
 					u.ass(this, {
-						opacity: 1
+						opacity: 1,
+						transform: "translate3d(0, 0, 0)"
 					});
 					u.t.setTimer(this, "undoIntermezzo", 10000);
 				}
@@ -5937,7 +6066,7 @@ Util.Objects["front"] = new function() {
 					this.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
 					this.side_a.ctx.beginPath();
 					this.side_a.ctx.fillStyle = "#f0bd18";
-					this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, easing*this.side_a.player.diagonal_radius, 0, (2*Math.PI));
+					this.side_a.ctx.arc(this.side_a.center_x, this.side_a.center_y, easing*page.cN.scene.diagonal_radius, 0, (2*Math.PI));
 					this.side_a.ctx.fill();
 					this.side_a.ctx.closePath();
 					this.side_a.ctx.beginPath();
@@ -5963,159 +6092,315 @@ Util.Objects["front"] = new function() {
 					this.transitioned = function(event) {
 						page.cN.scene.buildSideB();
 					}
-					u.a.transition(this, "all 0.3s ease-in");
+					u.a.transition(this, "all 0.5s ease-in");
 					u.ass(this, {
 						opacity: 0
 					});
 				}
+				page.resized();
 			}
 		}
 		scene.buildSideB = function() {
 			if(!this.side_b.is_ready) {
 				this.side_b.is_ready = true;
 				this.side_b.is_active = true;
-				this.side_b.song_title = u.ae(this.side_b, "h2", {class:"song_title", html:"-"});
-				this.side_b.side_title = u.ae(this.side_b, "h3", {class:"side_title", html:"Himmelmekanik, Side B"});
-				this.side_b.track_status = u.ae(this.side_b, "h3", {class:"track_status"});
-				this.side_b.time_status = u.ae(this.side_b, "h3", {class:"time_status"});
 				u.ass(this.intermezzo, {
 					"display": "none"
 				});
 				u.ass(this.side_b, {
+					display: "block",
 					opacity: 1
 				});
+				page.cN.scene.intermezzo.is_active = false;
+				this.side_b.song_title = u.ae(this.side_b, "h2", {class:"song_title", html:"-"});
+				this.side_b.song_title_switcher = u.ae(this.side_b, "h2", {class:"song_title switch", html:"&nbsp;"});
+				this.side_b.song_title_switcher.side_b = this.side_b;
+				u.ass(this.side_b.song_title_switcher, {
+					transform: "translate3d(0, 25px, 0)"
+				});
+				this.side_b.track_title = "Himmelmekanik, Side B";
+				this.side_b.side_title = u.ae(this.side_b, "h3", {class:"side_title", html:this.side_b.track_title});
+				this.side_b.track_status = u.ae(this.side_b, "h3", {class:"track_status"});
+				this.side_b.time_status = u.ae(this.side_b, "h3", {class:"time_status"});
+				this.side_b.tracks = {
+					"0":{name:"Falden Engel / Game On", track:"06", end: "205"},
+					"205":{name:"Amin & Amina", track:"07", end: "454"},
+					"454":{name:"En ellipse", track:"08", end:"558"},
+					"558":{name:"I ensomhed for evigt", track:"09", end: "801"},
+					"801":{name:"Ånd ud, ånd ind", track:"10", end: "1038"},
+					"1038":{name:"9 Juveler", track:"11", end: "1260"},
+				}
+				this.side_b.track_keys = Object.keys(this.side_b.tracks);
+				this.side_b.easing = u.easings["ease-in-fast"];
 				this.side_b.stopplayer = u.mediaPlayer({type:"audio"});
 				u.ac(this.side_b.stopplayer, "stopplayer");
 				this.side_b.player = u.mediaPlayer({type:"audio"});
 				this.side_b.player.side_b = this.side_b;
 				this.side_b.player.ready = function() {
-					u.bug("player ready:", this);
-					this.easing = u.easings["ease-in-slow"];
-					this.diagonal_radius = Math.ceil(Math.sqrt(Math.pow(page.browser_w, 2) + Math.pow(page.browser_w, 2)) / 2);
-					this.transitioned = function() {
-						page.cN.scene.is_side_b_built = true;
-						delete this.transitioned;
-						u.a.transition(this.side_b.side_title, "all 0.5s ease-in-out");
-						u.ass(this.side_b.side_title, {
-							opacity: 1
+					if(!this.can_autoplay) {
+						u.ac(this.side_b, "requires_action");
+						this.bn_play = u.ae(this.side_b, "div", {class:"play", html:"Start"});
+						this.bn_play.player = this;
+						u.e.click(this.bn_play);
+						this.bn_play.clicked = function() {
+							this.player.loadAndPlay("/assets/side-b");
+							u.a.transition(this, "all 2s ease-in-out");
+							u.ass(this, {
+								opacity: 0,
+							});
+						}
+						u.ass(this.bn_play, {
+							top: ((page.browser_h/4 * 3) - 10) + "px",
+							opacity: 0,
+							transform: "translate3d(0, 15px, 0)"
 						});
-						this.side_b.stopplayer.load("/assets/stop");
-						this.side_b.playAgain = function(event) {
-							this.player.play();
-						}
-						this.side_b.stopOnInteraction = function(event) {
-							u.bug("ignore input");
-							u.e.kill(event);
-							if(!u.t.valid(this.t_stop)) {
-								this.stopplayer.play(0);
-								this.player.pause();
-								this.t_stop = u.t.setTimer(this, "playAgain", 5000);
-							}
-						}
-						this.side_b.wheel_event_id = u.e.addWindowEvent(this.side_b, "wheel", this.side_b.stopOnInteraction);
-						this.side_b.mousemove_event_id = u.e.addWindowEvent(this.side_b, "mousemove", this.side_b.stopOnInteraction);
-						this.side_b.blur_event_id = u.e.addWindowEvent(this.side_b, "blur", this.side_b.stopOnInteraction);
-					}
-					this.loadGrow = function(progress) {
-						var easing = this.easing(progress);
-						var radius = easing*this.diagonal_radius < this.side_b.radius*0.025 ? this.side_b.radius*0.025 : easing*this.diagonal_radius;
-						this.side_b.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
-						this.side_b.ctx.beginPath();
-						this.side_b.ctx.fillStyle = "#f0bd18";
-						this.side_b.ctx.arc(this.side_b.center_x, this.side_b.center_y, radius, 0, (2*Math.PI));
-						this.side_b.ctx.fill();
-						this.side_b.ctx.closePath();
-						this.side_b.ctx.beginPath();
-						this.side_b.ctx.lineWidth = 4;
-						if(this.diagonal_radius > this.side_b.radius) {
-							this.side_b.ctx.strokeStyle = "#f6d874";
-						}
-						else {
-							this.side_b.ctx.strokeStyle = "#f0bd18";
-						}
-						this.side_b.ctx.arc(this.side_b.center_x, this.side_b.center_y, this.side_b.radius, -1*Math.PI, 1*Math.PI);
-						this.side_b.ctx.stroke();
-						this.side_b.ctx.closePath();
+						u.a.transition(this.bn_play, "all 2s ease-in-out");
+						u.ass(this.bn_play, {
+							opacity: 1,
+							transform: "translate3d(0, 0, 0)"
+						});
 					}
 					this.loading = function(event) {
 						delete this.loading;
-						u.a.requestAnimationFrame(this, "loadGrow", 6000);
+						u.a.requestAnimationFrame(this.side_b, "loadGrow", 2000);
 					}
 					this.playing = function(event) {
-						u.bug("Playing", event);
+						delete this.playing;
 						this.is_playing = true;
 					}
-					this.tracks = {
-						"0":{name:"Metamorfose", track:"06", end: "277"},
-						"277":{name:"Damgulanna", track:"07", end: "481"},
-						"481":{name:"Selvom jeg tæller", track:"08", end:"757"},
-						"757":{name:"Malmös søn, under håndvasken", track:"09", end: "973"},
-						"973":{name:"Snekkersten Al Safira", track:"10", end: "1260"},
-					}
-					this.track_keys = Object.keys(this.tracks);
 					this.timeupdate = function(event) {
 						if(this.current_track_i === undefined) {
 							this.current_track_i = 0;
-							this.current_track = this.tracks[this.track_keys[this.current_track_i]];
-							this.side_b.song_title.innerHTML = this.current_track.name;
-							this.side_b.track_status.innerHTML = this.current_track.track + "/10";
+							this.current_track = this.side_b.tracks[this.side_b.track_keys[this.current_track_i]];
+							this.side_b.updateTitle(this.current_track.name);
+							this.side_b.track_status.innerHTML = this.current_track.track + "/11";
 						}
 						else if(this.currentTime > this.current_track.end) {
 							this.current_track_i++;
-							this.current_track = this.tracks[this.track_keys[this.current_track_i]];
-							if(this.current_track_i >= this.track_keys.length) {
+							this.current_track = this.side_b.tracks[this.side_b.track_keys[this.current_track_i]];
+							if(this.current_track_i >= this.side_b.track_keys.length) {
 								this.stop();
-								page.cN.scene.buildIntermezzo();
+								page.cN.scene.buildFinale();
 								delete this.timeupdate;
 								return;
 							}
-							this.side_b.song_title.innerHTML = this.current_track.name;
-							this.side_b.track_status.innerHTML = this.current_track.track + "/10";
+							this.side_b.updateTitle(this.current_track.name);
+							this.side_b.track_status.innerHTML = this.current_track.track + "/11";
 							page.resized();
 						}
-						this.side_b.time_status.innerHTML = u.period("m:s", {seconds: this.currentTime-this.track_keys[this.current_track_i]});
+						this.side_b.time_status.innerHTML = u.period("m:s", {seconds: this.currentTime-this.side_b.track_keys[this.current_track_i]});
 						this.side_b.updateCanvas(this.currentTime);
-						if(page.cN.scene.is_side_b_built && !this.is_details_shown) {
-							this.is_details_shown = true;
-							u.a.transition(this.side_b.song_title, "all 0.5s ease-in-out");
-							u.ass(this.side_b.song_title, {
-								opacity: 1
-							});
-							u.a.transition(this.side_b.track_status, "all 0.5s ease-in-out");
-							u.ass(this.side_b.track_status, {
-								opacity: 1
-							});
-							u.a.transition(this.side_b.time_status, "all 0.5s ease-in-out");
-							u.ass(this.side_b.time_status, {
-								opacity: 1
-							});
-						}
-					}
-					this.side_b.updateCanvas = function(progress) {
-						this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
-						this.ctx.beginPath();
-						this.ctx.rect(0, 0, page.browser_w, page.browser_h);
-						this.ctx.fillStyle = "#f0bd18";
-						this.ctx.fill();
-						this.ctx.closePath();
-						this.ctx.beginPath();
-						this.ctx.lineWidth = 4;
-						this.ctx.strokeStyle = "#f6d874";
-						this.ctx.arc(this.center_x, this.center_y, this.radius, -1*Math.PI, 1*Math.PI);
-						this.ctx.stroke();
-						this.ctx.closePath();
-						this.ctx.beginPath();
-						this.ctx.lineWidth = 4;
-						this.ctx.strokeStyle = "#cc9c00";
-						this.ctx.arc(this.center_x, this.center_y, this.radius, -(Math.PI/2), 2 * (progress / this.player.duration) * Math.PI - (Math.PI/2));
-						this.ctx.stroke();
-						this.ctx.closePath();
 					}
 					this.loadAndPlay("/assets/side-b");
+				}
+				this.side_b.loadGrow = function(progress) {
+					progress = progress;
+					var easing = this.easing(progress);
+					this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+					this.ctx.beginPath();
+					this.ctx.fillStyle = "#f0bd18";
+					this.ctx.arc(this.center_x, this.center_y, easing*page.cN.scene.diagonal_radius, 0, (2*Math.PI));
+					this.ctx.fill();
+					this.ctx.closePath();
+					this.ctx.beginPath();
+					this.ctx.lineWidth = 4;
+					if(this.diagonal_radius > this.radius) {
+						this.ctx.strokeStyle = "#f6d874";
+					}
+					else {
+						this.ctx.strokeStyle = "#f0bd18";
+					}
+					this.ctx.arc(this.center_x, this.center_y, this.radius, 0, (2 * easing) * Math.PI);
+					this.ctx.stroke();
+					this.ctx.closePath();
+					this.ctx.beginPath();
+					this.ctx.lineWidth = 4;
+					this.ctx.strokeStyle = "#cc9c00";
+					this.ctx.arc(this.center_x, this.center_y, this.radius, -(Math.PI/2), (2 * easing * Math.PI) - (Math.PI/2));
+					this.ctx.stroke();
+					this.ctx.closePath();
+				}
+				this.side_b.transitioned = function() {
+					this.is_built = true;
+					delete this.transitioned;
+					page.cN.scene.scrolled = function() {
+						this.side_b.updateCanvas(this.side_b.player.media.currentTime);
+					}
+					u.a.transition(this.track_status, "all 0.5s ease-in-out");
+					u.ass(this.track_status, {
+						opacity: 1
+					});
+					u.a.transition(this.time_status, "all 0.5s ease-in-out");
+					u.ass(this.time_status, {
+						opacity: 1
+					});
+					u.a.transition(this.side_title, "all 0.5s ease-in-out");
+					u.ass(this.side_title, {
+						opacity: 1
+					});
+					this.updateTitle(this.player.current_track.name);
+					this.stopplayer.load("/assets/stop");
+					this.wheel_event_id = u.e.addWindowEvent(this, "wheel", this.stopOnInteraction);
+					this.mousemove_event_id = u.e.addWindowEvent(this, "mousemove", this.stopOnInteraction);
+					this.blur_event_id = u.e.addWindowEvent(this, "blur", this.stopOnInteraction);
+					this.key_event_id = u.e.addWindowEvent(this, "keydown", this.stopOnInteraction);
+				}
+				this.side_b.playAgain = function(event) {
+					this.player.play();
+				}
+				this.side_b.stopOnInteraction = function(event) {
+					if(!u.t.valid(this.t_stop)) {
+						this.stopplayer.play(0);
+						this.player.pause();
+						this.t_stop = u.t.setTimer(this, "playAgain", 5000);
+					}
+				}
+				this.side_b.updateCanvas = function(progress) {
+					this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+					this.ctx.beginPath();
+					this.ctx.rect(0, 0, page.browser_w, page.browser_h);
+					this.ctx.fillStyle = "#f0bd18";
+					this.ctx.fill();
+					this.ctx.closePath();
+					this.ctx.beginPath();
+					this.ctx.lineWidth = 4;
+					this.ctx.strokeStyle = "#f6d874";
+					this.ctx.arc(this.center_x, this.center_y, this.radius, -1*Math.PI, 1*Math.PI);
+					this.ctx.stroke();
+					this.ctx.closePath();
+					this.ctx.beginPath();
+					this.ctx.lineWidth = 4;
+					this.ctx.strokeStyle = "#cc9c00";
+					this.ctx.arc(this.center_x, this.center_y, this.radius, -(Math.PI/2), 2 * (progress / this.player.duration) * Math.PI - (Math.PI/2));
+					this.ctx.stroke();
+					this.ctx.closePath();
+				}
+				this.side_b.updateTitle = function(title) {
+					if(this.is_built) {
+						this.song_title_switcher.innerHTML = title;
+						page.resized();	
+						this.song_title_switcher.transitioned = function() {
+							this.side_b.song_title.innerHTML = this.innerHTML;
+							page.resized();
+							u.ass(this.side_b.song_title, {
+								opacity:1,
+								transform: "translate3d(0, 0, 0)"
+							});
+							u.ass(this, {
+								opacity:0,
+								transform: "translate3d(0, " + (this.offsetHeight*0.7) + "px, 0)"
+							});
+						}
+						u.a.transition(this.song_title_switcher, "all 2s ease-in-out");
+						u.ass(this.song_title_switcher, {
+							opacity:1,
+							transform: "translate3d(0,0,0)"
+						});
+						u.a.transition(this.song_title, "all 2s ease-in-out");
+						u.ass(this.song_title, {
+							opacity:0,
+							transform: "translate3d(0, -" + (this.song_title.offsetHeight*0.7) + "px, 0)"
+						});
+					}
 				}
 				u.ae(this.side_b, this.side_b.player);
 				u.ae(this.side_b, this.side_b.stopplayer);
 				window.player = this.side_b.player;
+				page.resized();
+			}
+		}
+		scene.buildFinale = function() {
+			if(!this.finale.is_ready) {
+				this.finale.is_ready = true;
+				this.finale.is_active = true;
+				u.e.removeWindowEvent(this.side_b, "wheel", this.side_b.wheel_event_id);
+				u.e.removeWindowEvent(this.side_b, "mousemove", this.side_b.mousemove_event_id);
+				u.e.removeWindowEvent(this.side_b, "blur", this.side_b.blur_event_id);
+				u.e.removeWindowEvent(this.side_b, "keydown", this.side_b.key_event_id);
+				u.a.transition(this.side_b.side_title, "all 0.5s ease-in-out");
+				u.ass(this.side_b.side_title, {
+					opacity: 0
+				});
+				u.a.transition(this.side_b.song_title, "all 0.5s ease-in-out");
+				u.ass(this.side_b.song_title, {
+					opacity: 0
+				});
+				u.a.transition(this.side_b.track_status, "all 0.5s ease-in-out");
+				u.ass(this.side_b.track_status, {
+					opacity: 0
+				});
+				u.a.transition(this.side_b.time_status, "all 0.5s ease-in-out");
+				u.ass(this.side_b.time_status, {
+					opacity: 0
+				});
+				this.finale.easing = u.easings["ease-in"];
+				this.finale.side_b = this.side_b;
+				this.finale.transitioned = function() {
+					delete this.transitioned;
+					u.ass(this, {
+						opacity: 0,
+						display:"block",
+						transform: "translate3d(0, 15px, 0)"
+					});
+					u.ass(this.side_b, {
+						display:"none"
+					});
+					page.cN.scene.side_b.is_active = false;
+					page.cN.scene.scrolled = function(){}
+					u.a.transition(this, "all 2s ease-in-out");
+					u.ass(this, {
+						opacity: 1,
+						transform: "translate3d(0, 0, 0)"
+					});
+					var play_again = u.qs("span.listen", this);
+					var ask_question = u.qs("span.question", this);
+					play_again.finale = this;
+					u.e.click(play_again);
+					play_again.clicked = function() {
+						location.reload(true);
+					}
+					u.e.click(ask_question);
+					ask_question.clicked = function() {
+						location.href = "mailto:marc@fachini.dk";
+					}
+				}
+				this.finale.undoSideB = function(progress) {
+					progress = 1 - progress;
+					var easing = this.easing(progress);
+					this.side_b.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+					this.side_b.ctx.beginPath();
+					this.side_b.ctx.fillStyle = "#f0bd18";
+					this.side_b.ctx.arc(this.side_b.center_x, this.side_b.center_y, easing*page.cN.scene.diagonal_radius, 0, (2*Math.PI));
+					this.side_b.ctx.fill();
+					this.side_b.ctx.closePath();
+					this.side_b.ctx.beginPath();
+					this.side_b.ctx.lineWidth = 4;
+					if(this.diagonal_radius > this.side_b.radius) {
+						this.side_b.ctx.strokeStyle = "#f6d874";
+					}
+					else {
+						this.side_b.ctx.strokeStyle = "#f0bd18";
+					}
+					this.side_b.ctx.arc(this.side_b.center_x, this.side_b.center_y, this.side_b.radius, 0, (2 * easing) * Math.PI);
+					this.side_b.ctx.stroke();
+					this.side_b.ctx.closePath();
+					this.side_b.ctx.beginPath();
+					this.side_b.ctx.lineWidth = 4;
+					this.side_b.ctx.strokeStyle = "#cc9c00";
+					this.side_b.ctx.arc(this.side_b.center_x, this.side_b.center_y, this.side_b.radius, -(Math.PI/2), (2 * easing * Math.PI) - (Math.PI/2));
+					this.side_b.ctx.stroke();
+					this.side_b.ctx.closePath();
+				}
+				u.a.requestAnimationFrame(this.finale, "undoSideB", 2000);
+				this.finale.undoFinale = function(progress) {
+					this.transitioned = function(event) {
+						page.cN.scene.buildLetter();
+					}
+					u.a.transition(this, "all 0.5s ease-in");
+					u.ass(this, {
+						opacity: 0
+					});
+				}
 				page.resized();
 			}
 		}

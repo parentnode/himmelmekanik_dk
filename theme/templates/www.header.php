@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="<?= $this->language() ?>">
 <head>
-	<!-- (c) & (p) think.dk 2018 -->
-	<!-- For detailed copyright license, see /terms -->
-	<!-- If you want to use or contribute to this code, visit http://parentnode.dk -->
+	<!-- (c) & (p) think.dk / parentnode.dk 2018 -->
+	<!-- We are an open source development collective – Join us in our quest to make the world a better place -->
 	<title><?= $this->pageTitle() ?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="keywords" content="development frontend HTML JavaScript CSS idealism web" />
