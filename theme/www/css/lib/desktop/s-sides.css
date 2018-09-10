@@ -1,0 +1,14 @@
+/* SIDE A+B */
+#content .scene div.side {position: relative;}
+#content .scene div.side canvas {width: 100%;}
+#content .scene div.side h2.song_title {position: absolute; font-size: 70px; color: #ffffff; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
+#content .scene div.side h3.side_title,
+#content .scene div.side h3.track_status,
+#content .scene div.side h3.time_status {position: absolute; opacity: 0; font-size: 14px; color: #f6d874; padding: 0; left: 0; width: 100%; text-align: center;}
+#content .scene div.side.loading h3.time_status {text-indent: -9999px; height: 30px;
+	background: transparent url(/img/gx_loader.gif) no-repeat center center;
+	background-size: 30px auto;
+}
+#content .scene div.side.requires_action div.play {position: absolute; opacity: 0; font-size: 20px; background: #f0bd18; color: #ffffff; padding: 5px 10px; border-radius: 5px; display: inline-block; width: 120px;
+	text-transform: uppercase; left: 50%; margin-left: -60px; text-align: center; cursor: pointer;
+}

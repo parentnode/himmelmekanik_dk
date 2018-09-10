@@ -1,0 +1,8 @@
+/* LETTER */
+#content .scene div.letter {opacity: 0; overflow-y: auto;}
+
+#content .scene div.letter ul.info {display: none;}
+#content .scene div.letter div.articlebody {padding: 100px 0;}
+
+#content .scene div.letter h1 span,
+#content .scene div.letter p span {display: inline-block;}

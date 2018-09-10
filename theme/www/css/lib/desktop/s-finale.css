@@ -1,0 +1,9 @@
+/* FINALE */
+#content .scene div.finale {
+	display: none;
+}
+#content .scene div.finale div.table {display: table; width: 100%; height: 100%;}
+#content .scene div.finale div.cell {display: table-cell; vertical-align: middle;}
+
+#content .scene div.finale p {padding-top: 20px; padding-bottom: 20px;}
+#content .scene div.finale p span {text-decoration: underline; cursor: pointer;}

@@ -19,6 +19,10 @@ Util.Objects["page"] = new function() {
 			this.browser_h = u.browserH();
 			this.browser_w = u.browserW();
 
+			u.ass(this.cN, {
+				height: this.browser_h + "px"
+			});
+
 			// forward scroll event to current scene
 			if(this.cN && this.cN.scene && typeof(this.cN.scene.resized) == "function") {
 				this.cN.scene.resized();
@@ -44,10 +48,11 @@ Util.Objects["page"] = new function() {
 			// page is ready to be shown - only initalize if not already shown
 			if(!this.is_ready) {
 
-				u.rc(this, "i:page");
-				// page is ready
 				this.is_ready = true;
+				u.rc(this, "i:page");
 
+
+				// Map scene reference
 				this.cN.scene = u.qs(".scene", this);
 
 				// set resize handler
@@ -56,39 +61,15 @@ Util.Objects["page"] = new function() {
 				u.e.addWindowEvent(this, "scroll", "scrolled");
 
 
+				// initial page size recalculation
 				this.resized();
+
 
 				// Load scene, when font's are ready
 				this.fontsLoaded = function() {
-					// u.bug("fontsLoaded");
+					u.bug("fontsLoaded");
 
-					u.textscaler(this, {
-						"min_width":600,
-						"max_width":1600,
-						"unit":"px",
-						"h1":{
-							"min_size":40,
-							"max_size":110
-						},
-						"h2":{
-							"min_size":30,
-							"max_size":80
-						},
-						"h3":{
-							"min_size":12,
-							"max_size":18
-						},
-						"p":{
-							"min_size":14,
-							"max_size":32
-						},
-					})
 
-					// Reset any scroll position
-					window.scrollTo(0, 0);
-					u.ass(this.cN, {
-						height: "auto"
-					});
 					// Initialize scene
 					u.o.front.init(page.cN.scene);
 

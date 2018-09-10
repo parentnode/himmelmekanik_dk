@@ -1,0 +1,9 @@
+/* INTERMEZZO */
+#content .scene div.intermezzo {
+	display: none;
+}
+#content .scene div.intermezzo div.table {display: table; width: 100%; height: 100%;}
+#content .scene div.intermezzo div.cell {display: table-cell; vertical-align: middle;}
+
+#content .scene div.intermezzo p {padding-top: 20px; padding-bottom: 20px;}
+
