@@ -44,32 +44,8 @@ Util.Objects["front"] = new function() {
 		scene.scrolled = function(event) {
  			// u.bug("scene.scrolled:", this);
 
-			// If letter exists
-			if(this.letter) {
-				this.letter.scrolled();
-			}
-
-			// If side A exists
-			if(this.side_a) {
-				this.side_a.scrolled();
-			}
-
-			// If intermezzo exists
-			if(this.intermezzo) {
-				this.intermezzo.scrolled();
-			}
-
-			// If side B exists
-			if(this.side_b) {
-				this.side_b.scrolled();
-			}
-
-			// If finale exists
-			if(this.finale) {
-				this.finale.scrolled();
-			}
-
 		}
+
 
 		// Scene is ready to be initialized
 		scene.ready = function() {
@@ -136,7 +112,8 @@ Util.Objects["front"] = new function() {
 
 				// Reset any scroll position (fixes reload offsets)
 				window.scrollTo(0, 0);
-
+				this.letter.scrollTo(0, 0);
+				
 
 				// initial page size recalculation
 				this.resized();
@@ -157,8 +134,10 @@ Util.Objects["front"] = new function() {
 		// Build Letter
 		scene.controller = function() {
 
-			this.letter.is_done = true;
-			this.side_a.is_done = true;
+			// this.letter.is_done = true;
+			// this.side_a.is_done = true;
+			// this.intermezzo.is_done = true;
+			// this.side_b.is_done = true;
 
 			if(this.is_ready) {
 

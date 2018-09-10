@@ -20,7 +20,7 @@ Util.Objects["letter"] = new function() {
 
 		// Scene scrolled
 		div.scrolled = function(event) {
- 			// u.bug("div.scrolled:", this);
+ 			u.bug("div.scrolled:", this);
 
 			if(this.is_active) {
 
@@ -28,7 +28,7 @@ Util.Objects["letter"] = new function() {
 				if(this.nodes.length > this.current_front_node_i) {
 
 					// Next node in view
-					if(this.nodes[this.current_front_node_i].offsetTop - page.browser_h < page.scroll_y) {
+					if(this.nodes[this.current_front_node_i].offsetTop - page.browser_h < this.scrollTop) {
 
 						this.current_front_node = this.nodes[this.current_front_node_i++];
 
@@ -57,7 +57,6 @@ Util.Objects["letter"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:letter");
 
-
 				// get reference to headline
 				this.h1 = u.qs("h1", this);
 
@@ -80,8 +79,8 @@ Util.Objects["letter"] = new function() {
 				});
 
 
-				// Re-calculate positions for letter
-				this.resized();
+				// set scroll handler
+				u.e.addEvent(this, "scroll", this.scrolled);
 
 			}
 
