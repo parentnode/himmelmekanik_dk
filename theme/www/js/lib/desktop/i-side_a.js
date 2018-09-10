@@ -39,7 +39,7 @@ Util.Objects["side_a"] = new function() {
 
 		// Build Letter
 		div.build = function() {
-			// u.bug("build side a");
+			u.bug("build side a");
 
 			this.is_active = true;
 

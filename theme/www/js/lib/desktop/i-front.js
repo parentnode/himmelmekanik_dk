@@ -134,7 +134,7 @@ Util.Objects["front"] = new function() {
 		// Build Letter
 		scene.controller = function() {
 
-			// this.letter.is_done = true;
+			this.letter.is_done = true;
 			// this.side_a.is_done = true;
 			// this.intermezzo.is_done = true;
 			// this.side_b.is_done = true;
