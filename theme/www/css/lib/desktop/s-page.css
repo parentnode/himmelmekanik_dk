@@ -4,7 +4,7 @@
 }
 
 html {min-height: 100%;}
-body {background: #ffffff; margin: 0; overflow: hidden;}
+body {background: #ffffff url("/img/bg_gradient.jpg") no-repeat center center; margin: 0; overflow: hidden;}
 
 
 /* BASE */
