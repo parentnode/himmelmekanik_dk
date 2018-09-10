@@ -1,5 +1,7 @@
 /* SIDE A+B */
-#content .scene div.side {position: relative;}
+#content .scene div.side {position: relative; opacity: 0; height: 100%;
+	display: none;
+}
 #content .scene div.side canvas {width: 100%;}
 #content .scene div.side h2.song_title {position: absolute; font-size: 70px; color: #ffffff; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
 #content .scene div.side h3.side_title,

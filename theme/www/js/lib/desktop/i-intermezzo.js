@@ -33,17 +33,13 @@ Util.Objects["intermezzo"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:intermezzo");
 
-
-				// Let controller decide what to do
-				page.cN.scene.controller();
-
 			}
 
 		}
 
 		// Build Letter
 		div.build = function() {
-			// u.bug("buildLetter");
+			u.bug("build intermezzo");
 
 			this.is_active = true;
 

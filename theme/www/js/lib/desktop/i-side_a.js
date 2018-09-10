@@ -25,7 +25,7 @@ Util.Objects["side_a"] = new function() {
 
 		// Scene is ready to be initialized
 		div.ready = function() {
-			u.bug("div.ready:", this);
+			// u.bug("div.ready:", this);
 
 			// Avoid ever getting ready twice
 			if(!this.is_ready) {
@@ -33,17 +33,13 @@ Util.Objects["side_a"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:side_a");
 
-
-				// Let controller decide what to do
-				page.cN.scene.controller();
-
 			}
 
 		}
 
 		// Build Letter
 		div.build = function() {
-			// u.bug("buildLetter");
+			// u.bug("build side a");
 
 			this.is_active = true;
 

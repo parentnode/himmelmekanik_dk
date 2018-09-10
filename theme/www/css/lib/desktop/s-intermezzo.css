@@ -1,5 +1,5 @@
 /* INTERMEZZO */
-#content .scene div.intermezzo {
+#content .scene div.intermezzo {opacity: 0; height: 100%;
 	display: none;
 }
 #content .scene div.intermezzo div.table {display: table; width: 100%; height: 100%;}

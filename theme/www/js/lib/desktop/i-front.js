@@ -2,13 +2,13 @@ Util.Objects["front"] = new function() {
 	this.init = function(scene) {
 
 		scene.resized = function(event) {
-			u.bug("scene.resized:", this);
+			// u.bug("scene.resized:", this);
 
 
 			// Calculate diagonal_radius (half diameter of fully covering circle - used in multiple places)
 			this.diagonal_radius = Math.ceil(Math.sqrt(Math.pow(page.browser_w, 2) + Math.pow(page.browser_w, 2)) / 2);
 
-
+			// Set scene height
 			u.ass(this, {
 				height: page.browser_h + "px"
 			});
@@ -77,8 +77,6 @@ Util.Objects["front"] = new function() {
 
 			if(!this.is_ready) {
 
-
-				this.is_ready = true;
 				u.rc(this, "i:front");
 
 
@@ -143,6 +141,14 @@ Util.Objects["front"] = new function() {
 				// initial page size recalculation
 				this.resized();
 
+
+				// Mark as ready
+				this.is_ready = true;
+
+
+				// Decide what to do next
+				this.controller();
+
 			}
 
 		}
@@ -151,7 +157,11 @@ Util.Objects["front"] = new function() {
 		// Build Letter
 		scene.controller = function() {
 
-			if(this.letter && this.side_a && this.intermezzo && this.side_b && this.finale) {
+			this.letter.is_done = true;
+			this.side_a.is_done = true;
+
+			if(this.is_ready) {
+
 				if(this.letter.is_ready && !this.letter.is_active && !this.letter.is_done) {
 					this.letter.build();
 				}
@@ -167,6 +177,7 @@ Util.Objects["front"] = new function() {
 				else if(this.side_b.is_done && this.finale.is_ready && !this.finale.is_active && !this.finale.is_done) {
 					this.finale.build();
 				}
+
 			}
 
 		}

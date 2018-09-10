@@ -33,17 +33,13 @@ Util.Objects["side_b"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:side_b");
 
-
-				// Let controller decide what to do
-				page.cN.scene.controller();
-
 			}
 
 		}
 
 		// Build Letter
 		div.build = function() {
-			// u.bug("buildLetter");
+			// u.bug("build side b");
 
 			this.is_active = true;
 

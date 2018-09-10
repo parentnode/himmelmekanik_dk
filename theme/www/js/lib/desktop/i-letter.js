@@ -2,7 +2,7 @@ Util.Objects["letter"] = new function() {
 	this.init = function(div) {
 
 		div.resized = function(event) {
-			u.bug("div.resized:", this);
+			// u.bug("div.resized:", this);
 
 			// If letter exists and it is active (shown or partially shown)
 			if(this.is_active) {
@@ -83,19 +83,18 @@ Util.Objects["letter"] = new function() {
 				// Re-calculate positions for letter
 				this.resized();
 
-				// Let controller decide what to do
-				page.cN.scene.controller();
-
 			}
 
 		}
 
 		// Build Letter
 		div.build = function() {
-			u.bug("buildLetter");
+			u.bug("build letter");
 
 			this.is_active = true;
 
+			// recalculated top padding
+			this.resized();
 
 			// Show each text node as user scrolls down the page
 			this.current_front_node_i = 0;

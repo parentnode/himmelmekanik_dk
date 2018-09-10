@@ -33,17 +33,13 @@ Util.Objects["finale"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:finale");
 
-
-				// Let controller decide what to do
-				page.cN.scene.controller();
-
 			}
 
 		}
 
 		// Build Letter
 		div.build = function() {
-			// u.bug("buildLetter");
+			// u.bug("build finale");
 
 			this.is_active = true;
 

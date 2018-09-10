@@ -1,5 +1,5 @@
 /* LETTER */
-#content .scene div.letter {opacity: 0; overflow-y: auto;}
+#content .scene div.letter {opacity: 0; overflow-y: auto; height: 100%;}
 
 #content .scene div.letter ul.info {display: none;}
 #content .scene div.letter div.articlebody {padding: 100px 0;}
