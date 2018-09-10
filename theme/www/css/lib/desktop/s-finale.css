@@ -1,6 +1,10 @@
 /* FINALE */
 #content .scene div.finale {opacity: 0; height: 100%;
 	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
 }
 #content .scene div.finale div.table {display: table; width: 100%; height: 100%;}
 #content .scene div.finale div.cell {display: table-cell; vertical-align: middle;}

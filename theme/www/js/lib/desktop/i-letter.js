@@ -14,6 +14,11 @@ Util.Objects["letter"] = new function() {
 					});
 				}
 
+				// Adjust bottom padding
+				u.ass(this, {
+					"padding-bottom":page.browser_h + "px",
+				});
+
 			}
 
 		}
@@ -79,8 +84,7 @@ Util.Objects["letter"] = new function() {
 				});
 
 
-				// set scroll handler
-				u.e.addEvent(this, "scroll", this.scrolled);
+
 
 			}
 
@@ -94,6 +98,9 @@ Util.Objects["letter"] = new function() {
 
 			// recalculated top padding
 			this.resized();
+
+			// set scroll handler
+			u.e.addEvent(this, "scroll", this.scrolled);
 
 			// Show each text node as user scrolls down the page
 			this.current_front_node_i = 0;
@@ -118,7 +125,7 @@ Util.Objects["letter"] = new function() {
 
 		}
 		
-		// Build Letter
+		// Destroy Letter
 		div.destroy = function() {
 
 			this.is_done = true;

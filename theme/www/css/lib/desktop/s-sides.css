@@ -1,6 +1,10 @@
 /* SIDE A+B */
 #content .scene div.side {position: relative; opacity: 0; height: 100%;
 	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
 }
 #content .scene div.side canvas {width: 100%;}
 #content .scene div.side h2.song_title {position: absolute; font-size: 70px; color: #ffffff; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
