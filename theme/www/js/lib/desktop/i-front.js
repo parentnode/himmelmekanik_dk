@@ -76,13 +76,12 @@ Util.Objects["front"] = new function() {
 			u.bug("scene.ready:", this);
 
 			if(!this.is_ready) {
-				u.bug("blow it");
+
 
 				this.is_ready = true;
 				u.rc(this, "i:front");
 
 
-				console.log("fush1")
 				// Page contains 5 sections: 
 				// Letter, Side A, Intermezzo, Side B and Finale
 				// Get reference for each section
@@ -90,21 +89,17 @@ Util.Objects["front"] = new function() {
 
 				// LETTER
 				this.letter = u.qs("div.letter", this);
-				console.log(this.letter)
 				u.o.letter.init(this.letter);
 
-				console.log("fush2")
 
 				// SIDE A
 				this.side_a = u.qs("div.side_a", this);
 				u.o.side_a.init(this.side_a);
 
-				console.log("fush3")
 
 				// INTERMEZZO
 				this.intermezzo = u.qs("div.intermezzo", this);
 				u.o.intermezzo.init(this.intermezzo);
-				console.log("resize me")
 
 
 				// SIDE B
@@ -144,7 +139,7 @@ Util.Objects["front"] = new function() {
 				// Reset any scroll position (fixes reload offsets)
 				window.scrollTo(0, 0);
 
-				u.bug("resize me")
+
 				// initial page size recalculation
 				this.resized();
 
@@ -155,22 +150,23 @@ Util.Objects["front"] = new function() {
 
 		// Build Letter
 		scene.controller = function() {
-			u.bug("scene controller");
 
-			if(this.letter.is_ready && !this.letter.is_active && !this.letter.is_done) {
-				this.letter.build();
-			}
-			else if(this.letter.is_done && this.side_a.is_ready && !this.side_a.is_active && !this.side_a.is_done) {
-				this.side_a.build();
-			}
-			else if(this.side_a.is_done && this.intermezzo.is_ready && !this.intermezzo.is_active && !this.intermezzo.is_done) {
-				this.intermezzo.build();
-			}
-			else if(this.intermezzo.is_done && this.side_b.is_ready && !this.side_b.is_active && !this.side_b.is_done) {
-				this.side_b.build();
-			}
-			else if(this.side_b.is_done && this.finale.is_ready && !this.finale.is_active && !this.finale.is_done) {
-				this.finale.build();
+			if(this.letter && this.side_a && this.intermezzo && this.side_b && this.finale) {
+				if(this.letter.is_ready && !this.letter.is_active && !this.letter.is_done) {
+					this.letter.build();
+				}
+				else if(this.letter.is_done && this.side_a.is_ready && !this.side_a.is_active && !this.side_a.is_done) {
+					this.side_a.build();
+				}
+				else if(this.side_a.is_done && this.intermezzo.is_ready && !this.intermezzo.is_active && !this.intermezzo.is_done) {
+					this.intermezzo.build();
+				}
+				else if(this.intermezzo.is_done && this.side_b.is_ready && !this.side_b.is_active && !this.side_b.is_done) {
+					this.side_b.build();
+				}
+				else if(this.side_b.is_done && this.finale.is_ready && !this.finale.is_active && !this.finale.is_done) {
+					this.finale.build();
+				}
 			}
 
 		}
