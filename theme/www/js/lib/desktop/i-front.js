@@ -64,12 +64,12 @@ Util.Objects["front"] = new function() {
 				// LETTER
 				this.letter = u.qs("div.letter", this);
 				u.o.letter.init(this.letter);
+				
 
 
 				// SIDE A
 				this.side_a = u.qs("div.side_a", this);
 				u.o.side_a.init(this.side_a);
-
 
 				// INTERMEZZO
 				this.intermezzo = u.qs("div.intermezzo", this);

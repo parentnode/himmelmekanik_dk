@@ -33,6 +33,8 @@ Util.Objects["side_a"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:side_a");
 
+				this.canvas = u.ae(this, "canvas", {width:this.offsetWidth, height:page.browser_h});
+				this.ctx = this.canvas.getContext("2d");
 			}
 
 		}
@@ -42,11 +44,11 @@ Util.Objects["side_a"] = new function() {
 			u.bug("build side a");
 
 			this.is_active = true;
-
+			
 
 		}
 		
-		// Build Letter
+		// Destroy Letter
 		div.destroy = function() {
 
 			this.is_done = true;
