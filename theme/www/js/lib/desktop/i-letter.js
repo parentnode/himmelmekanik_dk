@@ -9,13 +9,13 @@ Util.Objects["letter"] = new function() {
 
 				// Adjust top padding
 				if(this.h1) {
-					u.ass(this, {
+					u.ass(this.wrapper, {
 						paddingTop: ((page.browser_h - this.h1.offsetHeight) / 2) / 1.8 +"px",
 					});
 				}
 
 				// Adjust bottom padding
-				u.ass(this, {
+				u.ass(this.wrapper, {
 					"padding-bottom":page.browser_h + "px",
 				});
 
@@ -59,8 +59,9 @@ Util.Objects["letter"] = new function() {
 			// Avoid ever getting ready twice
 			if(!this.is_ready) {
 
-				this.is_ready = true;
 				u.rc(this, "i:letter");
+
+				this.wrapper = u.wc(this, "div");
 
 				// get reference to headline
 				this.h1 = u.qs("h1", this);
@@ -78,10 +79,37 @@ Util.Objects["letter"] = new function() {
 					});
 				}
 
+				// Preload cloud graphics
+				u.preloader(this, [
+					"/img/gx_cloud_front_left1.png", 
+					"/img/gx_cloud_front_left2.png",
+					"/img/gx_cloud_front1.png", 
+					"/img/gx_cloud_front2.png", 
+					"/img/gx_cloud_front3.png",
+					"/img/gx_cloud_front_right1.png", 
+					"/img/gx_cloud_front_right2.png",
+					"/img/gx_cloud_mid1.png", 
+					"/img/gx_cloud_mid2.png", 
+					"/img/gx_cloud_mid3.png",
+					"/img/gx_cloud_back1.png", 
+					"/img/gx_cloud_back2.png", 
+					"/img/gx_cloud_back3.png", 
+					"/img/gx_cloud_back4.png"
+				])
+
+
+
 				// Letter is now ready to be shown (content is hidden)
 				u.ass(this, {
 					opacity: 1,
 				});
+
+				// Now we're ready to call the controller
+				this.loaded = function (queue) {
+					this.is_ready = true;
+					page.cN.scene.controller();
+				}
+				
 
 
 
@@ -122,6 +150,175 @@ Util.Objects["letter"] = new function() {
 				opacity: 1,
 				transform: "translate3d(0, 0, 0)"
 			});
+
+
+
+			// Add clouds layers
+			this.clouds_front = u.ae(this, "div", {
+				"class":"clouds front",
+			})
+
+			this.clouds_mid = u.ae(this, "div", {
+				"class":"clouds mid",
+			})
+
+			this.clouds_back = u.ae(this, "div", {
+				"class":"clouds back",
+			})
+
+			u.ass(this.clouds_front, {
+				"position":"absolute",
+				"top":"0",
+				"left":"0",
+				"width":"100%",
+				"height":(page.browser_h * 1.5) + "px",
+				"z-index":"-10"
+			});
+
+			u.ass(this.clouds_mid, {
+				"position":"absolute",
+				"top":"0",
+				"left":"0",
+				"width":"100%",
+				"height":(page.browser_h * 1.5) + "px",
+				"z-index":"-20"
+			});
+
+			u.ass(this.clouds_back, {
+				"position":"absolute",
+				"top":"0",
+				"left":"0",
+				"width":"100%",
+				"height":(page.browser_h * 1.5) + "px",
+				"z-index":"-30"
+			}) 
+			
+			
+			// Using a loop, add single cloud divs with injected imgs to each layer depending on the height of the clouds layers, 
+			// randomizing their position in three dimensions
+			this.layer_names = ["front", "mid", "back"];
+			this.clouds_gx = {
+				"front":{
+					"left":[
+						"/img/gx_cloud_front_left1.png", 
+						"/img/gx_cloud_front_left2.png"
+					],
+					"center":[
+						"/img/gx_cloud_front1.png", 
+						"/img/gx_cloud_front2.png", 
+						"/img/gx_cloud_front3.png"],
+					"right":[
+						"/img/gx_cloud_front_right1.png", 
+						"/img/gx_cloud_front_right2.png"
+					],
+				},
+				"mid":[
+					"/img/gx_cloud_mid1.png", 
+					"/img/gx_cloud_mid2.png", 
+					"/img/gx_cloud_mid3.png"],
+				"back":[
+					"/img/gx_cloud_back1.png", 
+					"/img/gx_cloud_back2.png", 
+					"/img/gx_cloud_back3.png", 
+					"/img/gx_cloud_back4.png"]
+			};
+
+			var current_ypos = 0;
+			var top_ypos = 125;
+			var current_layer = "";
+			var current_cloud_gx = [];
+			var i = 0;
+
+			// Left column loop
+			current_ypos = top_ypos;
+
+			//Denne kompleksitet er kun nødvendig i centerloopet. Til højre og venstre er kun frontlaget nødvendigt.
+		/* 	while (current_ypos < this.clouds_front.offsetHeight) {
+				current_layer = this.layer_names[Math.round(u.random(0,2))];
+				current_layer_cloud_gx = this.clouds_gx[current_layer];
+
+				if (current_layer == "front") {
+					u.ae(this.clouds_front, "img", {
+						"src":current_layer_cloud_gx.left[Math.round(u.random(0,current_layer_cloud_gx.left.length))]
+					})
+				}
+				else if (current_layer == "mid") {
+					u.ae(this.clouds_mid, "img", {
+						"src":current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length))]
+					})
+				}
+				else if (current_layer == "back") {
+					u.ae(this.clouds_back, "img", {
+						"src":current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length))]
+					})
+				}
+
+				current_ypos = current_ypos + 200;
+			} */
+			
+			// Right column loop
+			current_ypos = top_ypos;
+			while (current_ypos < this.clouds_front.offsetHeight) {
+				current_layer = this.layer_names[Math.round(u.random(0,2))];
+				current_ypos = current_ypos + 200;
+			}
+
+			// Center column loop
+			current_ypos = top_ypos;
+			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
+				current_layer = this.layer_names[Math.round(u.random(0,2))];
+				current_layer_cloud_gx = this.clouds_gx[current_layer];
+
+				if (current_layer == "front") {
+					this["div_center_cloud_" + i] = u.ae(this.clouds_front, "div", {
+						"class":"center cloud " + i,
+					})
+
+					u.ae(this["div_center_cloud_" + i], "img", {
+						"src":current_layer_cloud_gx.center[Math.round(u.random(0,current_layer_cloud_gx.center.length-1))]
+					})
+					
+				}
+				else if (current_layer == "mid") {
+					this["div_center_cloud_" + i] = u.ae(this.clouds_mid, "div", {
+						"class":"center cloud " + i,
+					})
+
+					u.ae(this["div_center_cloud_" + i], "img", {
+						"src":current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					})
+				}
+				else if (current_layer == "back") {
+					this["div_center_cloud_" + i] = u.ae(this.clouds_back, "div", {
+						"class":"center cloud " + i,
+					})
+
+					u.ae(this["div_center_cloud_" + i], "img", {
+						"src":current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					})
+				}
+				
+				console.log(this["div_center_cloud_" + i]);
+				console.log(this["div_center_cloud_" + i].offsetHeight);
+				// current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight;
+				u.ass(this["div_center_cloud_" + i], {
+					"position":"absolute",
+					"top":current_ypos + "px"
+				})
+				
+				current_ypos = current_ypos + 200;
+			}
+			
+
+
+			// Place the clouds and slide them in from the side (CSS transition)
+
+			// Use scroll handler to move cloud layers with different speeds
+
+
+
+
+
 
 		}
 		
