@@ -18,3 +18,13 @@
 
 #content .scene div.letter h1 span,
 #content .scene div.letter p span {display: inline-block;}
+
+#content .scene div.letter div.center {
+	width: 640px;
+	margin-left: -320px;
+	text-align: center;
+}
+
+#content .scene div.letter div.center img {
+	display: inline-block;
+}

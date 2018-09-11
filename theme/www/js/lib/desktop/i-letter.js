@@ -83,11 +83,15 @@ Util.Objects["letter"] = new function() {
 				u.preloader(this, [
 					"/img/gx_cloud_front_left1.png", 
 					"/img/gx_cloud_front_left2.png",
+					"/img/gx_cloud_front_left3.png",
+					"/img/gx_cloud_front_left4.png",
 					"/img/gx_cloud_front1.png", 
 					"/img/gx_cloud_front2.png", 
 					"/img/gx_cloud_front3.png",
 					"/img/gx_cloud_front_right1.png", 
 					"/img/gx_cloud_front_right2.png",
+					"/img/gx_cloud_front_right3.png",
+					"/img/gx_cloud_front_right4.png",
 					"/img/gx_cloud_mid1.png", 
 					"/img/gx_cloud_mid2.png", 
 					"/img/gx_cloud_mid3.png",
@@ -201,7 +205,9 @@ Util.Objects["letter"] = new function() {
 				"front":{
 					"left":[
 						"/img/gx_cloud_front_left1.png", 
-						"/img/gx_cloud_front_left2.png"
+						"/img/gx_cloud_front_left2.png",
+						"/img/gx_cloud_front_left3.png",
+						"/img/gx_cloud_front_left4.png"
 					],
 					"center":[
 						"/img/gx_cloud_front1.png", 
@@ -209,7 +215,9 @@ Util.Objects["letter"] = new function() {
 						"/img/gx_cloud_front3.png"],
 					"right":[
 						"/img/gx_cloud_front_right1.png", 
-						"/img/gx_cloud_front_right2.png"
+						"/img/gx_cloud_front_right2.png",
+						"/img/gx_cloud_front_right3.png",
+						"/img/gx_cloud_front_right4.png",
 					],
 				},
 				"mid":[
@@ -227,40 +235,79 @@ Util.Objects["letter"] = new function() {
 			var top_ypos = 125;
 			var current_layer = "";
 			var current_cloud_gx = [];
+			var cloud_path = "";
+			var previous_cloud_path = "";
 			var i = 0;
 
 			// Left column loop
 			current_ypos = top_ypos;
-
-			//Denne kompleksitet er kun nødvendig i centerloopet. Til højre og venstre er kun frontlaget nødvendigt.
-		/* 	while (current_ypos < this.clouds_front.offsetHeight) {
+			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
 				current_layer = this.layer_names[Math.round(u.random(0,2))];
 				current_layer_cloud_gx = this.clouds_gx[current_layer];
 
 				if (current_layer == "front") {
-					u.ae(this.clouds_front, "img", {
-						"src":current_layer_cloud_gx.left[Math.round(u.random(0,current_layer_cloud_gx.left.length))]
+					this["div_left_cloud_" + i] = u.ae(this.clouds_front, "div", {
+						"class":"left cloud " + i,
 					})
-				}
-				else if (current_layer == "mid") {
-					u.ae(this.clouds_mid, "img", {
-						"src":current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length))]
-					})
-				}
-				else if (current_layer == "back") {
-					u.ae(this.clouds_back, "img", {
-						"src":current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length))]
-					})
-				}
 
-				current_ypos = current_ypos + 200;
-			} */
+					cloud_path = current_layer_cloud_gx.left[Math.round(u.random(0,current_layer_cloud_gx.left.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+					
+					
+					this["img_left_cloud_" + i] = u.ae(this["div_left_cloud_" + i], "img", {
+						"src":cloud_path
+					})
+					
+					
+					
+					// console.log(this["div_left_cloud_" + i]);
+					// console.log(this["div_left_cloud_" + i].offsetHeight);
+					u.ass(this["div_left_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"left": 0 - Math.round(u.random(0, 100)) + "px"
+
+					})
+					
+					current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,403)) - 60;
+				}
+			}
 			
 			// Right column loop
 			current_ypos = top_ypos;
-			while (current_ypos < this.clouds_front.offsetHeight) {
+			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
 				current_layer = this.layer_names[Math.round(u.random(0,2))];
-				current_ypos = current_ypos + 200;
+				current_layer_cloud_gx = this.clouds_gx[current_layer];
+
+				if (current_layer == "front") {
+					this["div_right_cloud_" + i] = u.ae(this.clouds_front, "div", {
+						"class":"right cloud " + i,
+					})
+
+					cloud_path = current_layer_cloud_gx.right[Math.round(u.random(0,current_layer_cloud_gx.right.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+
+					this["img_right_cloud_" + i] = u.ae(this["div_right_cloud_" + i], "img", {
+						"src": cloud_path
+					})
+					
+					
+					// console.log(this["div_right_cloud_" + i]);
+					// console.log(this["div_right_cloud_" + i].offsetHeight);
+					u.ass(this["div_right_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"right": 0 - Math.round(u.random(0, 100)) + "px"
+					})
+					
+					current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,353)) - 60;
+				}
 			}
 
 			// Center column loop
@@ -274,8 +321,14 @@ Util.Objects["letter"] = new function() {
 						"class":"center cloud " + i,
 					})
 
-					u.ae(this["div_center_cloud_" + i], "img", {
-						"src":current_layer_cloud_gx.center[Math.round(u.random(0,current_layer_cloud_gx.center.length-1))]
+					cloud_path = current_layer_cloud_gx.center[Math.round(u.random(0,current_layer_cloud_gx.center.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+
+					this["img_center_cloud_" + i] = u.ae(this["div_center_cloud_" + i], "img", {
+						"src":cloud_path
 					})
 					
 				}
@@ -284,8 +337,14 @@ Util.Objects["letter"] = new function() {
 						"class":"center cloud " + i,
 					})
 
-					u.ae(this["div_center_cloud_" + i], "img", {
-						"src":current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+
+					this["img_center_cloud_" + i] = u.ae(this["div_center_cloud_" + i], "img", {
+						"src":cloud_path
 					})
 				}
 				else if (current_layer == "back") {
@@ -293,20 +352,29 @@ Util.Objects["letter"] = new function() {
 						"class":"center cloud " + i,
 					})
 
-					u.ae(this["div_center_cloud_" + i], "img", {
-						"src":current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+
+					this["img_center_cloud_" + i] = u.ae(this["div_center_cloud_" + i], "img", {
+						"src":cloud_path
 					})
 				}
 				
 				console.log(this["div_center_cloud_" + i]);
 				console.log(this["div_center_cloud_" + i].offsetHeight);
-				// current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight;
 				u.ass(this["div_center_cloud_" + i], {
 					"position":"absolute",
-					"top":current_ypos + "px"
+					"top":current_ypos + "px",
+					"left":"50%"
 				})
+				u.ass(this["img_center_cloud_" + i], {
+					"margin-left":Math.round(u.random(-300,300)) + "px"
+				}) 
 				
-				current_ypos = current_ypos + 200;
+				current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight + Math.round(u.random(100,573));
 			}
 			
 
