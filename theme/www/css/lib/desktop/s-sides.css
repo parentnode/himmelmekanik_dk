@@ -1,13 +1,13 @@
 /* SIDE A+B */
 #content .scene div.side {position: relative; opacity: 0; height: 100%;
-	display: none;
+	/* display: none; */
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 }
 #content .scene div.side canvas {width: 100%;}
-#content .scene div.side h2.song_title {position: absolute; font-size: 70px; color: #ffffff; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
+#content .scene div.side h2.song_title {position: absolute; font-size: 70px; color: #f6d874; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
 #content .scene div.side h3.side_title,
 #content .scene div.side h3.track_status,
 #content .scene div.side h3.time_status {position: absolute; opacity: 0; font-size: 14px; color: #f6d874; padding: 0; left: 0; width: 100%; text-align: center;}
