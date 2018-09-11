@@ -1,6 +1,6 @@
 /* SIDE A+B */
 #content .scene div.side {position: relative; opacity: 0; height: 100%;
-	/* display: none; */
+	display: none;
 	position: absolute;
 	top: 0;
 	left: 0;

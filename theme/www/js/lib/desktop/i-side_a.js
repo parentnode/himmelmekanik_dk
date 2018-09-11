@@ -89,6 +89,8 @@ Util.Objects["side_a"] = new function() {
 
 				this.canvas = u.ae(this, "canvas", {width:this.offsetWidth, height:page.browser_h});
 				this.ctx = this.canvas.getContext("2d");
+
+				page.cN.scene.controller();
 			}
 
 		}

@@ -33,6 +33,7 @@ Util.Objects["intermezzo"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:intermezzo");
 
+				page.cN.scene.controller();
 			}
 
 		}

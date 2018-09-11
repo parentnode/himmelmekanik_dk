@@ -33,6 +33,8 @@ Util.Objects["finale"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:finale");
 
+				page.cN.scene.controller();
+
 			}
 
 		}

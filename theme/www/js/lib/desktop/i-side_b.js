@@ -33,6 +33,8 @@ Util.Objects["side_b"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:side_b");
 
+				page.cN.scene.controller();
+
 			}
 
 		}
