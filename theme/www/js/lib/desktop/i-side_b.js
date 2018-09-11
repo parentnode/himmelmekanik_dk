@@ -2,11 +2,65 @@ Util.Objects["side_b"] = new function() {
 	this.init = function(div) {
 
 		div.resized = function(event) {
-			// u.bug("div.resized:", this);
+			u.bug("div.resized:", this);
 
 			// If letter exists and it is active (shown or partially shown)
 			if(this.is_active) {
+				// recalculate canvas properties
+				if(this.canvas) {
+					this.canvas.height = page.browser_h;
+					this.canvas.width = page.browser_w;
 
+					this.center_x = Math.round(page.browser_w/2);
+					this.center_y = Math.round(page.browser_h/2);
+					// use smallest to define radius
+					if(page.browser_h > page.browser_w) {
+						this.radius = this.center_x - 35;
+					}
+					else {
+						this.radius = this.center_y - 35;
+					}
+
+					if(this.is_ready) {
+						window.scrollTo(0,this.offsetTop);
+					}
+					// Fix for canvas redraw after setting canvas width and height
+					if(this.player) {
+						this.updateCanvas(this.player.currentTime);
+					}
+				}
+
+				if(this.song_title) {
+					u.ass(this.song_title, {
+						top: ((page.browser_h - this.song_title.offsetHeight)/2) + "px"
+					});
+				}
+				if(this.song_title_switcher) {
+					u.ass(this.song_title_switcher, {
+						top: ((page.browser_h - this.song_title_switcher.offsetHeight)/2) + "px"
+					});
+				}
+				if(this.side_title) {
+					u.ass(this.side_title, {
+						top: (page.browser_h/4 + 10) + "px"
+					});
+				}
+				if(this.track_status) {
+					u.ass(this.track_status, {
+						top: (page.browser_h/4 - 10) + "px"
+					});
+				}
+				if(this.time_status) {
+					u.ass(this.time_status, {
+						top: ((page.browser_h/4 * 3) - 10) + "px"
+					});
+				}
+
+				if(this.player && this.player.bn_play) {
+					u.ass(this.player.bn_play, {
+						top: ((page.browser_h/4 * 3) - 10) + "px"
+					});
+				}
 
 			}
 
@@ -33,23 +87,336 @@ Util.Objects["side_b"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:side_b");
 
-				page.cN.scene.controller();
+				this.canvas = u.ae(this, "canvas", {width:this.offsetWidth, height:page.browser_h});
+				this.ctx = this.canvas.getContext("2d");
 
+				page.cN.scene.controller();
 			}
 
 		}
 
-		// Build Letter
+		// Build side a
 		div.build = function() {
-			// u.bug("build side b");
+			u.bug("build side a");
 
 			this.is_active = true;
+			
+			// Add dynamic content to Side A
+			// Animatable title track
+			this.song_title = u.qs("h2", this);
+			this.song_title_switcher = u.ae(this, "h2", {class:"song_title switch", html:"&nbsp;"});
+			this.song_title_switcher.div = this;
+			u.ass(this.song_title_switcher, {
+				transform: "translate3d(0, 25px, 0)"
+			});
+
+			// Static data
+			this.side_title = u.ae(this, "h3", {class:"side_title", html:"Himmelmekanik, Side A"});
+			this.track_status = u.ae(this, "h3", {class:"track_status"});
+			this.time_status = u.ae(this, "h3", {class:"time_status"});
+
+			u.ass(this, {display:"block"});
+			this.resized();
+			u.ass(this, {opacity:1});
+
+
+			// Putting songs into json
+			this.tracks = {}; // Declaring a json object
+			var last_start = 0; // Flag for first song in this.tracks
+			this.songs = u.qsa("ul > li", this); // Querying songs
+			for(var i = 0; i < this.songs.length; i++) {
+				var song_end = this.songs[i].getAttribute("data-trackends");
+				var song_number = ("0" + (i + 1));
+				var song_name = this.songs[i].innerHTML;
+				var song_object = {name:song_name, track:song_number, end:song_end}; // Putting all variables into a json object
+				// Creating a new key:value pair.in this.tracks where last_start is the key and song_object the value.
+				this.tracks[last_start] = song_object;
+				last_start = song_end; // Update flag for next song
+			}
+			console.log(this.tracks);
+			this.track_keys = Object.keys(this.tracks);
+			console.log("TRACK KEYS: ", this.track_keys);
+			// Get easing method
+			this.easing = u.easings["ease-in"];
+
+
+			// Add audio player (scratch sound)
+			this.stopplayer = u.mediaPlayer({type:"audio"});
+			u.ac(this.stopplayer, "stopplayer");
+
+			// Add audio player (Side A)
+			this.player = u.mediaPlayer({type:"audio"});
+			this.player.div = this;
+
+			// Audio player is ready
+			this.player.ready = function() {
+				// u.bug("player ready:", this);
+
+				if(!this.can_autoplay) {
+					u.ac(this, "requires_action");
+//						this.time_status.innerHTML = "Start";
+					this.bn_play = u.ae(this, "div", {class:"play", html:"Start"});
+					this.bn_play.player = this;
+					u.e.click(this.bn_play);
+					this.bn_play.clicked = function() {
+						this.player.loadAndPlay("/assets/side-b");
+
+						u.a.transition(this, "all 2s ease-in-out");
+						u.ass(this, {
+							opacity: 0,
+						});
+
+					}
+
+					u.ass(this.bn_play, {
+						top: ((page.browser_h/4 * 3) - 10) + "px",
+						opacity: 0,
+						transform: "translate3d(0, 15px, 0)"
+					});
+
+					u.a.transition(this.bn_play, "all 2s ease-in-out");
+					u.ass(this.bn_play, {
+						opacity: 1,
+						transform: "translate3d(0, 0, 0)"
+					});
+					
+//						page.resized();
+				}
+
+				// Run opening animation only once
+				this.loading = function(event) {
+
+					// Only needed once
+					delete this.loading;
+					//u.bug("loading", event);
+
+					u.ac(this, "loading");
+				}
+				// Playback has started callback
+				this.playing = function(event) {
+					// u.bug("Playing", event);
+
+					// Only needed once
+					delete this.playing;
+
+					u.rc(this, "loading");
+
+					// make this clear
+					this.is_playing = true;
+
+					
+					// Apply new transition
+					u.a.transition(this.div.track_status, "all 0.5s ease-in-out");
+					u.ass(this.div.track_status, {
+						opacity: 1
+					});
+
+					// Apply new transition
+					u.a.transition(this.div.time_status, "all 0.5s ease-in-out");
+					u.ass(this.div.time_status, {
+						opacity: 1
+					});
+
+					// Apply new transition
+					u.a.transition(this.div.side_title, "all 0.5s ease-in-out");
+					u.ass(this.div.side_title, {
+						opacity: 1
+					});
+
+					// Apply new transition
+					u.a.transition(this.div.song_title, "all 0.5s ease-in-out");
+					u.ass(this.div.song_title, {
+						opacity: 1
+					});
+
+
+					// Update title
+					if(this.div.current_track && this.div.current_track.name) {
+						this.div.updateTitle(this.div.current_track.name);
+					}
+
+
+					// Preload the stop asset
+					this.div.stopplayer.load("/assets/stop");
+
+
+					// Stop music on all interaction
+					this.div.wheel_event_id = u.e.addWindowEvent(this.div, "wheel", this.div.stopOnInteraction);
+					this.div.mousemove_event_id = u.e.addWindowEvent(this.div, "mousemove", this.div.stopOnInteraction);
+					this.div.blur_event_id = u.e.addWindowEvent(this.div, "blur", this.div.stopOnInteraction);
+					this.div.key_event_id = u.e.addWindowEvent(this.div, "keydown", this.div.stopOnInteraction);
+
+				}
+
+				// Update track name and number based on timeupdates from the audio node
+				this.timeupdate = function(event) {
+					u.bug("timeupdate", this.div.current_track_i, this.div.current_track, this.currentTime);
+
+					// first track
+					if(this.div.current_track_i === undefined) {
+						console.log(this.div.track_keys);
+						this.div.current_track_i = 0;
+						this.div.current_track = this.div.tracks[this.div.track_keys[this.div.current_track_i]];
+						console.log("current track ", this.div.current_track.name)
+						// update html
+						this.div.updateTitle(this.div.current_track.name);
+						// this.div.song_title.innerHTML = this.div.current_track.name;
+						this.div.track_status.innerHTML = this.div.current_track.track + "/11";
+
+					}
+					// Next track
+					else if(this.currentTime > this.div.current_track.end) {
+
+						this.div.current_track_i++;
+						this.div.current_track = this.div.tracks[this.div.track_keys[this.div.current_track_i]];
+
+						// End of last track
+						if(this.div.current_track_i >= this.div.track_keys.length) {
+							this.stop();
+
+							// Go to the next step
+							this.div.destroy();
+
+							// delete this function - stop listining.
+							delete this.timeupdate;
+
+							// end of business
+							return;
+						}
+
+						// update html
+						this.div.updateTitle(this.div.current_track.name);
+						// this.div.song_title.innerHTML = this.div.current_track.name;
+						this.div.track_status.innerHTML = this.div.current_track.track + "/11";
+
+					}
+
+
+					// update timestamp
+					this.div.time_status.innerHTML = u.period("m:s", {seconds: this.currentTime-this.div.track_keys[this.div.current_track_i]});
+
+
+					// update timeline circle
+					this.div.updateCanvas(this.currentTime);
+
+				}
+
+				this.loadAndPlay("/assets/side-b");
+
+			}
+		
+			// Play again after interaction stop
+			this.playAgain = function(event) {
+				this.player.play();
+			}
+
+			// Scratch on interaction
+			this.stopOnInteraction = function(event) {
+				// u.bug("ignore input");
+//					u.e.kill(event);
+
+
+				if(!u.t.valid(this.t_stop)) {
+					this.stopplayer.play(0);
+					this.player.pause();
+					this.t_stop = u.t.setTimer(this, "playAgain", 5000);
+				}
+
+			}
+
+			// Update progress canvas
+			this.updateCanvas = function(progress) {
+				u.bug("UPDATE CANVAS ", progress, this.center_y, this.radius, this.center_x);
+//						u.bug("Resize ctx")
+				// Clear canvas
+				this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+
+				// // Create orange square
+				// this.ctx.beginPath();
+				// this.ctx.rect(0, 0, page.browser_w, page.browser_h);
+				// this.ctx.fillStyle = "#f0bd18";
+				// this.ctx.fill();
+				// this.ctx.closePath();
+
+			
+				// Draw outer circle
+				this.ctx.beginPath();
+				this.ctx.lineWidth = 4;
+				this.ctx.strokeStyle = "#f6d874";
+				this.ctx.arc(this.center_x, this.center_y, this.radius, -1*Math.PI, 1*Math.PI);
+				this.ctx.stroke();
+				this.ctx.closePath();
+
+
+				// Draw "played" circle
+				this.ctx.beginPath();
+				this.ctx.lineWidth = 4;
+				this.ctx.strokeStyle = "#cc9c00";
+				this.ctx.arc(this.center_x, this.center_y, this.radius, -(Math.PI/2), 2 * (progress / this.player.duration) * Math.PI - (Math.PI/2));
+				this.ctx.stroke();
+				this.ctx.closePath();
+
+			}
+
+			// Update song title
+			this.updateTitle = function(title) {
+
+				// Song title
+				this.song_title_switcher.innerHTML = title;
+
+				// Resize page to re-position elements
+				page.resized();	
+
+				this.song_title_switcher.transitioned = function() {
+
+
+					this.div.song_title.innerHTML = this.innerHTML;
+
+					page.resized();
+					
+
+					u.ass(this.div.song_title, {
+						opacity:1,
+						transform: "translate3d(0, 0, 0)"
+					});
+					u.ass(this, {
+						opacity:0,
+						transform: "translate3d(0, " + (this.offsetHeight*0.7) + "px, 0)"
+					});
+
+				}
+				u.a.transition(this.song_title_switcher, "all 2s ease-in-out");
+				u.ass(this.song_title_switcher, {
+					opacity:1,
+					transform: "translate3d(0,0,0)"
+				});
+				u.a.transition(this.song_title, "all 2s ease-in-out");
+				u.ass(this.song_title, {
+					opacity:0,
+					transform: "translate3d(0, -" + (this.song_title.offsetHeight*0.7) + "px, 0)"
+				});
+
+				// Resize page to re-position elements
+//						page.resized();	
+
+
+			}
+
+
+			// Append players to DOM (just to avoid any browser issues)
+			u.ae(this, this.player);
+			u.ae(this, this.stopplayer);
+
 
 
 		}
 		
-		// Build Letter
+		// Destroy Letter
 		div.destroy = function() {
+			u.bug("DESTROY", this)
+
+			u.a.transition(this, "all 3s ease-in-out");
+			u.ass(this, {opacity:0});
 
 			this.is_done = true;
 

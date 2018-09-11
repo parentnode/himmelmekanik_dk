@@ -115,9 +115,10 @@ Util.Objects["side_a"] = new function() {
 			this.track_status = u.ae(this, "h3", {class:"track_status"});
 			this.time_status = u.ae(this, "h3", {class:"time_status"});
 
+			u.ass(this, {display:"block"});
 			this.resized();
 			u.ass(this, {opacity:1});
-			u.ass(this, {display:"block"});
+
 
 			// Putting songs into json
 			this.tracks = {}; // Declaring a json object
@@ -413,6 +414,10 @@ Util.Objects["side_a"] = new function() {
 		// Destroy Letter
 		div.destroy = function() {
 			u.bug("DESTROY", this)
+
+			u.a.transition(this, "all 3s ease-in-out");
+			u.ass(this, {opacity:0});
+
 			this.is_done = true;
 
 			// Let controller decide what to do
