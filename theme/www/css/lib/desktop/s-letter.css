@@ -28,3 +28,11 @@
 #content .scene div.letter div.center img {
 	display: inline-block;
 }
+
+#content .scene div.letter div.clouds {
+	overflow: hidden;
+}
+
+#content .scene div.letter div.cloud {
+	opacity: 0;
+}

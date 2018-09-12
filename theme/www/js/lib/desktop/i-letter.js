@@ -25,12 +25,12 @@ Util.Objects["letter"] = new function() {
 
 		// Scene scrolled
 		div.scrolled = function(event) {
- 			u.bug("div.scrolled:", this);
+ 			// u.bug("div.scrolled:", this);
 
 			if(this.is_active) {
 
 				// still front nodes - reveal as scrolled into view
-				if(this.nodes.length > this.current_front_node_i) {
+				if(this.nodes.length > this.current_front_node_i) {		
 
 					// Next node in view
 					if(this.nodes[this.current_front_node_i].offsetTop - page.browser_h < this.scrollTop) {
@@ -48,8 +48,43 @@ Util.Objects["letter"] = new function() {
 
 				}
 
-			}
+				this.clouds_front.style.top = -(this.scrollTop * 0.5) + "px";
+				this.clouds_mid.style.top = -(this.scrollTop * 0.4) + "px";
+				this.clouds_back.style.top = -(this.scrollTop * 0.3) + "px";
 
+				// If side_a scrolled into view - draw the circle
+				// if(this.side_a.offsetTop - page.browser_h < page.scroll_y) {
+
+					// Calculate progress (number between 0 and 1)
+					var total_scroll_height = (this.wrapper.offsetHeight - page.browser_h)
+					console.log(total_scroll_height);
+					var progress = (total_scroll_height - (total_scroll_height - this.scrollTop)) / total_scroll_height
+
+					var current_degree = Math.PI * progress;
+					u.bug("progress:" + progress);
+					// u.bug("current_degree", current_degree);
+
+
+					// Clear canvas
+					page.cN.scene.circle.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+
+					// Draw outer circle
+					page.cN.scene.circle.ctx.beginPath();
+					page.cN.scene.circle.ctx.lineWidth = 4;
+					page.cN.scene.circle.ctx.strokeStyle = "#f6d874";
+					page.cN.scene.circle.ctx.arc(page.cN.scene.circle.center_x, page.cN.scene.circle.center_y, page.cN.scene.circle.radius, 0*Math.PI, progress*2*Math.PI);
+					page.cN.scene.circle.ctx.stroke();
+					page.cN.scene.circle.ctx.closePath();
+
+					// The end is reached - full circle 
+					if(total_scroll_height <= this.scrollTop) {
+						console.log('hej');
+
+						// u.bug("ready to build SideA");
+						this.destroy();
+					}
+				// }
+			}
 		}
 
 		// Scene is ready to be initialized
@@ -175,7 +210,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":(page.browser_h * 1.5) + "px",
+				"height":this.offsetHeight * 2 + "px",
 				"z-index":"-10"
 			});
 
@@ -184,7 +219,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":(page.browser_h * 1.5) + "px",
+				"height":this.offsetHeight * 2 + "px",
 				"z-index":"-20"
 			});
 
@@ -193,7 +228,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":(page.browser_h * 1.5) + "px",
+				"height":this.offsetHeight * 2 + "px",
 				"z-index":"-30"
 			}) 
 			
@@ -238,6 +273,7 @@ Util.Objects["letter"] = new function() {
 			var cloud_path = "";
 			var previous_cloud_path = "";
 			var i = 0;
+			var clouds = [];
 
 			// Left column loop
 			current_ypos = top_ypos;
@@ -261,19 +297,61 @@ Util.Objects["letter"] = new function() {
 						"src":cloud_path
 					})
 					
-					
-					
-					// console.log(this["div_left_cloud_" + i]);
-					// console.log(this["div_left_cloud_" + i].offsetHeight);
 					u.ass(this["div_left_cloud_" + i], {
 						"position":"absolute",
 						"top":current_ypos + "px",
 						"left": 0 - Math.round(u.random(0, 100)) + "px"
+	
+					})
 
+				}
+				
+				else if (current_layer == "mid") {
+					this["div_left_cloud_" + i] = u.ae(this.clouds_mid, "div", {
+						"class":"left cloud " + i,
 					})
 					
-					current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,403)) - 60;
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+					
+					this["img_left_cloud_" + i] = u.ae(this["div_left_cloud_" + i], "img", {
+						"src":cloud_path
+					})
+					
+					u.ass(this["div_left_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"left": 0 + Math.round(u.random(-20, 100)) + "px"
+						
+					})
 				}
+				else if (current_layer == "back") {
+					this["div_left_cloud_" + i] = u.ae(this.clouds_back, "div", {
+						"class":"left cloud " + i,
+					})
+					
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+					
+					this["img_left_cloud_" + i] = u.ae(this["div_left_cloud_" + i], "img", {
+						"src":cloud_path
+					})
+					u.ass(this["div_left_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"left": 0 + Math.round(u.random(-20, 100)) + "px"
+						
+					})
+				}
+				
+				clouds.push(this["div_left_cloud_" + i]);
+				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(50,403)) - 60;
 			}
 			
 			// Right column loop
@@ -292,22 +370,69 @@ Util.Objects["letter"] = new function() {
 						continue
 					}
 					previous_cloud_path = cloud_path;
-
+					
+					
 					this["img_right_cloud_" + i] = u.ae(this["div_right_cloud_" + i], "img", {
-						"src": cloud_path
+						"src":cloud_path
 					})
-					
-					
-					// console.log(this["div_right_cloud_" + i]);
-					// console.log(this["div_right_cloud_" + i].offsetHeight);
 					u.ass(this["div_right_cloud_" + i], {
 						"position":"absolute",
 						"top":current_ypos + "px",
 						"right": 0 - Math.round(u.random(0, 100)) + "px"
+	
 					})
 					
-					current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,353)) - 60;
 				}
+
+				else if (current_layer == "mid") {
+					this["div_right_cloud_" + i] = u.ae(this.clouds_mid, "div", {
+						"class":"right cloud " + i,
+					})
+
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+
+					this["img_right_cloud_" + i] = u.ae(this["div_right_cloud_" + i], "img", {
+						"src":cloud_path
+					})
+
+					u.ass(this["div_right_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"right": 0 + Math.round(u.random(-20, 100)) + "px"
+	
+					})
+					
+				}
+				else if (current_layer == "back") {
+					this["div_right_cloud_" + i] = u.ae(this.clouds_back, "div", {
+						"class":"right cloud " + i,
+					})
+
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+
+					this["img_right_cloud_" + i] = u.ae(this["div_right_cloud_" + i], "img", {
+						"src":cloud_path
+					})
+
+					u.ass(this["div_right_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"right": 0 + Math.round(u.random(-20, 100)) + "px"
+	
+					})
+				}
+				
+
+				clouds.push(this["div_right_cloud_" + i]);
+				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 60;
 			}
 
 			// Center column loop
@@ -363,8 +488,8 @@ Util.Objects["letter"] = new function() {
 					})
 				}
 				
-				console.log(this["div_center_cloud_" + i]);
-				console.log(this["div_center_cloud_" + i].offsetHeight);
+				// console.log(this["div_center_cloud_" + i]);
+				// console.log(this["div_center_cloud_" + i].offsetHeight);
 				u.ass(this["div_center_cloud_" + i], {
 					"position":"absolute",
 					"top":current_ypos + "px",
@@ -374,24 +499,67 @@ Util.Objects["letter"] = new function() {
 					"margin-left":Math.round(u.random(-300,300)) + "px"
 				}) 
 				
+				clouds.push(this["div_center_cloud_" + i]);
 				current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight + Math.round(u.random(100,573));
 			}
-			
 
+			// Shuffle clouds array		
+			function shuffle(array) {
+				var currentIndex = array.length, temporaryValue, randomIndex;
+				
+				// While there remain elements to shuffle...
+				while (0 !== currentIndex) {
+					
+					// Pick a remaining element...
+					randomIndex = Math.floor(Math.random() * currentIndex);
+					currentIndex -= 1;
+					
+					// And swap it with the current element.
+					temporaryValue = array[currentIndex];
+					array[currentIndex] = array[randomIndex];
+					array[randomIndex] = temporaryValue;
+				}
+				
+				return array;
+			}
 
-			// Place the clouds and slide them in from the side (CSS transition)
+			clouds_shuffled = shuffle(clouds);
 
-			// Use scroll handler to move cloud layers with different speeds
-
-
-
-
-
+			// Fade in the shuffled clouds (CSS transition)
+			for (i = 0; i < clouds_shuffled.length; i++) {				
+				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*75 + "ms");
+				u.ass(clouds_shuffled[i], {
+					"opacity":1
+				})
+			}
+		
 
 		}
 		
 		// Destroy Letter
 		div.destroy = function() {
+
+			console.log("Destroyed!")
+			//Lock screen
+			u.ass(this, {
+				"overflow-y":"hidden"
+			})
+
+			// Fade out the shuffled clouds
+			for (i = 0; i < clouds_shuffled.length; i++) {				
+				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*75 + "ms");
+				u.ass(clouds_shuffled[i], {
+					"opacity":0 
+				})
+			}
+
+			this.finalize = function() {
+				u.ass(this, {
+					"display":"none"
+				});
+			}
+
+			u.t.setTimer(this, "finalize", 1800 + i*75 + 200);
 
 			this.is_done = true;
 
