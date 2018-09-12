@@ -1,5 +1,5 @@
 
-/*seg_smartphone_include.css*/
+/*seg_tablet_include.css*/
 
 /*s-fonts.css*/
 @font-face {
@@ -198,4 +198,5 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .field div.hint {z-index: 9; border: 1px solid #007633; color: #007633; background: #d0f4e0;}
 #content .field.focus div.hint,
 #content .field.hover div.hint {display: block;}
+
 

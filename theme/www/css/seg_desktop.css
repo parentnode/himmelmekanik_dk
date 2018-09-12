@@ -10,6 +10,14 @@
 	font-weight: 900;
 	font-style: normal;
 }
+@font-face {
+	font-family: 'Kalam Bold';
+	src: url('/css/fonts/kalam-bold-webfont.woff2') format('woff2'),
+	 	 url('/css/fonts/kalam-bold-webfont.woff') format('woff'),
+		 url('/css/fonts/kalam-bold-webfont.ttf') format('truetype');
+	font-weight: 900;
+	font-style: normal;
+}
 
 
 /*s-page.css*/
@@ -18,7 +26,7 @@
 	-webkit-font-smoothing: antialiased;
 }
 html {min-height: 100%;}
-body {background: #ffffff; margin: 0; overflow-y: scroll; overflow-x: hidden;}
+body {background: #ffee88 url("/img/bg_gradient.jpg") no-repeat center center; margin: 0; overflow: hidden;}
 h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dd, dt {padding: 0; margin: 0;}
 h1, h2, h3, h4, h5, h6, p, li, dd, dt, span, a {line-height: 1em; font-weight: 900;}
 ul {list-style: none;}
@@ -66,49 +74,16 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .scene h1,
 #content .scene h2 {color: #f0bd18; width: 85%;}
 #content .scene div.audioplayer {width: 50px; height: 50px;}
-#content .scene div.letter ul.info {display: none;}
-#content .scene div.letter div.articlebody {padding: 100px 0;}
-#content .scene div.letter h1 span,
-#content .scene div.letter p span {display: inline-block;}
-#content .scene div.side_a {position: relative;}
-#content .scene div.side_a canvas {width: 100%;}
-#content .scene div.side_a h2.song_title {position: absolute; font-size: 70px; color: #ffffff; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
-#content .scene div.side_a h3.side_title,
-#content .scene div.side_a h3.track_status,
-#content .scene div.side_a h3.time_status {position: absolute; opacity: 0; font-size: 14px; color: #f6d874; padding: 0; left: 0; width: 100%; text-align: center;}
-#content .scene div.side_a.loading h3.time_status {text-indent: -9999px; height: 30px;
-	background: transparent url(/img/gx_loader.gif) no-repeat center center;
-	background-size: 30px auto;
+#content .scene div.circle {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -10;
+	transform: rotate(-90deg);
 }
-#content .scene div.side_a.requires_action div.play {position: absolute; opacity: 0; font-size: 20px; background: #f0bd18; color: #ffffff; padding: 5px 10px; border-radius: 5px; display: inline-block; width: 120px;
-	text-transform: uppercase; left: 50%; margin-left: -60px; text-align: center; cursor: pointer;
-}
-#content .scene div.intermezzo {
-	display: none;
-}
-#content .scene div.intermezzo div.table {display: table; width: 100%; height: 100%;}
-#content .scene div.intermezzo div.cell {display: table-cell; vertical-align: middle;}
-#content .scene div.intermezzo p {padding-top: 20px; padding-bottom: 20px;}
-#content .scene div.side_b {position: relative; display: none;}
-#content .scene div.side_b canvas {width: 100%;}
-#content .scene div.side_b h2.song_title {position: absolute; font-size: 70px; color: #ffffff; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
-#content .scene div.side_b h3.side_title,
-#content .scene div.side_b h3.track_status,
-#content .scene div.side_b h3.time_status {position: absolute; opacity: 0; font-size: 14px; color: #f6d874; padding: 0; left: 0; width: 100%; text-align: center;}
-#content .scene div.side_b.loading h3.time_status {text-indent: -9999px; height: 30px;
-	background: transparent url(/img/gx_loader.gif) no-repeat center center;
-	background-size: 30px auto;
-}
-#content .scene div.side_b.requires_action div.play {position: absolute; opacity: 0; font-size: 20px; background: #f0bd18; color: #ffffff; padding: 5px 10px; border-radius: 5px; display: inline-block; width: 120px;
-	text-transform: uppercase; left: 50%; margin-left: -60px; text-align: center; cursor: pointer;
-}
-#content .scene div.finale {
-	display: none;
-}
-#content .scene div.finale div.table {display: table; width: 100%; height: 100%;}
-#content .scene div.finale div.cell {display: table-cell; vertical-align: middle;}
-#content .scene div.finale p {padding-top: 20px; padding-bottom: 20px;}
-#content .scene div.finale p span {text-decoration: underline; cursor: pointer;}
+
 
 /*s-form.css*/
 #content {}
@@ -236,3 +211,104 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content ul.actions input.button.secondary:hover,
 #content ul.actions a.button.secondary:hover {background-color: #313942;}
 
+
+/*s-letter.css*/
+#content .scene div.letter {opacity: 0; overflow-y: auto; 
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+#content .scene div.letter p {
+	font-family: "Kalam Bold", Verdana, Arial, sans-serif; color: #000000;
+	-webkit-text-size-adjust: none;
+	-webkit-font-smoothing: antialiased;
+}
+#content .scene div.letter ul.info {display: none;}
+#content .scene div.letter div.articlebody {padding: 100px 0;}
+#content .scene div.letter h1 span,
+#content .scene div.letter p span {display: inline-block;}
+#content .scene div.letter div.center {
+	width: 640px;
+	margin-left: -320px;
+	text-align: center;
+}
+#content .scene div.letter div.center img {
+	display: inline-block;
+}
+#content .scene div.letter div.clouds {
+	overflow: hidden;
+}
+#content .scene div.letter div.cloud {
+	opacity: 0;
+}
+
+/*s-sides.css*/
+#content .scene div.side {position: relative; opacity: 0; height: 100%;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+#content .scene div.side canvas {width: 100%;}
+#content .scene div.side h2.song_title {position: absolute; font-size: 70px; color: #f6d874; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
+#content .scene div.side h3.side_title,
+#content .scene div.side h3.track_status,
+#content .scene div.side h3.time_status {position: absolute; opacity: 0; font-size: 14px; color: #f6d874; padding: 0; left: 0; width: 100%; text-align: center;}
+#content .scene div.side.loading h3.time_status {text-indent: -9999px; height: 30px;
+	background: transparent url(/img/gx_loader.gif) no-repeat center center;
+	background-size: 30px auto;
+}
+#content .scene div.side.requires_action div.play {position: absolute; opacity: 0; font-size: 20px; background: #f0bd18; color: #ffffff; padding: 5px 10px; border-radius: 5px; display: inline-block; width: 120px;
+	text-transform: uppercase; left: 50%; margin-left: -60px; text-align: center; cursor: pointer;
+}
+#content .scene div.side ul {
+	display: none;
+}
+#content .scene .side .cloud {
+	z-index: 10;
+	position: absolute;
+}
+#content .scene .side .cloud.left {
+	left: 0;
+}
+#content .scene .side .cloud.right {
+	right: 0;
+}
+#content .scene .side .cloud.top {
+	top: 0;
+}
+#content .scene .side .cloud.middle {
+	top: 30%;
+}
+#content .scene .side .cloud.bottom {
+	bottom: 0;
+}
+
+
+/*s-intermezzo.css*/
+#content .scene div.intermezzo {opacity: 0; height: 100%;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+#content .scene div.intermezzo div.table {display: table; width: 100%; height: 100%;}
+#content .scene div.intermezzo div.cell {display: table-cell; vertical-align: middle;}
+#content .scene div.intermezzo p {padding-top: 20px; padding-bottom: 20px;}
+
+
+/*s-finale.css*/
+#content .scene div.finale {opacity: 0; height: 100%;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+#content .scene div.finale div.table {display: table; width: 100%; height: 100%;}
+#content .scene div.finale div.cell {display: table-cell; vertical-align: middle;}
+#content .scene div.finale p {padding-top: 20px; padding-bottom: 20px;}
+#content .scene div.finale p span {text-decoration: underline; cursor: pointer;}
