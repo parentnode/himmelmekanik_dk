@@ -345,7 +345,10 @@ Util.Objects["side_b"] = new function() {
 					}
 					else {
 						console.log(this.currentVolume);
-						this.currentVolume = this.currentVolume + 0.01;
+						this.currentVolume = u.round(this.currentVolume + 0.01, 2);
+						if (this.currentTime >= 1) {
+							this.currentVolume = 1;
+						}
 						this.player.volume(this.currentVolume);
 					}
 				}
