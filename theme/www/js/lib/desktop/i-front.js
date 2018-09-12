@@ -13,6 +13,21 @@ Util.Objects["front"] = new function() {
 				height: page.browser_h + "px"
 			});
 
+			if(this.circle) {
+				this.circle.canvas.width = page.browser_w
+				this.circle.canvas.height = page.browser_h
+
+				this.circle.center_x = Math.round(page.browser_w/2);
+				this.circle.center_y = Math.round(page.browser_h/2);
+				// use smallest to define radius
+				if(page.browser_h > page.browser_w) {
+					this.circle.radius = this.circle.center_x - 35;
+				}
+				else {
+					this.circle.radius = this.circle.center_y - 35;
+				}
+			}
+
 			// If letter exists
 			if(this.letter) {
 				this.letter.resized();
@@ -59,6 +74,14 @@ Util.Objects["front"] = new function() {
 				// Page contains 5 sections: 
 				// Letter, Side A, Intermezzo, Side B and Finale
 				// Get reference for each section
+
+				// LOAD CIRCLE
+				this.circle = u.ae(this, "div", {
+					"class":"circle",
+				});
+				
+				this.circle.canvas = u.ae(this.circle, "canvas", {width:this.offsetWidth, height:page.browser_h});
+				this.circle.ctx = this.circle.canvas.getContext("2d");
 
 
 				// LETTER

@@ -25,7 +25,7 @@ Util.Objects["letter"] = new function() {
 
 		// Scene scrolled
 		div.scrolled = function(event) {
- 			u.bug("div.scrolled:", this);
+ 			// u.bug("div.scrolled:", this);
 
 			if(this.is_active) {
 
@@ -53,42 +53,37 @@ Util.Objects["letter"] = new function() {
 				this.clouds_back.style.top = -(this.scrollTop * 0.3) + "px";
 
 				// If side_a scrolled into view - draw the circle
-				console.log("SIDE A: " + page.cN.scene.side_a.offsetTop)
-				if(page.cN.scene.side_a.offsetTop - page.browser_h < page.scroll_y) {
+				// if(this.side_a.offsetTop - page.browser_h < page.scroll_y) {
 
+					// Calculate progress (number between 0 and 1)
+					var total_scroll_height = (this.wrapper.offsetHeight - page.browser_h)
+					console.log(total_scroll_height);
+					var progress = (total_scroll_height - (total_scroll_height - this.scrollTop)) / total_scroll_height
 
-					// Caculate progress
-					var progress = ((page.scroll_y + page.browser_h) - page.cN.scene.side_a.offsetTop) / page.browser_h;
 					var current_degree = Math.PI * progress;
-					// u.bug("progress:" + progress);
+					u.bug("progress:" + progress);
 					// u.bug("current_degree", current_degree);
 
 
 					// Clear canvas
-					page.cN.scene.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
-
-					// Draw dot
-					page.cN.scene.side_a.ctx.beginPath();
-					page.cN.scene.side_a.ctx.fillStyle = "#f0bd18";
-					page.cN.scene.side_a.ctx.arc(page.cN.scene.side_a.center_x, page.cN.scene.side_a.center_y, progress*page.cN.scene.side_a.radius*0.025, 0, (2*Math.PI));
-					page.cN.scene.side_a.ctx.fill();
-					page.cN.scene.side_a.ctx.closePath();
+					page.cN.scene.circle.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
 
 					// Draw outer circle
-					page.cN.scene.side_a.ctx.beginPath();
-					page.cN.scene.side_a.ctx.lineWidth = 4;
-					page.cN.scene.side_a.ctx.strokeStyle = "#f0bd18";
-					page.cN.scene.side_a.ctx.arc(page.cN.scene.side_a.center_x, page.cN.scene.side_a.center_y, page.cN.scene.side_a.radius, -progress*Math.PI, progress*Math.PI);
-					page.cN.scene.side_a.ctx.stroke();
-					page.cN.scene.side_a.ctx.closePath();
+					page.cN.scene.circle.ctx.beginPath();
+					page.cN.scene.circle.ctx.lineWidth = 4;
+					page.cN.scene.circle.ctx.strokeStyle = "#f6d874";
+					page.cN.scene.circle.ctx.arc(page.cN.scene.circle.center_x, page.cN.scene.circle.center_y, page.cN.scene.circle.radius, 0*Math.PI, progress*2*Math.PI);
+					page.cN.scene.circle.ctx.stroke();
+					page.cN.scene.circle.ctx.closePath();
 
-					// The end is reached - full circle
-					if(page.cN.scene.side_a.offsetTop <= page.scroll_y) {
+					// The end is reached - full circle 
+					if(total_scroll_height <= this.scrollTop) {
+						console.log('hej');
 
 						// u.bug("ready to build SideA");
-						this.buildSideA();
+						this.destroy();
 					}
-				}
+				// }
 			}
 		}
 
@@ -532,7 +527,7 @@ Util.Objects["letter"] = new function() {
 
 			// Fade in the shuffled clouds (CSS transition)
 			for (i = 0; i < clouds_shuffled.length; i++) {				
-				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*75 + "ms")
+				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*75 + "ms");
 				u.ass(clouds_shuffled[i], {
 					"opacity":1
 				})
@@ -543,6 +538,28 @@ Util.Objects["letter"] = new function() {
 		
 		// Destroy Letter
 		div.destroy = function() {
+
+			console.log("Destroyed!")
+			//Lock screen
+			u.ass(this, {
+				"overflow-y":"hidden"
+			})
+
+			// Fade out the shuffled clouds
+			for (i = 0; i < clouds_shuffled.length; i++) {				
+				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*75 + "ms");
+				u.ass(clouds_shuffled[i], {
+					"opacity":0 
+				})
+			}
+
+			this.finalize = function() {
+				u.ass(this, {
+					"display":"none"
+				});
+			}
+
+			u.t.setTimer(this, "finalize", 1800 + i*75 + 200);
 
 			this.is_done = true;
 
