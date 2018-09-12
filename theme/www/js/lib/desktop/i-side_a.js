@@ -90,9 +90,36 @@ Util.Objects["side_a"] = new function() {
 				this.canvas = u.ae(this, "canvas", {width:this.offsetWidth, height:page.browser_h});
 				this.ctx = this.canvas.getContext("2d");
 
+				// Setting up clouds
+				this.cloud_left_top = div.addCloud("/img/gx_cloud_front1", "cloud left top");
+				this.cloud_left_middle = div.addCloud("/img/gx_cloud_front3", "cloud left middle");
+				this.cloud_left_bottom = div.addCloud("/img/gx_cloud_front2", "cloud left bottom");
+				this.cloud_right_top = div.addCloud("/img/gx_cloud_front2", "cloud right top");
+				this.cloud_right_middle = div.addCloud("/img/gx_cloud_front1", "cloud right middle");
+				this.cloud_right_bottom = div.addCloud("/img/gx_cloud_front3", "cloud right bottom");
+
+				u.a.translate(this.cloud_left_top, -660, 0);
+				u.a.translate(this.cloud_left_middle, -660, 0);
+				u.a.translate(this.cloud_left_bottom, -660, 0);
+				u.a.translate(this.cloud_right_top, 660, 0);
+				u.a.translate(this.cloud_right_middle, 660, 0);
+				u.a.translate(this.cloud_right_bottom, 660, 0);
+
 				page.cN.scene.controller();
 			}
 
+		}
+
+		div.addCloud = function(image, classname) {
+			var cloud = u.ae(this, "div", {
+				class: classname
+			});
+
+			u.ae(cloud, "img", {
+				src: image
+			})
+
+			return cloud;
 		}
 
 		// Build side a
@@ -250,7 +277,7 @@ Util.Objects["side_a"] = new function() {
 
 				// Update track name and number based on timeupdates from the audio node
 				this.timeupdate = function(event) {
-					u.bug("timeupdate", this.div.current_track_i, this.div.current_track, this.currentTime);
+					//u.bug("timeupdate", this.div.current_track_i, this.div.current_track, this.currentTime);
 
 					// first track
 					if(this.div.current_track_i === undefined) {
@@ -308,6 +335,41 @@ Util.Objects["side_a"] = new function() {
 			// Play again after interaction stop
 			this.playAgain = function(event) {
 				this.player.play();
+				
+				// Slowly turning the volume back up
+				this.currentVolume = 0;
+				this.turnUpVolume = function() {
+					if (this.currentVolume >= 1) {
+						console.log("stopping interval")
+						u.t.resetInterval(this.t_vol);
+					}
+					else {
+						console.log(this.currentVolume);
+						this.currentVolume = this.currentVolume + 0.01;
+						this.player.volume(this.currentVolume);
+					}
+				}
+				this.t_vol = u.t.setInterval(this, "turnUpVolume", 20);
+
+			}
+
+			this.moveCloudsBack = function(event) {
+				u.a.transition(this.cloud_left_top, "all 3s ease-in-out");
+				u.a.transition(this.cloud_left_middle, "all 4s ease-in-out");
+				u.a.transition(this.cloud_left_bottom, "all 2.5s ease-in-out");
+
+				u.a.transition(this.cloud_right_top, "all 4s ease-in-out");
+				u.a.transition(this.cloud_right_middle, "all 2.5s ease-in-out");
+				u.a.transition(this.cloud_right_bottom, "all 3s ease-in-out");
+
+				u.a.translate(this.cloud_left_top, -660, 0);
+				u.a.translate(this.cloud_left_middle, -660, 0);
+				u.a.translate(this.cloud_left_bottom, -660, 0);
+
+				u.a.translate(this.cloud_right_top, 660, 0);
+				u.a.translate(this.cloud_right_middle, 660, 0);
+				u.a.translate(this.cloud_right_bottom, 660, 0);
+
 			}
 
 			// Scratch on interaction
@@ -315,18 +377,37 @@ Util.Objects["side_a"] = new function() {
 				// u.bug("ignore input");
 //					u.e.kill(event);
 
-
 				if(!u.t.valid(this.t_stop)) {
+					this.player.volume(0);
 					this.stopplayer.play(0);
 					this.player.pause();
 					this.t_stop = u.t.setTimer(this, "playAgain", 5000);
+
+
+					// Clouds
+					this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
+
+					u.a.transition(this.cloud_left_top, "all .2s ease-in-out");
+					u.a.transition(this.cloud_left_middle, "all .3s ease-in-out");
+					u.a.transition(this.cloud_left_bottom, "all .4s ease-in-out");
+
+					u.a.transition(this.cloud_right_top, "all .4s ease-in-out");
+					u.a.transition(this.cloud_right_middle, "all .2s ease-in-out");
+					u.a.transition(this.cloud_right_bottom, "all .3s ease-in-out");
+
+					u.a.translate(this.cloud_left_top, page.browser_w/4-150, 0);
+					u.a.translate(this.cloud_left_middle, page.browser_w/4-400, 0);
+					u.a.translate(this.cloud_left_bottom, page.browser_w/4-200, 0);
+
+					u.a.translate(this.cloud_right_top, -page.browser_w/4+300, 0);
+					u.a.translate(this.cloud_right_middle, -page.browser_w/4+300, 0);
+					u.a.translate(this.cloud_right_bottom, -page.browser_w/4+200, 0);
 				}
 
 			}
 
 			// Update progress canvas
 			this.updateCanvas = function(progress) {
-				u.bug("UPDATE CANVAS ", progress, this.center_y, this.radius, this.center_x);
 //						u.bug("Resize ctx")
 				// Clear canvas
 				this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);

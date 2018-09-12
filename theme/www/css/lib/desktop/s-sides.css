@@ -22,3 +22,26 @@
 #content .scene div.side ul {
 	display: none;
 }
+
+/* Clouds */
+#content .scene .side .cloud {
+	z-index: 10;
+	position: absolute;
+}
+#content .scene .side .cloud.left {
+	left: 0;
+}
+#content .scene .side .cloud.right {
+	right: 0;
+	/* transform: scaleX(-1);
+	-webkit-transform: scaleX(-1); */
+}
+#content .scene .side .cloud.top {
+	top: 0;
+}
+#content .scene .side .cloud.middle {
+	top: 30%;
+}
+#content .scene .side .cloud.bottom {
+	bottom: 0;
+}
