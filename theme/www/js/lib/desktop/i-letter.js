@@ -30,7 +30,7 @@ Util.Objects["letter"] = new function() {
 			if(this.is_active) {
 
 				// still front nodes - reveal as scrolled into view
-				if(this.nodes.length > this.current_front_node_i) {
+				if(this.nodes.length > this.current_front_node_i) {		
 
 					// Next node in view
 					if(this.nodes[this.current_front_node_i].offsetTop - page.browser_h < this.scrollTop) {
@@ -48,8 +48,48 @@ Util.Objects["letter"] = new function() {
 
 				}
 
-			}
+				this.clouds_front.style.top = -(this.scrollTop * 0.5) + "px";
+				this.clouds_mid.style.top = -(this.scrollTop * 0.4) + "px";
+				this.clouds_back.style.top = -(this.scrollTop * 0.3) + "px";
 
+				// If side_a scrolled into view - draw the circle
+				console.log("SIDE A: " + page.cN.scene.side_a.offsetTop)
+				if(page.cN.scene.side_a.offsetTop - page.browser_h < page.scroll_y) {
+
+
+					// Caculate progress
+					var progress = ((page.scroll_y + page.browser_h) - page.cN.scene.side_a.offsetTop) / page.browser_h;
+					var current_degree = Math.PI * progress;
+					// u.bug("progress:" + progress);
+					// u.bug("current_degree", current_degree);
+
+
+					// Clear canvas
+					page.cN.scene.side_a.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+
+					// Draw dot
+					page.cN.scene.side_a.ctx.beginPath();
+					page.cN.scene.side_a.ctx.fillStyle = "#f0bd18";
+					page.cN.scene.side_a.ctx.arc(page.cN.scene.side_a.center_x, page.cN.scene.side_a.center_y, progress*page.cN.scene.side_a.radius*0.025, 0, (2*Math.PI));
+					page.cN.scene.side_a.ctx.fill();
+					page.cN.scene.side_a.ctx.closePath();
+
+					// Draw outer circle
+					page.cN.scene.side_a.ctx.beginPath();
+					page.cN.scene.side_a.ctx.lineWidth = 4;
+					page.cN.scene.side_a.ctx.strokeStyle = "#f0bd18";
+					page.cN.scene.side_a.ctx.arc(page.cN.scene.side_a.center_x, page.cN.scene.side_a.center_y, page.cN.scene.side_a.radius, -progress*Math.PI, progress*Math.PI);
+					page.cN.scene.side_a.ctx.stroke();
+					page.cN.scene.side_a.ctx.closePath();
+
+					// The end is reached - full circle
+					if(page.cN.scene.side_a.offsetTop <= page.scroll_y) {
+
+						// u.bug("ready to build SideA");
+						this.buildSideA();
+					}
+				}
+			}
 		}
 
 		// Scene is ready to be initialized
@@ -175,7 +215,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":(page.browser_h * 1.5) + "px",
+				"height":this.offsetHeight * 2 + "px",
 				"z-index":"-10"
 			});
 
@@ -184,7 +224,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":(page.browser_h * 1.5) + "px",
+				"height":this.offsetHeight * 2 + "px",
 				"z-index":"-20"
 			});
 
@@ -193,7 +233,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":(page.browser_h * 1.5) + "px",
+				"height":this.offsetHeight * 2 + "px",
 				"z-index":"-30"
 			}) 
 			
@@ -238,6 +278,7 @@ Util.Objects["letter"] = new function() {
 			var cloud_path = "";
 			var previous_cloud_path = "";
 			var i = 0;
+			var clouds = [];
 
 			// Left column loop
 			current_ypos = top_ypos;
@@ -261,19 +302,61 @@ Util.Objects["letter"] = new function() {
 						"src":cloud_path
 					})
 					
-					
-					
-					// console.log(this["div_left_cloud_" + i]);
-					// console.log(this["div_left_cloud_" + i].offsetHeight);
 					u.ass(this["div_left_cloud_" + i], {
 						"position":"absolute",
 						"top":current_ypos + "px",
 						"left": 0 - Math.round(u.random(0, 100)) + "px"
+	
+					})
 
+				}
+				
+				else if (current_layer == "mid") {
+					this["div_left_cloud_" + i] = u.ae(this.clouds_mid, "div", {
+						"class":"left cloud " + i,
 					})
 					
-					current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,403)) - 60;
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+					
+					this["img_left_cloud_" + i] = u.ae(this["div_left_cloud_" + i], "img", {
+						"src":cloud_path
+					})
+					
+					u.ass(this["div_left_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"left": 0 + Math.round(u.random(-20, 100)) + "px"
+						
+					})
 				}
+				else if (current_layer == "back") {
+					this["div_left_cloud_" + i] = u.ae(this.clouds_back, "div", {
+						"class":"left cloud " + i,
+					})
+					
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+					
+					this["img_left_cloud_" + i] = u.ae(this["div_left_cloud_" + i], "img", {
+						"src":cloud_path
+					})
+					u.ass(this["div_left_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"left": 0 + Math.round(u.random(-20, 100)) + "px"
+						
+					})
+				}
+				
+				clouds.push(this["div_left_cloud_" + i]);
+				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(50,403)) - 60;
 			}
 			
 			// Right column loop
@@ -292,22 +375,69 @@ Util.Objects["letter"] = new function() {
 						continue
 					}
 					previous_cloud_path = cloud_path;
-
+					
+					
 					this["img_right_cloud_" + i] = u.ae(this["div_right_cloud_" + i], "img", {
-						"src": cloud_path
+						"src":cloud_path
 					})
-					
-					
-					// console.log(this["div_right_cloud_" + i]);
-					// console.log(this["div_right_cloud_" + i].offsetHeight);
 					u.ass(this["div_right_cloud_" + i], {
 						"position":"absolute",
 						"top":current_ypos + "px",
 						"right": 0 - Math.round(u.random(0, 100)) + "px"
+	
 					})
 					
-					current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,353)) - 60;
 				}
+
+				else if (current_layer == "mid") {
+					this["div_right_cloud_" + i] = u.ae(this.clouds_mid, "div", {
+						"class":"right cloud " + i,
+					})
+
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+
+					this["img_right_cloud_" + i] = u.ae(this["div_right_cloud_" + i], "img", {
+						"src":cloud_path
+					})
+
+					u.ass(this["div_right_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"right": 0 + Math.round(u.random(-20, 100)) + "px"
+	
+					})
+					
+				}
+				else if (current_layer == "back") {
+					this["div_right_cloud_" + i] = u.ae(this.clouds_back, "div", {
+						"class":"right cloud " + i,
+					})
+
+					cloud_path = current_layer_cloud_gx[Math.round(u.random(0,current_layer_cloud_gx.length-1))]
+					if (cloud_path == previous_cloud_path) {
+						continue
+					}
+					previous_cloud_path = cloud_path;
+
+					this["img_right_cloud_" + i] = u.ae(this["div_right_cloud_" + i], "img", {
+						"src":cloud_path
+					})
+
+					u.ass(this["div_right_cloud_" + i], {
+						"position":"absolute",
+						"top":current_ypos + "px",
+						"right": 0 + Math.round(u.random(-20, 100)) + "px"
+	
+					})
+				}
+				
+
+				clouds.push(this["div_right_cloud_" + i]);
+				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 60;
 			}
 
 			// Center column loop
@@ -363,8 +493,8 @@ Util.Objects["letter"] = new function() {
 					})
 				}
 				
-				console.log(this["div_center_cloud_" + i]);
-				console.log(this["div_center_cloud_" + i].offsetHeight);
+				// console.log(this["div_center_cloud_" + i]);
+				// console.log(this["div_center_cloud_" + i].offsetHeight);
 				u.ass(this["div_center_cloud_" + i], {
 					"position":"absolute",
 					"top":current_ypos + "px",
@@ -374,19 +504,40 @@ Util.Objects["letter"] = new function() {
 					"margin-left":Math.round(u.random(-300,300)) + "px"
 				}) 
 				
+				clouds.push(this["div_center_cloud_" + i]);
 				current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight + Math.round(u.random(100,573));
 			}
-			
 
+			// Shuffle clouds array		
+			function shuffle(array) {
+				var currentIndex = array.length, temporaryValue, randomIndex;
+				
+				// While there remain elements to shuffle...
+				while (0 !== currentIndex) {
+					
+					// Pick a remaining element...
+					randomIndex = Math.floor(Math.random() * currentIndex);
+					currentIndex -= 1;
+					
+					// And swap it with the current element.
+					temporaryValue = array[currentIndex];
+					array[currentIndex] = array[randomIndex];
+					array[randomIndex] = temporaryValue;
+				}
+				
+				return array;
+			}
 
-			// Place the clouds and slide them in from the side (CSS transition)
+			clouds_shuffled = shuffle(clouds);
 
-			// Use scroll handler to move cloud layers with different speeds
-
-
-
-
-
+			// Fade in the shuffled clouds (CSS transition)
+			for (i = 0; i < clouds_shuffled.length; i++) {				
+				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*75 + "ms")
+				u.ass(clouds_shuffled[i], {
+					"opacity":1
+				})
+			}
+		
 
 		}
 		
