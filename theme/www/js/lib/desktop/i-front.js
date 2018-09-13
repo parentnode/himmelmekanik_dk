@@ -160,9 +160,9 @@ Util.Objects["front"] = new function() {
 		scene.controller = function() {
 
 			if(this.is_ready) {
-				this.letter.is_done = true;
-				this.side_a.is_done = true;
-				this.intermezzo.is_done = true;
+				// this.letter.is_done = true;
+				// this.side_a.is_done = true;
+				// this.intermezzo.is_done = true;
 				// this.side_b.is_done = true;
 
 				if(this.letter.is_ready && !this.letter.is_active && !this.letter.is_done) {
