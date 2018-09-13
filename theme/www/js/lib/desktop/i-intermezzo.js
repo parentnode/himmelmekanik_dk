@@ -30,9 +30,6 @@ Util.Objects["intermezzo"] = new function() {
 			// Avoid ever getting ready twice
 			if(!this.is_ready) {
 
-				this.is_ready = true;
-				u.rc(this, "i:intermezzo");
-
 				page.cN.scene.intermezzo.table = u.wc(page.cN.scene.intermezzo, "div", {
 					class:"table"
 				})
@@ -67,16 +64,28 @@ Util.Objects["intermezzo"] = new function() {
 				u.a.translate(this.cloud_right_top, 660, 0);
 				u.a.translate(this.cloud_right_middle, 660, 0);
 				u.a.translate(this.cloud_right_bottom, 660, 0);
+
+				this.is_ready = true;
+				u.rc(this, "i:intermezzo");
 				
 				page.cN.scene.controller();
 			}
 
 		}
 
-		// Build Letter
+		// Build Intermezzo
 		div.build = function() {
 			u.bug("build intermezzo");
 
+
+			u.ass (this, {
+				"display":"block",
+			})
+
+			u.a.transition(this, "all 2s ease-in");
+			u.ass (this, {
+				"opacity":1
+			})
 			// Clouds
 			// this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
 
@@ -100,14 +109,11 @@ Util.Objects["intermezzo"] = new function() {
 
 			this.is_active = true;
 			
-			u.ass(this, {display:"block"});
-			this.resized();
-			u.ass(this, {opacity:1});
 
 
 		}
 		
-		// Build Letter
+		// Destroy Intermezzo
 		div.destroy = function() {
 
 			this.is_done = true;
