@@ -504,7 +504,13 @@ Util.Objects["side_b"] = new function() {
 		div.destroy = function() {
 			u.bug("DESTROY", this)
 
-			u.a.transition(this, "all 3s ease-in-out");
+			u.a.transition(this.song_title, "all 1.5s ease-in-out");
+			u.ass(this.song_title, {
+				opacity:0, 
+				transform: "scale(0.85)"
+			});
+
+			u.a.transition(this, "all 1s ease-in-out");
 			u.ass(this, {opacity:0});
 
 			this.is_done = true;
