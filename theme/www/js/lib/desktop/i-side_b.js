@@ -524,7 +524,11 @@ Util.Objects["side_b"] = new function() {
 					"display":"none"
 				});
 				this.is_done = true;
+
+				// Let controller decide what to do
+				page.cN.scene.controller();
 			}
+
 		}
 
 		// div is ready
