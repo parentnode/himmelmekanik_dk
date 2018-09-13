@@ -512,6 +512,12 @@ Util.Objects["side_b"] = new function() {
 			u.a.transition(this, "all 1s ease-in-out");
 			u.ass(this, {opacity:0});
 
+			// Remove stop events
+			u.e.removeWindowEvent(this, "wheel", this.wheel_event_id);
+			u.e.removeWindowEvent(this, "mousemove", this.mousemove_event_id);
+			u.e.removeWindowEvent(this, "blur", this.blur_event_id);
+			u.e.removeWindowEvent(this, "keydown", this.key_event_id);
+
 			u.t.setTimer(this, "hideDiv", 1550);
 			this.hideDiv = function() {
 				u.ass(this, {display:"none"});

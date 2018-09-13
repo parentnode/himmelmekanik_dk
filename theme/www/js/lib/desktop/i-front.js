@@ -113,6 +113,8 @@ Util.Objects["front"] = new function() {
 				u.textscaler(this, {
 					"min_width":600,
 					"max_width":1600,
+					"min_height":640,
+					"max_height":1400,
 					"unit":"px",
 					"h1":{
 						"min_size":40,
@@ -120,7 +122,7 @@ Util.Objects["front"] = new function() {
 					},
 					"h2":{
 						"min_size":30,
-						"max_size":80
+						"max_size":60
 					},
 					"h3":{
 						"min_size":12,
@@ -158,8 +160,8 @@ Util.Objects["front"] = new function() {
 		scene.controller = function() {
 
 			if(this.is_ready) {
-				this.letter.is_done = true;
-				this.side_a.is_done = true;
+				// this.letter.is_done = true;
+				// this.side_a.is_done = true;
 				// this.intermezzo.is_done = true;
 				// this.side_b.is_done = true;
 
