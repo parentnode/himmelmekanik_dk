@@ -41,22 +41,22 @@
 	animation-iteration-count: infinite;
 }
 #content .scene .intermezzo .cloud.left.top {
-	animation-delay: 0.5s;
+	animation-delay: 1.6s;
 }
 #content .scene .intermezzo .cloud.left.middle {
-	animation-delay: 0s;
+	animation-delay: 1.2s;
 }
 #content .scene .intermezzo .cloud.left.bottom {
-	animation-delay: 1s;
+	animation-delay: 1.8s;
 }
 #content .scene .intermezzo .cloud.right.top {
-	animation-delay: 0s;
+	animation-delay: 0.8s;
 }
 #content .scene .intermezzo .cloud.right.middle {
 	animation-delay: 0.6s;
 }
 #content .scene .intermezzo .cloud.right.bottom {
-	animation-delay: 0.7s;
+	animation-delay: 1s;
 }
 
 @keyframes cloudUpDown {
@@ -64,7 +64,7 @@
 		transform: translateY(0px);
 	}
 	50% {
-		transform: translateY(-15px);
+		transform: translateY(-25px);
 
 	}
 	to {
