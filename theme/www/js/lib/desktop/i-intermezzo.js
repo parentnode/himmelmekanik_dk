@@ -80,13 +80,21 @@ Util.Objects["intermezzo"] = new function() {
 
 		}
 
-		// Build Letter
+		// Build Intermezzo
 		div.build = function() {
 			u.bug("build intermezzo");
 
-			u.ass(this, {display:"block"});
+
+			u.ass (this, {
+				"display":"block",
+			})
+
+			u.a.transition(this, "all 2s ease-in");
+			u.ass (this, {
+				"opacity":1
+			})
+
 			this.resized();
-			u.ass(this, {opacity:1});
 
 			// Clouds
 			var transition_time = 1;
@@ -108,10 +116,12 @@ Util.Objects["intermezzo"] = new function() {
 			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 200), 0);
 
 			this.is_active = true;
+			
+
 
 		}
 		
-		// Build Letter
+		// Destroy Intermezzo
 		div.destroy = function() {
 
 			this.is_done = true;
