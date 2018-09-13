@@ -164,10 +164,6 @@ Util.Objects["intermezzo"] = new function() {
 				page.cN.scene.controller();
 			}
 
-
-
-
-
 		}
 
 		// div is ready
