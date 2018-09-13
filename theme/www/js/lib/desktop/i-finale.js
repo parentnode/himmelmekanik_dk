@@ -6,7 +6,14 @@ Util.Objects["finale"] = new function() {
 
 			// If letter exists and it is active (shown or partially shown)
 			if(this.is_active) {
-
+				
+				u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 150), 0);
+				u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
+				u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 200), 0);
+	
+				u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 300), 0);
+				u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 300), 0);
+				u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 200), 0);
 
 			}
 

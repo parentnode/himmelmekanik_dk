@@ -36,6 +36,7 @@
 #content .scene .intermezzo .cloud img {
 	animation-name: cloudUpDown;
 	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
 }
 
 #content .scene .intermezzo .cloud.left.top img {

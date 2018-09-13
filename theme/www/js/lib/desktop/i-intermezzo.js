@@ -6,6 +6,7 @@ Util.Objects["intermezzo"] = new function() {
 
 			// If letter exists and it is active (shown or partially shown)
 			if(this.is_active) {
+				
 				u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 150), 0);
 				u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
 				u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 200), 0);
@@ -117,8 +118,6 @@ Util.Objects["intermezzo"] = new function() {
 
 			this.is_active = true;
 			
-
-
 		}
 		
 		// Destroy Intermezzo
