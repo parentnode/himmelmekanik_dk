@@ -122,13 +122,13 @@ Util.Objects["side_b"] = new function() {
 			return cloud;
 		}
 
-		// Build side a
+		// Build side B
 		div.build = function() {
-			u.bug("build side a");
+			u.bug("build side B");
 
 			this.is_active = true;
 			
-			// Add dynamic content to Side A
+			// Add dynamic content to side B
 			// Animatable title track
 			this.song_title = u.qs("h2", this);
 			this.song_title_switcher = u.ae(this, "h2", {class:"song_title switch", html:"&nbsp;"});
@@ -138,12 +138,13 @@ Util.Objects["side_b"] = new function() {
 			});
 
 			// Static data
-			this.side_title = u.ae(this, "h3", {class:"side_title", html:"Himmelmekanik, Side A"});
+			this.side_title = u.ae(this, "h3", {class:"side_title", html:"Himmelmekanik, side B"});
 			this.track_status = u.ae(this, "h3", {class:"track_status"});
 			this.time_status = u.ae(this, "h3", {class:"time_status"});
 
 			u.ass(this, {display:"block"});
 			this.resized();
+			u.a.transition(this, "all 1s ease-in");
 			u.ass(this, {opacity:1});
 
 
@@ -171,7 +172,7 @@ Util.Objects["side_b"] = new function() {
 			this.stopplayer = u.mediaPlayer({type:"audio"});
 			u.ac(this.stopplayer, "stopplayer");
 
-			// Add audio player (Side A)
+			// Add audio player (side B)
 			this.player = u.mediaPlayer({type:"audio"});
 			this.player.div = this;
 
