@@ -83,6 +83,11 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	z-index: -10;
 	transform: rotate(-90deg);
 }
+#content .scene p {
+	font-family: "Kalam Bold", Verdana, Arial, sans-serif; color: #000000;
+	-webkit-text-size-adjust: none;
+	-webkit-font-smoothing: antialiased;
+}
 
 
 /*s-form.css*/
