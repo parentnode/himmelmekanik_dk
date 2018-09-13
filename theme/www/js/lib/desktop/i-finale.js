@@ -30,6 +30,46 @@ Util.Objects["finale"] = new function() {
 			// Avoid ever getting ready twice
 			if(!this.is_ready) {
 
+				page.cN.scene.finale.table = u.wc(page.cN.scene.finale, "div", {
+					"class":"table"
+				});
+
+				page.cN.scene.finale.table.cell = u.wc(page.cN.scene.finale.table, "div", {
+					"class":"cell"
+				});
+
+				u.ass (this, {
+					"display":"block",
+				})
+
+				// Setting up clouds
+				this.addCloud = function(image, classname) {
+					var cloud = u.ae(this, "div", {
+						class: classname
+					});
+		
+					u.ae(cloud, "img", {
+						src: image
+					})
+		
+					return cloud;
+				}
+
+				this.cloud_left_top = this.addCloud("/img/gx_cloud_front1", "cloud left top");
+				this.cloud_left_middle = this.addCloud("/img/gx_cloud_front3", "cloud left middle");
+				this.cloud_left_bottom = this.addCloud("/img/gx_cloud_front2", "cloud left bottom");
+				this.cloud_right_top = this.addCloud("/img/gx_cloud_front2", "cloud right top");
+				this.cloud_right_middle = this.addCloud("/img/gx_cloud_front1", "cloud right middle");
+				this.cloud_right_bottom = this.addCloud("/img/gx_cloud_front3", "cloud right bottom");
+
+				u.a.translate(this.cloud_left_top, -660, 0);
+				u.a.translate(this.cloud_left_middle, -660, 0);
+				u.a.translate(this.cloud_left_bottom, -660, 0);
+				u.a.translate(this.cloud_right_top, 660, 0);
+				u.a.translate(this.cloud_right_middle, 660, 0);
+				u.a.translate(this.cloud_right_bottom, 660, 0);
+
+
 				this.is_ready = true;
 				u.rc(this, "i:finale");
 
@@ -39,17 +79,60 @@ Util.Objects["finale"] = new function() {
 
 		}
 
-		// Build Letter
+		// Build Finale
 		div.build = function() {
 			// u.bug("build finale");
 
-			this.is_active = true;
+			u.a.transition(this, "all 2s ease-in");
+			u.ass (this, {
+				"opacity":1
+			})
+
+			// Clouds
+			// this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
+
+			u.a.transition(this.cloud_left_top, "all 2s ease-in-out");
+			u.a.transition(this.cloud_left_middle, "all 3s ease-in-out");
+			u.a.transition(this.cloud_left_bottom, "all 4s ease-in-out");
+
+			u.a.transition(this.cloud_right_top, "all 4s ease-in-out");
+			u.a.transition(this.cloud_right_middle, "all 2s ease-in-out");
+			u.a.transition(this.cloud_right_bottom, "all 3s ease-in-out");
+
+			u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 150), 0);
+			u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
+			u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 200), 0);
+
+			u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 300), 0);
+			u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 300), 0);
+			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 200), 0);
+
+			this.is_active = true;	
 
 
 		}
 		
-		// Build Letter
+		// Destroy Finale
 		div.destroy = function() {
+
+			this.moveCloudsBack = function(event) {
+				u.a.transition(this.cloud_left_top, "all 3s ease-in-out");
+				u.a.transition(this.cloud_left_middle, "all 4s ease-in-out");
+				u.a.transition(this.cloud_left_bottom, "all 2.5s ease-in-out");
+
+				u.a.transition(this.cloud_right_top, "all 4s ease-in-out");
+				u.a.transition(this.cloud_right_middle, "all 2.5s ease-in-out");
+				u.a.transition(this.cloud_right_bottom, "all 3s ease-in-out");
+
+				u.a.translate(this.cloud_left_top, -660, 0);
+				u.a.translate(this.cloud_left_middle, -660, 0);
+				u.a.translate(this.cloud_left_bottom, -660, 0);
+
+				u.a.translate(this.cloud_right_top, 660, 0);
+				u.a.translate(this.cloud_right_middle, 660, 0);
+				u.a.translate(this.cloud_right_bottom, 660, 0);
+
+			}
 
 			this.is_done = true;
 

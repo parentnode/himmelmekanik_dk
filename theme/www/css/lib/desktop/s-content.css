@@ -30,3 +30,9 @@
 	transform: rotate(-90deg);
 }
 
+#content .scene p {
+	font-family: "Kalam Bold", Verdana, Arial, sans-serif; color: #000000;
+	-webkit-text-size-adjust: none;
+	-webkit-font-smoothing: antialiased;
+}
+
