@@ -21,8 +21,6 @@
 }
 #content .scene .intermezzo .cloud.right {
 	right: 0;
-	/* transform: scaleX(-1);
-	-webkit-transform: scaleX(-1); */
 }
 #content .scene .intermezzo .cloud.top {
 	top: 0;

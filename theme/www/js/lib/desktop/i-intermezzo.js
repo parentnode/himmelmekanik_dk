@@ -6,7 +6,14 @@ Util.Objects["intermezzo"] = new function() {
 
 			// If letter exists and it is active (shown or partially shown)
 			if(this.is_active) {
-
+				u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 150), 0);
+				u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
+				u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 200), 0);
+	
+				u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 300), 0);
+				u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 300), 0);
+				u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 200), 0);
+	
 
 			}
 
@@ -29,9 +36,6 @@ Util.Objects["intermezzo"] = new function() {
 
 			// Avoid ever getting ready twice
 			if(!this.is_ready) {
-
-				this.is_ready = true;
-				u.rc(this, "i:intermezzo");
 
 				page.cN.scene.intermezzo.table = u.wc(page.cN.scene.intermezzo, "div", {
 					class:"table"
@@ -67,6 +71,9 @@ Util.Objects["intermezzo"] = new function() {
 				u.a.translate(this.cloud_right_top, 660, 0);
 				u.a.translate(this.cloud_right_middle, 660, 0);
 				u.a.translate(this.cloud_right_bottom, 660, 0);
+
+				this.is_ready = true;
+				u.rc(this, "i:intermezzo");
 				
 				page.cN.scene.controller();
 			}
@@ -77,9 +84,11 @@ Util.Objects["intermezzo"] = new function() {
 		div.build = function() {
 			u.bug("build intermezzo");
 
-			// Clouds
-			// this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
+			u.ass(this, {display:"block"});
+			this.resized();
+			u.ass(this, {opacity:1});
 
+			// Clouds
 			var transition_time = 1;
 
 			u.a.transition(this.cloud_left_top, "all " + transition_time * 1.7 + "s ease-in-out");
@@ -99,11 +108,6 @@ Util.Objects["intermezzo"] = new function() {
 			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 200), 0);
 
 			this.is_active = true;
-			
-			u.ass(this, {display:"block"});
-			this.resized();
-			u.ass(this, {opacity:1});
-
 
 		}
 		
