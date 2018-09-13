@@ -64,7 +64,7 @@ Util.Objects["front"] = new function() {
 
 		// Scene is ready to be initialized
 		scene.ready = function() {
-			u.bug("scene.ready:", this);
+			// u.bug("scene.ready:", this);
 
 			if(!this.is_ready) {
 
@@ -113,6 +113,8 @@ Util.Objects["front"] = new function() {
 				u.textscaler(this, {
 					"min_width":600,
 					"max_width":1600,
+					"min_height":640,
+					"max_height":1400,
 					"unit":"px",
 					"h1":{
 						"min_size":40,
@@ -120,7 +122,7 @@ Util.Objects["front"] = new function() {
 					},
 					"h2":{
 						"min_size":30,
-						"max_size":80
+						"max_size":60
 					},
 					"h3":{
 						"min_size":12,
