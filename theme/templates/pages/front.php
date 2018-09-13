@@ -79,7 +79,7 @@
 			<li data-trackends="558">En ellipse</li>
 			<li data-trackends="801">I ensomhed for evigt</li>
 			<li data-trackends="1038">Ånd ud, ånd ind</li>
-			<li data-trackends="1260">9 Juveler</li>
+			<li data-trackends="1265.5">9 Juveler</li>
 		</ul>
 				
 	</div>
