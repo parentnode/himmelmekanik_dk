@@ -509,9 +509,13 @@ Util.Objects["side_b"] = new function() {
 				opacity:0, 
 				transform: "scale(0.85)"
 			});
-
 			u.a.transition(this, "all 1s ease-in-out");
 			u.ass(this, {opacity:0});
+
+			u.t.setTimer(this, "hideDiv", 1550);
+			this.hideDiv = function() {
+				u.ass(this, {display:"none"});
+			}
 
 			this.is_done = true;
 

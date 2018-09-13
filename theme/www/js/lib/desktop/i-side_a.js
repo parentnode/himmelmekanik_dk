@@ -495,22 +495,24 @@ Util.Objects["side_a"] = new function() {
 			u.ae(this, this.player);
 			u.ae(this, this.stopplayer);
 
-
-
 		}
 		
 		// Destroy Letter
 		div.destroy = function() {
 			u.bug("DESTROY", this)
-
+			// Fading elements and div out
 			u.a.transition(this.song_title, "all 1.5s ease-in-out");
 			u.ass(this.song_title, {
 				opacity:0, 
 				transform: "scale(0.85)"
 			});
-
 			u.a.transition(this, "all 1s ease-in-out");
 			u.ass(this, {opacity:0});
+
+			u.t.setTimer(this, "hideDiv", 1550);
+			this.hideDiv = function() {
+				u.ass(this, {display:"none"});
+			}
 
 			this.is_done = true;
 
