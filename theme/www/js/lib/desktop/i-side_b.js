@@ -273,7 +273,7 @@ Util.Objects["side_b"] = new function() {
 
 				// Update track name and number based on timeupdates from the audio node
 				this.timeupdate = function(event) {
-					u.bug("timeupdate", this.div.current_track_i, this.div.current_track, this.currentTime);
+					// u.bug("timeupdate", this.div.current_track_i, this.div.current_track, this.currentTime);
 
 					// first track
 					if(this.div.current_track_i === undefined) {
@@ -415,7 +415,6 @@ Util.Objects["side_b"] = new function() {
 
 			// Update progress canvas
 			this.updateCanvas = function(progress) {
-				u.bug("UPDATE CANVAS ", progress, this.center_y, this.radius, this.center_x);
 //						u.bug("Resize ctx")
 				// Clear canvas
 				this.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
