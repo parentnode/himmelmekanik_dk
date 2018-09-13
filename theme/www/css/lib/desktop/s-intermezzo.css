@@ -35,10 +35,28 @@
 }
 
 
-#content .scene .intermezzo .cloud > img {
+#content .scene .intermezzo .cloud {
 	animation-name: cloudUpDown;
-	animation-duration: 3s;
+	animation-duration: 5s;
 	animation-iteration-count: infinite;
+}
+#content .scene .intermezzo .cloud.left.top {
+	animation-delay: 0.5s;
+}
+#content .scene .intermezzo .cloud.left.middle {
+	animation-delay: 0s;
+}
+#content .scene .intermezzo .cloud.left.bottom {
+	animation-delay: 1s;
+}
+#content .scene .intermezzo .cloud.right.top {
+	animation-delay: 0s;
+}
+#content .scene .intermezzo .cloud.right.middle {
+	animation-delay: 0.6s;
+}
+#content .scene .intermezzo .cloud.right.bottom {
+	animation-delay: 0.7s;
 }
 
 @keyframes cloudUpDown {
@@ -46,7 +64,7 @@
 		transform: translateY(0px);
 	}
 	50% {
-		transform: translateY(5px);
+		transform: translateY(-15px);
 
 	}
 	to {
