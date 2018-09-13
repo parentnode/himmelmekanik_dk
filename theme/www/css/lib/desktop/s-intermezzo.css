@@ -9,5 +9,47 @@
 #content .scene div.intermezzo div.table {display: table; width: 100%; height: 100%;}
 #content .scene div.intermezzo div.cell {display: table-cell; vertical-align: middle;}
 
-#content .scene div.intermezzo p {padding-top: 20px; padding-bottom: 20px;}
+#content .scene div.intermezzo p {z-index: 15; padding-top: 20px; padding-bottom: 20px;}
 
+/* Clouds */
+#content .scene .intermezzo .cloud {
+	z-index: -1;
+	position: absolute;
+}
+#content .scene .intermezzo .cloud.left {
+	left: 0;
+}
+#content .scene .intermezzo .cloud.right {
+	right: 0;
+	/* transform: scaleX(-1);
+	-webkit-transform: scaleX(-1); */
+}
+#content .scene .intermezzo .cloud.top {
+	top: 0;
+}
+#content .scene .intermezzo .cloud.middle {
+	top: 30%;
+}
+#content .scene .intermezzo .cloud.bottom {
+	bottom: 0;
+}
+
+
+#content .scene .intermezzo .cloud > img {
+	animation-name: cloudUpDown;
+	animation-duration: 3s;
+	animation-iteration-count: infinite;
+}
+
+@keyframes cloudUpDown {
+	from {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(5px);
+
+	}
+	to {
+		transform: translateY(0px);
+	}
+}

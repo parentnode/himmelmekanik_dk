@@ -33,9 +33,37 @@ Util.Objects["intermezzo"] = new function() {
 				this.is_ready = true;
 				u.rc(this, "i:intermezzo");
 
+				page.cN.scene.intermezzo.table = u.wc(page.cN.scene.intermezzo, "div", {
+					class:"table"
+				})
+
+				page.cN.scene.intermezzo.cell = u.wc(page.cN.scene.intermezzo.table, "div", {
+					class:"cell"
+				})
+
+				// Setting up clouds
+				this.cloud_left_top = div.addCloud("/img/gx_cloud_front1", "cloud left top");
+				this.cloud_left_middle = div.addCloud("/img/gx_cloud_front3", "cloud left middle");
+				this.cloud_left_bottom = div.addCloud("/img/gx_cloud_front2", "cloud left bottom");
+				this.cloud_right_top = div.addCloud("/img/gx_cloud_front2", "cloud right top");
+				this.cloud_right_middle = div.addCloud("/img/gx_cloud_front1", "cloud right middle");
+				this.cloud_right_bottom = div.addCloud("/img/gx_cloud_front3", "cloud right bottom");
+				
 				page.cN.scene.controller();
 			}
 
+		}
+
+		div.addCloud = function(image, classname) {
+			var cloud = u.ae(this, "div", {
+				class: classname
+			});
+
+			u.ae(cloud, "img", {
+				src: image
+			})
+
+			return cloud;
 		}
 
 		// Build Letter
@@ -43,6 +71,10 @@ Util.Objects["intermezzo"] = new function() {
 			u.bug("build intermezzo");
 
 			this.is_active = true;
+			
+			u.ass(this, {display:"block"});
+			this.resized();
+			u.ass(this, {opacity:1});
 
 
 		}
