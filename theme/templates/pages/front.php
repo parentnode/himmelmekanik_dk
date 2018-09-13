@@ -67,7 +67,7 @@
 
 	<div class="intermezzo i:intermezzo">
 		<p>‘Himmelmekanik’ er mixet som en LP, derfor vender vi lige pladen.</p>
-		<p>"Det giver dig lige 10 sekunder til at sætte en tanke i gang.</p>
+		<p>Det giver dig lige 10 sekunder til at sætte en tanke i gang.</p>
 	</div>
 
 	<div class="side side_b i:side_b">

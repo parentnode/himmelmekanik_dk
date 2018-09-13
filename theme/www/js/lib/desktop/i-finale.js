@@ -93,7 +93,7 @@ Util.Objects["finale"] = new function() {
 			// Clouds
 			// this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
 
-			var transition_time = 1.;
+			var transition_time = 1;
 
 			u.a.transition(this.cloud_left_top, "all " + transition_time * 1.7 + "s ease-in-out");
 			u.a.transition(this.cloud_left_middle, "all " + transition_time * 1.6 + "s ease-in-out");
