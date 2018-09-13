@@ -268,11 +268,7 @@ Util.Objects["side_b"] = new function() {
 
 
 					// Stop music on all interaction
-					this.div.wheel_event_id = u.e.addWindowEvent(this.div, "wheel", this.div.stopOnInteraction);
-					this.div.mousemove_event_id = u.e.addWindowEvent(this.div, "mousemove", this.div.stopOnInteraction);
-					this.div.blur_event_id = u.e.addWindowEvent(this.div, "blur", this.div.stopOnInteraction);
-					this.div.key_event_id = u.e.addWindowEvent(this.div, "keydown", this.div.stopOnInteraction);
-
+					t_addevents = u.t.setTimer(this.div, "addStopEvents", 5000);
 				}
 
 				// Update track name and number based on timeupdates from the audio node
@@ -330,6 +326,14 @@ Util.Objects["side_b"] = new function() {
 
 				this.loadAndPlay("/assets/side-b");
 
+			}
+
+			this.addStopEvents = function(event) {
+				console.log("Stop events added");
+				this.wheel_event_id = u.e.addWindowEvent(this, "wheel", this.stopOnInteraction);
+				this.mousemove_event_id = u.e.addWindowEvent(this, "mousemove", this.stopOnInteraction);
+				this.blur_event_id = u.e.addWindowEvent(this, "blur", this.stopOnInteraction);
+				this.key_event_id = u.e.addWindowEvent(this, "keydown", this.stopOnInteraction);
 			}
 		
 			// Play again after interaction stop
