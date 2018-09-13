@@ -497,7 +497,7 @@ Util.Objects["side_a"] = new function() {
 
 		}
 		
-		// Destroy Letter
+		// Destroy side A
 		div.destroy = function() {
 			u.bug("DESTROY", this)
 			
@@ -510,15 +510,20 @@ Util.Objects["side_a"] = new function() {
 			u.a.transition(this, "all 1s ease-in-out");
 			u.ass(this, {opacity:0});
 
+
+			// Remove stop events
+			u.e.removeWindowEvent(this, "wheel", this.wheel_event_id);
+			u.e.removeWindowEvent(this, "mousemove", this.mousemove_event_id);
+			u.e.removeWindowEvent(this, "blur", this.blur_event_id);
+			u.e.removeWindowEvent(this, "keydown", this.key_event_id);
+
+
 			u.t.setTimer(this, "finalize", 1700);
 			this.finalize = function() {
 				u.ass(this, {
 					"display":"none"
 				});
 				this.is_done = true;
-
-				// Let controller decide what to do
-				page.cN.scene.controller();
 			}
 
 		}
