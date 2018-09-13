@@ -57,11 +57,11 @@ Util.Objects["letter"] = new function() {
 
 					// Calculate progress (number between 0 and 1)
 					var total_scroll_height = (this.wrapper.offsetHeight - page.browser_h)
-					console.log(total_scroll_height);
+					// console.log(total_scroll_height);
 					var progress = (total_scroll_height - (total_scroll_height - this.scrollTop)) / total_scroll_height
 
 					var current_degree = Math.PI * progress;
-					u.bug("progress:" + progress);
+					// u.bug("progress:" + progress);
 					// u.bug("current_degree", current_degree);
 
 
@@ -78,7 +78,6 @@ Util.Objects["letter"] = new function() {
 
 					// The end is reached - full circle 
 					if(total_scroll_height <= this.scrollTop) {
-						console.log('hej');
 
 						// u.bug("ready to build SideA");
 						this.destroy();
@@ -159,7 +158,7 @@ Util.Objects["letter"] = new function() {
 
 		// Build Letter
 		div.build = function() {
-			u.bug("build letter");
+			// u.bug("build letter");
 
 			this.is_active = true;
 
@@ -539,7 +538,7 @@ Util.Objects["letter"] = new function() {
 		// Destroy Letter
 		div.destroy = function() {
 
-			console.log("Destroyed!")
+			// console.log("Destroyed!")
 			//Lock screen
 			u.ass(this, {
 				"overflow-y":"hidden"

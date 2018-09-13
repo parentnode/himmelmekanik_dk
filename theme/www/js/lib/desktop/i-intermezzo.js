@@ -83,7 +83,7 @@ Util.Objects["intermezzo"] = new function() {
 
 		// Build Intermezzo
 		div.build = function() {
-			u.bug("build intermezzo");
+			// u.bug("build intermezzo");
 
 
 			u.ass (this, {

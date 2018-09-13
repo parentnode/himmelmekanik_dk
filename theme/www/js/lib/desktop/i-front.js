@@ -64,7 +64,7 @@ Util.Objects["front"] = new function() {
 
 		// Scene is ready to be initialized
 		scene.ready = function() {
-			u.bug("scene.ready:", this);
+			// u.bug("scene.ready:", this);
 
 			if(!this.is_ready) {
 

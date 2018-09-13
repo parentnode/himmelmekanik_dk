@@ -2,7 +2,7 @@ Util.Objects["side_b"] = new function() {
 	this.init = function(div) {
 
 		div.resized = function(event) {
-			u.bug("div.resized:", this);
+			// u.bug("div.resized:", this);
 
 			// If letter exists and it is active (shown or partially shown)
 			if(this.is_active) {
@@ -124,7 +124,7 @@ Util.Objects["side_b"] = new function() {
 
 		// Build side B
 		div.build = function() {
-			u.bug("build side B");
+			// u.bug("build side B");
 
 			this.is_active = true;
 			
@@ -161,9 +161,9 @@ Util.Objects["side_b"] = new function() {
 				this.tracks[last_start] = song_object;
 				last_start = song_end; // Update flag for next song
 			}
-			console.log(this.tracks);
+			// console.log(this.tracks);
 			this.track_keys = Object.keys(this.tracks);
-			console.log("TRACK KEYS: ", this.track_keys);
+			// console.log("TRACK KEYS: ", this.track_keys);
 			// Get easing method
 			this.easing = u.easings["ease-in"];
 
@@ -278,10 +278,10 @@ Util.Objects["side_b"] = new function() {
 
 					// first track
 					if(this.div.current_track_i === undefined) {
-						console.log(this.div.track_keys);
+						// console.log(this.div.track_keys);
 						this.div.current_track_i = 0;
 						this.div.current_track = this.div.tracks[this.div.track_keys[this.div.current_track_i]];
-						console.log("current track ", this.div.current_track.name)
+						// console.log("current track ", this.div.current_track.name)
 						// update html
 						this.div.updateTitle(this.div.current_track.name);
 						// this.div.song_title.innerHTML = this.div.current_track.name;
@@ -330,7 +330,7 @@ Util.Objects["side_b"] = new function() {
 			}
 
 			this.addStopEvents = function(event) {
-				console.log("Stop events added");
+				// console.log("Stop events added");
 				this.wheel_event_id = u.e.addWindowEvent(this, "wheel", this.stopOnInteraction);
 				this.mousemove_event_id = u.e.addWindowEvent(this, "mousemove", this.stopOnInteraction);
 				this.blur_event_id = u.e.addWindowEvent(this, "blur", this.stopOnInteraction);
@@ -345,11 +345,11 @@ Util.Objects["side_b"] = new function() {
 				this.currentVolume = 0;
 				this.turnUpVolume = function() {
 					if (this.currentVolume >= 1) {
-						console.log("stopping interval")
+						// console.log("stopping interval")
 						u.t.resetInterval(this.t_vol);
 					}
 					else {
-						console.log(this.currentVolume);
+						// console.log(this.currentVolume);
 						this.currentVolume = u.round(this.currentVolume + 0.01, 2);
 						if (this.currentTime >= 1) {
 							this.currentVolume = 1;
@@ -502,7 +502,7 @@ Util.Objects["side_b"] = new function() {
 		
 		// Destroy Letter
 		div.destroy = function() {
-			u.bug("DESTROY", this)
+			// u.bug("DESTROY", this)
 
 			u.a.transition(this.song_title, "all 1.5s ease-in-out");
 			u.ass(this.song_title, {
