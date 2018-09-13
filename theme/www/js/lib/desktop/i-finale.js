@@ -38,9 +38,7 @@ Util.Objects["finale"] = new function() {
 					"class":"cell"
 				});
 
-				u.ass (this, {
-					"display":"block",
-				})
+
 
 				// Setting up clouds
 				this.addCloud = function(image, classname) {
@@ -83,6 +81,10 @@ Util.Objects["finale"] = new function() {
 		div.build = function() {
 			// u.bug("build finale");
 
+			u.ass (this, {
+				"display":"block",
+			})
+
 			u.a.transition(this, "all 2s ease-in");
 			u.ass (this, {
 				"opacity":1
@@ -91,13 +93,15 @@ Util.Objects["finale"] = new function() {
 			// Clouds
 			// this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
 
-			u.a.transition(this.cloud_left_top, "all 2s ease-in-out");
-			u.a.transition(this.cloud_left_middle, "all 3s ease-in-out");
-			u.a.transition(this.cloud_left_bottom, "all 4s ease-in-out");
+			var transition_time = 1.;
 
-			u.a.transition(this.cloud_right_top, "all 4s ease-in-out");
-			u.a.transition(this.cloud_right_middle, "all 2s ease-in-out");
-			u.a.transition(this.cloud_right_bottom, "all 3s ease-in-out");
+			u.a.transition(this.cloud_left_top, "all " + transition_time * 1.7 + "s ease-in-out");
+			u.a.transition(this.cloud_left_middle, "all " + transition_time * 1.6 + "s ease-in-out");
+			u.a.transition(this.cloud_left_bottom, "all " + transition_time * 1.2 + "s ease-in-out");
+
+			u.a.transition(this.cloud_right_top, "all " + transition_time * 1.4 + "s ease-in-out");
+			u.a.transition(this.cloud_right_middle, "all " + transition_time * 1.3 + "s ease-in-out");
+			u.a.transition(this.cloud_right_bottom, "all " + transition_time + "s ease-in-out");
 
 			u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 150), 0);
 			u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
