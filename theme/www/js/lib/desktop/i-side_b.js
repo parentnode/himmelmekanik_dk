@@ -524,7 +524,7 @@ Util.Objects["side_b"] = new function() {
 					"display":"none"
 				});
 				this.is_done = true;
-
+			}
 		}
 
 		// div is ready
