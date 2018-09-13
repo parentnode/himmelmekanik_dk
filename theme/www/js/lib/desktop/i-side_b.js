@@ -512,15 +512,16 @@ Util.Objects["side_b"] = new function() {
 			u.a.transition(this, "all 1s ease-in-out");
 			u.ass(this, {opacity:0});
 
-			u.t.setTimer(this, "hideDiv", 1550);
-			this.hideDiv = function() {
-				u.ass(this, {display:"none"});
+			u.t.setTimer(this, "finalize", 1700);
+			this.finalize = function() {
+				u.ass(this, {
+					"display":"none"
+				});
+				this.is_done = true;
+
+				// Let controller decide what to do
+				page.cN.scene.controller();
 			}
-
-			this.is_done = true;
-
-			// Let controller decide what to do
-			page.cN.scene.controller();
 
 		}
 

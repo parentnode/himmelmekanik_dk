@@ -6,7 +6,7 @@ Util.Objects["finale"] = new function() {
 
 			// If letter exists and it is active (shown or partially shown)
 			if(this.is_active) {
-				
+
 				u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 150), 0);
 				u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
 				u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 200), 0);
@@ -46,6 +46,13 @@ Util.Objects["finale"] = new function() {
 				});
 
 
+				// Setting play again
+				this.listen_again = u.qs(".scene .finale .listen", this);
+				u.ce(this.listen_again);
+
+				this.listen_again.clicked = function(event) {
+					div.destroy();
+				}
 
 				// Setting up clouds
 				this.addCloud = function(image, classname) {
@@ -122,18 +129,21 @@ Util.Objects["finale"] = new function() {
 
 
 		}
+
 		
 		// Destroy Finale
 		div.destroy = function() {
 
 			this.moveCloudsBack = function(event) {
-				u.a.transition(this.cloud_left_top, "all 3s ease-in-out");
-				u.a.transition(this.cloud_left_middle, "all 4s ease-in-out");
-				u.a.transition(this.cloud_left_bottom, "all 2.5s ease-in-out");
+				var transition_time = 1;
 
-				u.a.transition(this.cloud_right_top, "all 4s ease-in-out");
-				u.a.transition(this.cloud_right_middle, "all 2.5s ease-in-out");
-				u.a.transition(this.cloud_right_bottom, "all 3s ease-in-out");
+				u.a.transition(this.cloud_left_top, "all " + transition_time * 1.7 + "s ease-in-out");
+				u.a.transition(this.cloud_left_middle, "all " + transition_time * 1.6 + "s ease-in-out");
+				u.a.transition(this.cloud_left_bottom, "all " + transition_time * 1.2 + "s ease-in-out");
+	
+				u.a.transition(this.cloud_right_top, "all " + transition_time * 1.4 + "s ease-in-out");
+				u.a.transition(this.cloud_right_middle, "all " + transition_time * 1.3 + "s ease-in-out");
+				u.a.transition(this.cloud_right_bottom, "all " + transition_time + "s ease-in-out");
 
 				u.a.translate(this.cloud_left_top, -660, 0);
 				u.a.translate(this.cloud_left_middle, -660, 0);
@@ -145,10 +155,18 @@ Util.Objects["finale"] = new function() {
 
 			}
 
-			this.is_done = true;
+			this.moveCloudsBack();
 
-			// Let controller decide what to do
-			page.cN.scene.controller();
+			u.t.setTimer(this, "finalize", 1700);
+			this.finalize = function() {
+				u.ass(this, {
+					"display":"none"
+				});
+				this.is_done = true;
+
+				// Let controller decide what to do
+				page.cN.scene.controller();
+			}
 
 		}
 
