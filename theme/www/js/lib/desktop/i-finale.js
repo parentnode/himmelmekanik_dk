@@ -46,12 +46,11 @@ Util.Objects["finale"] = new function() {
 				});
 
 
-				// Setting play again
+				// Setting up "play again"
 				this.listen_again = u.qs(".scene .finale .listen", this);
 				u.ce(this.listen_again);
-
-				this.listen_again.clicked = function(event) {
-					div.destroy();
+				this.listen_again.clicked = function() {
+					location.reload(true);
 				}
 
 				// Setting up clouds
@@ -129,44 +128,14 @@ Util.Objects["finale"] = new function() {
 
 
 		}
-
 		
 		// Destroy Finale
 		div.destroy = function() {
 
-			this.moveCloudsBack = function(event) {
-				var transition_time = 1;
+			this.is_done = true;
 
-				u.a.transition(this.cloud_left_top, "all " + transition_time * 1.7 + "s ease-in-out");
-				u.a.transition(this.cloud_left_middle, "all " + transition_time * 1.6 + "s ease-in-out");
-				u.a.transition(this.cloud_left_bottom, "all " + transition_time * 1.2 + "s ease-in-out");
-	
-				u.a.transition(this.cloud_right_top, "all " + transition_time * 1.4 + "s ease-in-out");
-				u.a.transition(this.cloud_right_middle, "all " + transition_time * 1.3 + "s ease-in-out");
-				u.a.transition(this.cloud_right_bottom, "all " + transition_time + "s ease-in-out");
-
-				u.a.translate(this.cloud_left_top, -660, 0);
-				u.a.translate(this.cloud_left_middle, -660, 0);
-				u.a.translate(this.cloud_left_bottom, -660, 0);
-
-				u.a.translate(this.cloud_right_top, 660, 0);
-				u.a.translate(this.cloud_right_middle, 660, 0);
-				u.a.translate(this.cloud_right_bottom, 660, 0);
-
-			}
-
-			this.moveCloudsBack();
-
-			u.t.setTimer(this, "finalize", 1700);
-			this.finalize = function() {
-				u.ass(this, {
-					"display":"none"
-				});
-				this.is_done = true;
-
-				// Let controller decide what to do
-				page.cN.scene.controller();
-			}
+			// Let controller decide what to do
+			page.cN.scene.controller();
 
 		}
 
