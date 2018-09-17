@@ -35,27 +35,27 @@ Util.Objects["letter"] = new function() {
 
 					for(var i = this.current_front_node_i; i < this.nodes.length; i++) {
 						// Next node in view
-						console.log("NEW NODE ", i, this.nodes[i], event.timeStamp);
+						console.log("NEW NODE ", i, this.nodes[i], event.timeStamp, "Offset ", this.nodes[i].offsetTop);
 						if(this.nodes[i].offsetTop - page.browser_h + 50 < this.scrollTop) {
-							console.log("SHOW ME");
+							console.log("NODE ", i, "is shown");
 							// this.current_front_node = this.nodes[this.current_front_node_i++];
 
 								if(event.timeStamp - this.last_show_time < 1000) {
-									delay = 1000 - event.timeStamp - this.last_show_time;
-									console.log("calc ", event.timeStamp, this.last_show_time)
+									delay = 1000 - (event.timeStamp - this.last_show_time);
+									console.log("WITH A DELAY OF 1000ms - ", event.timeStamp, " - ", this.last_show_time, " = ", delay);
 								}
 								else {
 									delay = 0;
+									console.log("WITH A DELAY OF ", delay);
 								}
-
+								
 								u.a.transition(this.nodes[i], "all 2s ease-in-out " + delay + "ms");
 								u.ass(this.nodes[i], {
 									opacity: 1,
 									transform: "translate3D(0, 0, 0)"
 								})
 								this.last_show_time = event.timeStamp + delay;
-								console.log("DELAY ", delay);
-
+								
 								this.current_front_node_i++;
 						}
 					}
