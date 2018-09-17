@@ -25,7 +25,7 @@
 
 /* Clouds */
 #content .scene .side .cloud {
-	z-index: 10;
+	z-index: -10;
 	position: absolute;
 }
 #content .scene .side .cloud.left {

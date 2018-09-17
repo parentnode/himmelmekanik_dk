@@ -357,11 +357,18 @@ Util.Objects["side_a"] = new function() {
 					}
 				}
 				this.t_vol = u.t.setInterval(this, "turnUpVolume", 20);
+				
+				this.moveCloudsBack(event);
 
-				this.addStopEvents(event);
+				u.t.setTimer(this, "reactivatePlayback", 5000);
 
+				
+						
+			}
 
-
+			this.reactivatePlayback = function () {
+				this.addStopEvents();
+				this.is_stopped = false;
 			}
 
 			this.moveCloudsBack = function(event) {
@@ -388,7 +395,8 @@ Util.Objects["side_a"] = new function() {
 				// u.bug("ignore input");
 //					u.e.kill(event);
 
-				if(!u.t.valid(this.t_stop)) {
+				if(!this.is_stopped) {
+					this.is_stopped = true;
 					this.player.volume(0);
 					this.stopplayer.play(0);
 					this.player.pause();
@@ -396,7 +404,7 @@ Util.Objects["side_a"] = new function() {
 
 
 					// Clouds
-					this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
+					// this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
 
 					u.a.transition(this.cloud_left_top, "all .2s ease-in-out");
 					u.a.transition(this.cloud_left_middle, "all .3s ease-in-out");
