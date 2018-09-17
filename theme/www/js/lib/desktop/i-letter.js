@@ -59,10 +59,16 @@ Util.Objects["letter"] = new function() {
 					var total_scroll_height = (this.wrapper.offsetHeight - page.browser_h)
 					// console.log(total_scroll_height);
 					var progress = (total_scroll_height - (total_scroll_height - this.scrollTop)) / total_scroll_height
+					
+					if (progress >= 0.999) {
+						progress = 1;						
+					}
 
 					var current_degree = Math.PI * progress;
+
+
 					// u.bug("progress:" + progress);
-					// u.bug("current_degree", current_degree);
+					// u.bug("current_degree:" + current_degree);
 
 
 					// Clear canvas
@@ -77,7 +83,7 @@ Util.Objects["letter"] = new function() {
 					page.cN.scene.circle.ctx.closePath();
 
 					// The end is reached - full circle 
-					if(total_scroll_height <= this.scrollTop) {
+					if(progress >= 1) {
 
 						// u.bug("ready to build SideA");
 						this.destroy();
