@@ -179,102 +179,104 @@ Util.Objects["side_a"] = new function() {
 			this.player.ready = function() {
 				// u.bug("player ready:", this);
 
+
+
 				if(!this.can_autoplay) {
 					u.ac(this, "requires_action");
-//						this.time_status.innerHTML = "Start";
+					//						this.time_status.innerHTML = "Start";
 					this.bn_play = u.ae(this, "div", {class:"play", html:"Start"});
 					this.bn_play.player = this;
 					u.e.click(this.bn_play);
 					this.bn_play.clicked = function() {
 						this.player.loadAndPlay("/assets/side-a");
-
+						
 						u.a.transition(this, "all 2s ease-in-out");
 						u.ass(this, {
 							opacity: 0,
 						});
-
+						
 					}
-
+					
 					u.ass(this.bn_play, {
 						top: ((page.browser_h/4 * 3) - 10) + "px",
 						opacity: 0,
 						transform: "translate3d(0, 15px, 0)"
 					});
-
+					
 					u.a.transition(this.bn_play, "all 2s ease-in-out");
 					u.ass(this.bn_play, {
 						opacity: 1,
 						transform: "translate3d(0, 0, 0)"
 					});
 					
-//						page.resized();
+					//						page.resized();
 				}
-
+				
 				// Run opening animation only once
 				this.loading = function(event) {
-
+					
 					// Only needed once
 					delete this.loading;
 					//u.bug("loading", event);
-
+					
 					u.ac(this, "loading");
 				}
 				// Playback has started callback
 				this.playing = function(event) {
 					// u.bug("Playing", event);
-
+					
 					// Only needed once
 					delete this.playing;
-
+					
 					u.rc(this, "loading");
-
+					
 					// make this clear
 					this.is_playing = true;
-
+					
 					
 					// Apply new transition
 					u.a.transition(this.div.track_status, "all 0.5s ease-in-out");
 					u.ass(this.div.track_status, {
 						opacity: 1
 					});
-
+					
 					// Apply new transition
 					u.a.transition(this.div.time_status, "all 0.5s ease-in-out");
 					u.ass(this.div.time_status, {
 						opacity: 1
 					});
-
+					
 					// Apply new transition
 					u.a.transition(this.div.side_title, "all 0.5s ease-in-out");
 					u.ass(this.div.side_title, {
 						opacity: 1
 					});
-
+					
 					// Apply new transition
 					u.a.transition(this.div.song_title, "all 0.5s ease-in-out");
 					u.ass(this.div.song_title, {
 						opacity: 1
 					});
-
-
+					
+					
 					// Update title
 					if(this.div.current_track && this.div.current_track.name) {
 						this.div.updateTitle(this.div.current_track.name);
 					}
-
-
+					
+					
 					// Preload the stop asset
 					this.div.stopplayer.load("/assets/stop");
-
-
+					
+					
 					// Stop music on all interaction
 					t_addevents = u.t.setTimer(this.div, "addStopEvents", 5000);
 				}
-
+				
 				// Update track name and number based on timeupdates from the audio node
 				this.timeupdate = function(event) {
 					//u.bug("timeupdate", this.div.current_track_i, this.div.current_track, this.currentTime);
-
+					
 					// first track
 					if(this.div.current_track_i === undefined) {
 						// console.log(this.div.track_keys);
@@ -285,47 +287,47 @@ Util.Objects["side_a"] = new function() {
 						this.div.updateTitle(this.div.current_track.name);
 						// this.div.song_title.innerHTML = this.div.current_track.name;
 						this.div.track_status.innerHTML = this.div.current_track.track + "/11";
-
+						
 					}
 					// Next track
 					else if(this.currentTime > this.div.current_track.end) {
-
+						
 						this.div.current_track_i++;
 						this.div.current_track = this.div.tracks[this.div.track_keys[this.div.current_track_i]];
-
+						
 						// End of last track
 						if(this.div.current_track_i >= this.div.track_keys.length) {
 							this.stop();
-
+							
 							// Go to the next step
 							this.div.destroy();
-
+							
 							// delete this function - stop listining.
 							delete this.timeupdate;
-
+							
 							// end of business
 							return;
 						}
-
+						
 						// update html
 						this.div.updateTitle(this.div.current_track.name);
 						// this.div.song_title.innerHTML = this.div.current_track.name;
 						this.div.track_status.innerHTML = this.div.current_track.track + "/11";
-
+						
 					}
-
-
+					
+					
 					// update timestamp
 					this.div.time_status.innerHTML = u.period("m:s", {seconds: this.currentTime-this.div.track_keys[this.div.current_track_i]});
-
-
+					
+					
 					// update timeline circle
 					this.div.updateCanvas(this.currentTime);
-
+					
 				}
-
+				
 				this.loadAndPlay("/assets/side-a");
-
+				
 			}
 
 			this.addStopEvents = function(event) {
