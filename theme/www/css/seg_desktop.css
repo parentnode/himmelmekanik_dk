@@ -41,7 +41,7 @@ em, strong {font-size: inherit; font-family: inherit; line-height: inherit; colo
 h1 {padding: 0 50px; font-size: 60px; line-height: 1.05em;}
 h2 {padding: 0 50px 30px; font-size: 30px; line-height: 1.1em;}
 h3 {padding: 0 50px 10px; font-size: 20px; line-height: 1.25em;}
-p {padding: 0 50px 40px; font-size: 22px; line-height: 1.6em;} 
+p {padding: 0 50px 160px; font-size: 22px; line-height: 1.6em;} 
 ul,
 ol {font-size: 0;}
 li {font-size: 13px; line-height: 1.25em;}
@@ -70,7 +70,13 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .scene h4,
 #content .scene h5,
 #content .scene h6,
-#content .scene p {width: 70%; margin: 0 auto; text-align: center;}
+#content .scene p {width: 65%; margin: 0 auto; text-align: center;}
+@media screen and (max-width: 600px) {
+	#content .scene p {width: 370px}
+}
+@media screen and (min-width: 1200px) {
+	#content .scene p {width: 800px}
+}
 #content .scene h1,
 #content .scene h2 {color: #f0bd18; width: 85%;}
 #content .scene div.audioplayer {width: 50px; height: 50px;}
@@ -267,7 +273,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	display: none;
 }
 #content .scene .side .cloud {
-	z-index: 10;
+	z-index: -10;
 	position: absolute;
 }
 #content .scene .side .cloud.left {

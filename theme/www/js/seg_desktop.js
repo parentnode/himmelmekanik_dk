@@ -5415,8 +5415,8 @@ Util.Objects["front"] = new function() {
 						"max_size":32
 					},
 				});
-				window.scrollTo(0, 0);
-				this.letter.scrollTo(0, 0);
+				window.scrollTop = 0;
+				this.letter.scrollTop = 0;
 				this.resized();
 				this.is_ready = true;
 			}
@@ -5493,6 +5493,9 @@ Util.Objects["letter"] = new function() {
 				this.clouds_back.style.top = -(this.scrollTop * 0.3) + "px";
 					var total_scroll_height = (this.wrapper.offsetHeight - page.browser_h)
 					var progress = (total_scroll_height - (total_scroll_height - this.scrollTop)) / total_scroll_height
+					if (progress >= 0.999) {
+						progress = 1;						
+					}
 					var current_degree = Math.PI * progress;
 					page.cN.scene.circle.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
 					page.cN.scene.circle.ctx.beginPath();
@@ -5501,7 +5504,7 @@ Util.Objects["letter"] = new function() {
 					page.cN.scene.circle.ctx.arc(page.cN.scene.circle.center_x, page.cN.scene.circle.center_y, page.cN.scene.circle.radius, 0*Math.PI, progress*2*Math.PI);
 					page.cN.scene.circle.ctx.stroke();
 					page.cN.scene.circle.ctx.closePath();
-					if(total_scroll_height <= this.scrollTop) {
+					if(progress >= 1) {
 						this.destroy();
 					}
 			}
@@ -6076,6 +6079,12 @@ Util.Objects["side_a"] = new function() {
 					}
 				}
 				this.t_vol = u.t.setInterval(this, "turnUpVolume", 20);
+				this.moveCloudsBack(event);
+				u.t.setTimer(this, "reactivatePlayback", 5000);
+			}
+			this.reactivatePlayback = function () {
+				this.addStopEvents();
+				this.is_stopped = false;
 			}
 			this.moveCloudsBack = function(event) {
 				u.a.transition(this.cloud_left_top, "all 3s ease-in-out");
@@ -6092,12 +6101,11 @@ Util.Objects["side_a"] = new function() {
 				u.a.translate(this.cloud_right_bottom, 660, 0);
 			}
 			this.stopOnInteraction = function(event) {
-				if(!u.t.valid(this.t_stop)) {
+				if(!this.is_stopped) {
+					this.is_stopped = true;
 					this.player.volume(0);
 					this.stopplayer.play(0);
 					this.player.pause();
-					this.t_stop = u.t.setTimer(this, "playAgain", 5000);
-					this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
 					u.a.transition(this.cloud_left_top, "all .2s ease-in-out");
 					u.a.transition(this.cloud_left_middle, "all .3s ease-in-out");
 					u.a.transition(this.cloud_left_bottom, "all .4s ease-in-out");
@@ -6110,6 +6118,31 @@ Util.Objects["side_a"] = new function() {
 					u.a.translate(this.cloud_right_top, -page.browser_w/4+300, 0);
 					u.a.translate(this.cloud_right_middle, -page.browser_w/4+300, 0);
 					u.a.translate(this.cloud_right_bottom, -page.browser_w/4+200, 0);
+					u.ac(this, "requires_action");
+					this.bn_play = u.ae(this, "div", {class:"play", html:"Start"});
+					this.bn_play.player = this;
+					u.e.click(this.bn_play);
+					this.bn_play.clicked = function(event) {
+						page.cN.scene.side_a.playAgain(event);
+						u.a.transition(this, "all 2s ease-in-out");
+						u.ass(this, {
+							opacity: 0,
+						});
+					}
+					u.ass(this.bn_play, {
+						top: ((page.browser_h/4 * 3) - 10) + "px",
+						opacity: 0,
+						transform: "translate3d(0, 15px, 0)"
+					});
+					u.a.transition(this.bn_play, "all 2s ease-in-out");
+					u.ass(this.bn_play, {
+						opacity: 1,
+						transform: "translate3d(0, 0, 0)"
+					});
+					u.e.removeWindowEvent(this, "wheel", this.wheel_event_id);
+					u.e.removeWindowEvent(this, "mousemove", this.mousemove_event_id);
+					u.e.removeWindowEvent(this, "blur", this.blur_event_id);
+					u.e.removeWindowEvent(this, "keydown", this.key_event_id);
 				}
 			}
 			this.updateCanvas = function(progress) {
@@ -6515,6 +6548,7 @@ Util.Objects["side_b"] = new function() {
 					}
 				}
 				this.t_vol = u.t.setInterval(this, "turnUpVolume", 20);
+				this.addStopEvents(event);
 			}
 			this.moveCloudsBack = function(event) {
 				u.a.transition(this.cloud_left_top, "all 3s ease-in-out");
@@ -6535,7 +6569,6 @@ Util.Objects["side_b"] = new function() {
 					this.player.volume(0);
 					this.stopplayer.play(0);
 					this.player.pause();
-					this.t_stop = u.t.setTimer(this, "playAgain", 5000);
 					this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
 					u.a.transition(this.cloud_left_top, "all .2s ease-in-out");
 					u.a.transition(this.cloud_left_middle, "all .3s ease-in-out");
@@ -6549,6 +6582,31 @@ Util.Objects["side_b"] = new function() {
 					u.a.translate(this.cloud_right_top, -page.browser_w/4+300, 0);
 					u.a.translate(this.cloud_right_middle, -page.browser_w/4+300, 0);
 					u.a.translate(this.cloud_right_bottom, -page.browser_w/4+200, 0);
+					u.ac(this, "requires_action");
+					this.bn_play = u.ae(this, "div", {class:"play", html:"Start"});
+					this.bn_play.player = this;
+					u.e.click(this.bn_play);
+					this.bn_play.clicked = function(event) {
+						page.cN.scene.side_b.playAgain(event);
+						u.a.transition(this, "all 2s ease-in-out");
+						u.ass(this, {
+							opacity: 0,
+						});
+					}
+					u.ass(this.bn_play, {
+						top: ((page.browser_h/4 * 3) - 10) + "px",
+						opacity: 0,
+						transform: "translate3d(0, 15px, 0)"
+					});
+					u.a.transition(this.bn_play, "all 2s ease-in-out");
+					u.ass(this.bn_play, {
+						opacity: 1,
+						transform: "translate3d(0, 0, 0)"
+					});
+					u.e.removeWindowEvent(this, "wheel", this.wheel_event_id);
+					u.e.removeWindowEvent(this, "mousemove", this.mousemove_event_id);
+					u.e.removeWindowEvent(this, "blur", this.blur_event_id);
+					u.e.removeWindowEvent(this, "keydown", this.key_event_id);
 				}
 			}
 			this.updateCanvas = function(progress) {

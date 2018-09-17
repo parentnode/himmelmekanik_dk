@@ -5415,8 +5415,8 @@ Util.Objects["front"] = new function() {
 						"max_size":32
 					},
 				});
-				window.scrollTo(0, 0);
-				this.letter.scrollTo(0, 0);
+				window.scrollTop = 0;
+				this.letter.scrollTop = 0;
 				this.resized();
 				this.is_ready = true;
 			}
