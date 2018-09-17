@@ -136,8 +136,8 @@ Util.Objects["front"] = new function() {
 
 
 				// Reset any scroll position (fixes reload offsets)
-				window.scrollTo(0, 0);
-				this.letter.scrollTo(0, 0);
+				window.scrollTop = 0;
+				this.letter.scrollTop = 0;
 				
 
 				// initial page size recalculation
