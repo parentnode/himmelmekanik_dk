@@ -41,7 +41,8 @@ Util.Objects["letter"] = new function() {
 							// this.current_front_node = this.nodes[this.current_front_node_i++];
 
 								if(event.timeStamp - this.last_show_time < 1000) {
-									delay = event.timeStamp - this.last_show_time;
+									delay = 1000 - event.timeStamp - this.last_show_time;
+									console.log("calc ", event.timeStamp, this.last_show_time)
 								}
 								else {
 									delay = 0;
