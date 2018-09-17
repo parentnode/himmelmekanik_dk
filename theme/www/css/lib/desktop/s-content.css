@@ -11,7 +11,15 @@
 #content .scene h4,
 #content .scene h5,
 #content .scene h6,
-#content .scene p {width: 50%; margin: 0 auto; text-align: center;}
+#content .scene p {width: 65%; margin: 0 auto; text-align: center;}
+
+@media screen and (max-width: 600px) {
+	#content .scene p {width: 370px}
+}
+
+@media screen and (min-width: 1200px) {
+	#content .scene p {width: 800px}
+}
 
 #content .scene h1,
 #content .scene h2 {color: #f0bd18; width: 85%;}
