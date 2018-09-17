@@ -359,6 +359,8 @@ Util.Objects["side_b"] = new function() {
 				}
 				this.t_vol = u.t.setInterval(this, "turnUpVolume", 20);
 
+				this.addStopEvents(event);
+
 			}
 
 			this.moveCloudsBack = function(event) {
@@ -389,7 +391,7 @@ Util.Objects["side_b"] = new function() {
 					this.player.volume(0);
 					this.stopplayer.play(0);
 					this.player.pause();
-					this.t_stop = u.t.setTimer(this, "playAgain", 5000);
+					// this.t_stop = u.t.setTimer(this, "playAgain", 5000);
 
 
 					// Clouds
@@ -410,6 +412,41 @@ Util.Objects["side_b"] = new function() {
 					u.a.translate(this.cloud_right_top, -page.browser_w/4+300, 0);
 					u.a.translate(this.cloud_right_middle, -page.browser_w/4+300, 0);
 					u.a.translate(this.cloud_right_bottom, -page.browser_w/4+200, 0);
+
+					//Show start button
+					u.ac(this, "requires_action");
+//						this.time_status.innerHTML = "Start";
+					this.bn_play = u.ae(this, "div", {class:"play", html:"Start"});
+					this.bn_play.player = this;
+					u.e.click(this.bn_play);
+					this.bn_play.clicked = function(event) {
+						page.cN.scene.side_b.playAgain(event);
+
+						u.a.transition(this, "all 2s ease-in-out");
+						u.ass(this, {
+							opacity: 0,
+						});
+
+					}
+
+					u.ass(this.bn_play, {
+						top: ((page.browser_h/4 * 3) - 10) + "px",
+						opacity: 0,
+						transform: "translate3d(0, 15px, 0)"
+					});
+
+					u.a.transition(this.bn_play, "all 2s ease-in-out");
+					u.ass(this.bn_play, {
+						opacity: 1,
+						transform: "translate3d(0, 0, 0)"
+					});
+
+
+					// Remove stop events
+					u.e.removeWindowEvent(this, "wheel", this.wheel_event_id);
+					u.e.removeWindowEvent(this, "mousemove", this.mousemove_event_id);
+					u.e.removeWindowEvent(this, "blur", this.blur_event_id);
+					u.e.removeWindowEvent(this, "keydown", this.key_event_id);
 				}
 
 			}
