@@ -36,7 +36,8 @@ Util.Objects["letter"] = new function() {
 					for(var i = this.current_front_node_i; i < this.nodes.length; i++) {
 						// Next node in view
 						console.log("NEW NODE ", i, this.nodes[i], event.timeStamp, "Offset ", this.nodes[i].offsetTop);
-						if(this.nodes[i].offsetTop - page.browser_h + 300 < this.scrollTop) {
+						if(this.nodes[i].offsetTop - page.browser_h + (page.browser_h * 0.25) < this.scrollTop) {
+							console.log('offset', page.browser_h * 0.25);
 							console.log("NODE ", i, "is shown");
 							// this.current_front_node = this.nodes[this.current_front_node_i++];
 
