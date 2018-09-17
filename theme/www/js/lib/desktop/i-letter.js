@@ -25,25 +25,38 @@ Util.Objects["letter"] = new function() {
 
 		// Scene scrolled
 		div.scrolled = function(event) {
- 			// u.bug("div.scrolled:", this);
+			// u.bug("div.scrolled:", this);
 
 			if(this.is_active) {
 
 				// still front nodes - reveal as scrolled into view
-				if(this.nodes.length > this.current_front_node_i) {		
+				if(this.nodes.length > this.current_front_node_i) {
+					var delay;
 
-					// Next node in view
-					if(this.nodes[this.current_front_node_i].offsetTop - page.browser_h < this.scrollTop) {
+					for(var i = this.current_front_node_i; i < this.nodes.length; i++) {
+						// Next node in view
+						console.log("NEW NODE ", i, this.nodes[i], event.timeStamp);
+						if(this.nodes[i].offsetTop - page.browser_h + 50 < this.scrollTop) {
+							console.log("SHOW ME");
+							// this.current_front_node = this.nodes[this.current_front_node_i++];
 
-						this.current_front_node = this.nodes[this.current_front_node_i++];
+								if(event.timeStamp - this.last_show_time < 1000) {
+									delay = event.timeStamp - this.last_show_time;
+								}
+								else {
+									delay = 0;
+								}
 
-						// Show node
-						u.a.transition(this.current_front_node, "all 2s ease-in-out");
-						u.ass(this.current_front_node, {
-							opacity: 1,
-							transform: "translate3D(0, 0, 0)"
-						});
+								u.a.transition(this.nodes[i], "all 2s ease-in-out " + delay + "ms");
+								u.ass(this.nodes[i], {
+									opacity: 1,
+									transform: "translate3D(0, 0, 0)"
+								})
+								this.last_show_time = event.timeStamp + delay;
+								console.log("DELAY ", delay);
 
+								this.current_front_node_i++;
+						}
 					}
 
 				}
@@ -55,40 +68,40 @@ Util.Objects["letter"] = new function() {
 				// If side_a scrolled into view - draw the circle
 				// if(this.side_a.offsetTop - page.browser_h < page.scroll_y) {
 
-					// Calculate progress (number between 0 and 1)
-					var total_scroll_height = (this.wrapper.offsetHeight - page.browser_h)
-					// console.log(total_scroll_height);
-					var progress = (total_scroll_height - (total_scroll_height - this.scrollTop)) / total_scroll_height
-					
-					if (progress >= 0.999) {
-						progress = 1;						
-					}
+				// Calculate progress (number between 0 and 1)
+				var total_scroll_height = (this.wrapper.offsetHeight - page.browser_h)
+				// console.log(total_scroll_height);
+				var progress = (total_scroll_height - (total_scroll_height - this.scrollTop)) / total_scroll_height
+				
+				if (progress >= 0.999) {
+					progress = 1;						
+				}
 
-					var current_degree = Math.PI * progress;
-
-
-					// u.bug("progress:" + progress);
-					// u.bug("current_degree:" + current_degree);
+				var current_degree = Math.PI * progress;
 
 
-					// Clear canvas
-					page.cN.scene.circle.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+				// u.bug("progress:" + progress);
+				// u.bug("current_degree:" + current_degree);
 
-					// Draw outer circle
-					page.cN.scene.circle.ctx.beginPath();
-					page.cN.scene.circle.ctx.lineWidth = 4;
-					page.cN.scene.circle.ctx.strokeStyle = "#f6d874";
-					page.cN.scene.circle.ctx.arc(page.cN.scene.circle.center_x, page.cN.scene.circle.center_y, page.cN.scene.circle.radius, 0*Math.PI, progress*2*Math.PI);
-					page.cN.scene.circle.ctx.stroke();
-					page.cN.scene.circle.ctx.closePath();
 
-					// The end is reached - full circle 
-					if(progress >= 1) {
+				// Clear canvas
+				page.cN.scene.circle.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
 
-						// u.bug("ready to build SideA");
-						this.destroy();
-					}
-				// }
+				// Draw outer circle
+				page.cN.scene.circle.ctx.beginPath();
+				page.cN.scene.circle.ctx.lineWidth = 4;
+				page.cN.scene.circle.ctx.strokeStyle = "#f6d874";
+				page.cN.scene.circle.ctx.arc(page.cN.scene.circle.center_x, page.cN.scene.circle.center_y, page.cN.scene.circle.radius, 0*Math.PI, progress*2*Math.PI);
+				page.cN.scene.circle.ctx.stroke();
+				page.cN.scene.circle.ctx.closePath();
+
+				// The end is reached - full circle 
+				if(progress >= 1) {
+
+					// u.bug("ready to build SideA");
+					this.destroy();
+				}
+			// }
 			}
 		}
 
@@ -194,6 +207,7 @@ Util.Objects["letter"] = new function() {
 				opacity: 1,
 				transform: "translate3d(0, 0, 0)"
 			});
+			this.last_show_time = 0;
 
 
 
