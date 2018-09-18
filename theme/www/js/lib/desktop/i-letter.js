@@ -295,6 +295,7 @@ Util.Objects["letter"] = new function() {
 			var previous_cloud_path = "";
 			var i = 0;
 			var clouds = [];
+			var cloud_distance 
 
 			// Left column loop
 			current_ypos = top_ypos;
@@ -372,7 +373,7 @@ Util.Objects["letter"] = new function() {
 				}
 				
 				clouds.push(this["div_left_cloud_" + i]);
-				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(50,403)) - 60;
+				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 160;
 			}
 			
 			// Right column loop
@@ -453,7 +454,7 @@ Util.Objects["letter"] = new function() {
 				
 
 				clouds.push(this["div_right_cloud_" + i]);
-				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 60;
+				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 160;
 			}
 
 			// Center column loop
@@ -521,7 +522,7 @@ Util.Objects["letter"] = new function() {
 				}) 
 				
 				clouds.push(this["div_center_cloud_" + i]);
-				current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight + Math.round(u.random(100,573));
+				current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight + Math.round(u.random(0, 150)-60);
 			}
 
 			// Shuffle clouds array		
