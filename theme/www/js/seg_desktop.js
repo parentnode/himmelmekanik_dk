@@ -5395,8 +5395,6 @@ Util.Objects["front"] = new function() {
 				u.textscaler(this, {
 					"min_width":600,
 					"max_width":1600,
-					"min_height":640,
-					"max_height":1400,
 					"unit":"px",
 					"h1":{
 						"min_size":40,
@@ -5478,35 +5476,50 @@ Util.Objects["letter"] = new function() {
 		}
 		div.scrolled = function(event) {
 			if(this.is_active) {
-				if(this.nodes.length > this.current_front_node_i) {		
-					if(this.nodes[this.current_front_node_i].offsetTop - page.browser_h < this.scrollTop) {
-						this.current_front_node = this.nodes[this.current_front_node_i++];
-						u.a.transition(this.current_front_node, "all 2s ease-in-out");
-						u.ass(this.current_front_node, {
-							opacity: 1,
-							transform: "translate3D(0, 0, 0)"
-						});
+				if(this.nodes.length > this.current_front_node_i) {
+					var delay;
+					for(var i = this.current_front_node_i; i < this.nodes.length; i++) {
+						console.log("NEW NODE ", i, this.nodes[i], event.timeStamp, "Offset ", this.nodes[i].offsetTop);
+						if(this.nodes[i].offsetTop - page.browser_h + (page.browser_h * 0.25) < this.scrollTop) {
+							console.log('offset', page.browser_h * 0.25);
+							console.log("NODE ", i, "is shown");
+								if(event.timeStamp - this.last_show_time < 1000) {
+									delay = 1000 - (event.timeStamp - this.last_show_time);
+									console.log("WITH A DELAY OF 1000ms - ", event.timeStamp, " - ", this.last_show_time, " = ", delay);
+								}
+								else {
+									delay = 0;
+									console.log("WITH A DELAY OF ", delay);
+								}
+								u.a.transition(this.nodes[i], "all 2s ease-in-out " + delay + "ms");
+								u.ass(this.nodes[i], {
+									opacity: 1,
+									transform: "translate3D(0, 0, 0)"
+								})
+								this.last_show_time = event.timeStamp + delay;
+								this.current_front_node_i++;
+						}
 					}
 				}
 				this.clouds_front.style.top = -(this.scrollTop * 0.5) + "px";
 				this.clouds_mid.style.top = -(this.scrollTop * 0.4) + "px";
 				this.clouds_back.style.top = -(this.scrollTop * 0.3) + "px";
-					var total_scroll_height = (this.wrapper.offsetHeight - page.browser_h)
-					var progress = (total_scroll_height - (total_scroll_height - this.scrollTop)) / total_scroll_height
-					if (progress >= 0.999) {
-						progress = 1;						
-					}
-					var current_degree = Math.PI * progress;
-					page.cN.scene.circle.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
-					page.cN.scene.circle.ctx.beginPath();
-					page.cN.scene.circle.ctx.lineWidth = 4;
-					page.cN.scene.circle.ctx.strokeStyle = "#f6d874";
-					page.cN.scene.circle.ctx.arc(page.cN.scene.circle.center_x, page.cN.scene.circle.center_y, page.cN.scene.circle.radius, 0*Math.PI, progress*2*Math.PI);
-					page.cN.scene.circle.ctx.stroke();
-					page.cN.scene.circle.ctx.closePath();
-					if(progress >= 1) {
-						this.destroy();
-					}
+				var total_scroll_height = (this.wrapper.offsetHeight - page.browser_h)
+				var progress = (total_scroll_height - (total_scroll_height - this.scrollTop)) / total_scroll_height
+				if (progress >= 0.999) {
+					progress = 1;						
+				}
+				var current_degree = Math.PI * progress;
+				page.cN.scene.circle.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
+				page.cN.scene.circle.ctx.beginPath();
+				page.cN.scene.circle.ctx.lineWidth = 4;
+				page.cN.scene.circle.ctx.strokeStyle = "#f6d874";
+				page.cN.scene.circle.ctx.arc(page.cN.scene.circle.center_x, page.cN.scene.circle.center_y, page.cN.scene.circle.radius, 0*Math.PI, progress*2*Math.PI);
+				page.cN.scene.circle.ctx.stroke();
+				page.cN.scene.circle.ctx.closePath();
+				if(progress >= 1) {
+					this.destroy();
+				}
 			}
 		}
 		div.ready = function() {
@@ -5569,6 +5582,7 @@ Util.Objects["letter"] = new function() {
 				opacity: 1,
 				transform: "translate3d(0, 0, 0)"
 			});
+			this.last_show_time = 0;
 			this.clouds_front = u.ae(this, "div", {
 				"class":"clouds front",
 			})
@@ -5640,6 +5654,7 @@ Util.Objects["letter"] = new function() {
 			var previous_cloud_path = "";
 			var i = 0;
 			var clouds = [];
+			var cloud_distance 
 			current_ypos = top_ypos;
 			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
 				current_layer = this.layer_names[Math.round(u.random(0,2))];
@@ -5699,7 +5714,7 @@ Util.Objects["letter"] = new function() {
 					})
 				}
 				clouds.push(this["div_left_cloud_" + i]);
-				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(50,403)) - 60;
+				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 160;
 			}
 			current_ypos = top_ypos;
 			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
@@ -5760,7 +5775,7 @@ Util.Objects["letter"] = new function() {
 					})
 				}
 				clouds.push(this["div_right_cloud_" + i]);
-				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 60;
+				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 160;
 			}
 			current_ypos = top_ypos;
 			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
@@ -5814,7 +5829,7 @@ Util.Objects["letter"] = new function() {
 					"margin-left":Math.round(u.random(-300,300)) + "px"
 				}) 
 				clouds.push(this["div_center_cloud_" + i]);
-				current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight + Math.round(u.random(100,573));
+				current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight + Math.round(u.random(0, 150)-60);
 			}
 			function shuffle(array) {
 				var currentIndex = array.length, temporaryValue, randomIndex;
