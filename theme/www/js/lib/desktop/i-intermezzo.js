@@ -58,11 +58,11 @@ Util.Objects["intermezzo"] = new function() {
 		
 					return cloud;
 				}
-
-				this.cloud_left_top = this.addCloud("/img/gx_cloud_front1", "cloud left top");
+				
+				this.cloud_left_top = this.addCloud("/img/gx_cloud_mid2", "cloud left top");
 				this.cloud_left_middle = this.addCloud("/img/gx_cloud_front3", "cloud left middle");
 				this.cloud_left_bottom = this.addCloud("/img/gx_cloud_front2", "cloud left bottom");
-				this.cloud_right_top = this.addCloud("/img/gx_cloud_front2", "cloud right top");
+				this.cloud_right_top = this.addCloud("/img/gx_cloud_mid3", "cloud right top");
 				this.cloud_right_middle = this.addCloud("/img/gx_cloud_front1", "cloud right middle");
 				this.cloud_right_bottom = this.addCloud("/img/gx_cloud_front3", "cloud right bottom");
 
@@ -112,7 +112,7 @@ Util.Objects["intermezzo"] = new function() {
 			u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
 			u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 200), 0);
 
-			u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 300), 0);
+			u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 150), 0);
 			u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 300), 0);
 			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 200), 0);
 
