@@ -91,10 +91,10 @@ Util.Objects["side_b"] = new function() {
 				this.ctx = this.canvas.getContext("2d");
 
 				// Setting up clouds
-				this.cloud_left_top = div.addCloud("/img/gx_cloud_front1", "cloud left top");
+				this.cloud_left_top = div.addCloud("/img/gx_cloud_mid2", "cloud left top");
 				this.cloud_left_middle = div.addCloud("/img/gx_cloud_front3", "cloud left middle");
 				this.cloud_left_bottom = div.addCloud("/img/gx_cloud_front2", "cloud left bottom");
-				this.cloud_right_top = div.addCloud("/img/gx_cloud_front2", "cloud right top");
+				this.cloud_right_top = div.addCloud("/img/gx_cloud_mid3", "cloud right top");
 				this.cloud_right_middle = div.addCloud("/img/gx_cloud_front1", "cloud right middle");
 				this.cloud_right_bottom = div.addCloud("/img/gx_cloud_front3", "cloud right bottom");
 
@@ -425,7 +425,7 @@ Util.Objects["side_b"] = new function() {
 					u.a.translate(this.cloud_left_middle, page.browser_w/4-400, 0);
 					u.a.translate(this.cloud_left_bottom, page.browser_w/4-200, 0);
 
-					u.a.translate(this.cloud_right_top, -page.browser_w/4+300, 0);
+					u.a.translate(this.cloud_right_top, -page.browser_w/4+150, 0);
 					u.a.translate(this.cloud_right_middle, -page.browser_w/4+300, 0);
 					u.a.translate(this.cloud_right_bottom, -page.browser_w/4+200, 0);
 
