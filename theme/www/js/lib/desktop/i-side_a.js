@@ -364,7 +364,13 @@ Util.Objects["side_a"] = new function() {
 
 				u.t.setTimer(this, "reactivatePlayback", 5000);
 
-				
+				//Show time status
+				u.a.transition(this.time_status, "all 1.5s ease-in-out 1.5s");
+				u.ass(this.time_status, {
+					opacity: 1,
+					// transform: "translate3d(0, 0, 0)"
+
+				})
 						
 			}
 
@@ -433,7 +439,7 @@ Util.Objects["side_a"] = new function() {
 					this.bn_play.clicked = function(event) {
 						page.cN.scene.side_a.playAgain(event);
 
-						u.a.transition(this, "all 2s ease-in-out");
+						u.a.transition(this, "all 1.5s ease-in-out");
 						u.ass(this, {
 							opacity: 0,
 						});
@@ -446,11 +452,21 @@ Util.Objects["side_a"] = new function() {
 						transform: "translate3d(0, 15px, 0)"
 					});
 
-					u.a.transition(this.bn_play, "all 2s ease-in-out");
+					u.a.transition(this.bn_play, "all 1.5s ease-in-out 0.5s");
 					u.ass(this.bn_play, {
 						opacity: 1,
 						transform: "translate3d(0, 0, 0)"
 					});
+
+					//Hide time_status
+					u.a.transition(this.time_status, "all 0.5s ease-in-out");
+					u.ass(this.time_status, {
+						opacity: 0,
+						// transform: "translate3d(0, 15px, 0)"
+
+					})
+
+
 
 
 					// Remove stop events

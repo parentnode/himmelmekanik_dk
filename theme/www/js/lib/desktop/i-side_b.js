@@ -144,7 +144,7 @@ Util.Objects["side_b"] = new function() {
 
 			u.ass(this, {display:"block"});
 			this.resized();
-			u.a.transition(this, "all 1s ease-in");
+			// u.a.transition(this, "all 1s ease-in");
 			u.ass(this, {opacity:1});
 
 
@@ -359,8 +359,23 @@ Util.Objects["side_b"] = new function() {
 				}
 				this.t_vol = u.t.setInterval(this, "turnUpVolume", 20);
 
-				this.addStopEvents(event);
+				this.moveCloudsBack(event);
 
+				u.t.setTimer(this, "reactivatePlayback", 5000);
+
+				//Show time status
+				u.a.transition(this.time_status, "all 1.5s ease-in-out 1.5s");
+				u.ass(this.time_status, {
+					opacity: 1,
+					// transform: "translate3d(0, 0, 0)"
+
+				})
+						
+			}
+
+			this.reactivatePlayback = function () {
+				this.addStopEvents();
+				this.is_stopped = false;
 			}
 
 			this.moveCloudsBack = function(event) {
@@ -387,7 +402,8 @@ Util.Objects["side_b"] = new function() {
 				// u.bug("ignore input");
 //					u.e.kill(event);
 
-				if(!u.t.valid(this.t_stop)) {
+				if(!this.is_stopped) {
+					this.is_stopped = true;
 					this.player.volume(0);
 					this.stopplayer.play(0);
 					this.player.pause();
@@ -395,7 +411,7 @@ Util.Objects["side_b"] = new function() {
 
 
 					// Clouds
-					this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
+					// this.t_clouds = u.t.setTimer(this, "moveCloudsBack", 1000);
 
 					u.a.transition(this.cloud_left_top, "all .2s ease-in-out");
 					u.a.transition(this.cloud_left_middle, "all .3s ease-in-out");
@@ -422,7 +438,7 @@ Util.Objects["side_b"] = new function() {
 					this.bn_play.clicked = function(event) {
 						page.cN.scene.side_b.playAgain(event);
 
-						u.a.transition(this, "all 2s ease-in-out");
+						u.a.transition(this, "all 1.5s ease-in-out");
 						u.ass(this, {
 							opacity: 0,
 						});
@@ -435,13 +451,19 @@ Util.Objects["side_b"] = new function() {
 						transform: "translate3d(0, 15px, 0)"
 					});
 
-					u.a.transition(this.bn_play, "all 2s ease-in-out");
+					u.a.transition(this.bn_play, "all 1.5s ease-in-out 0.5s");
 					u.ass(this.bn_play, {
 						opacity: 1,
 						transform: "translate3d(0, 0, 0)"
 					});
 
+					//Hide time_status
+					u.a.transition(this.time_status, "all 0.5s ease-in-out");
+					u.ass(this.time_status, {
+						opacity: 0,
+						// transform: "translate3d(0, -15px, 0)"
 
+					})
 					// Remove stop events
 					u.e.removeWindowEvent(this, "wheel", this.wheel_event_id);
 					u.e.removeWindowEvent(this, "mousemove", this.mousemove_event_id);
@@ -537,7 +559,7 @@ Util.Objects["side_b"] = new function() {
 
 		}
 		
-		// Destroy Letter
+		// Destroy side B
 		div.destroy = function() {
 			// u.bug("DESTROY", this)
 
