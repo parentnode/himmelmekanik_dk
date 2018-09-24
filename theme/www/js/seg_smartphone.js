@@ -5395,8 +5395,6 @@ Util.Objects["front"] = new function() {
 				u.textscaler(this, {
 					"min_width":600,
 					"max_width":1600,
-					"min_height":640,
-					"max_height":1400,
 					"unit":"px",
 					"h1":{
 						"min_size":40,
