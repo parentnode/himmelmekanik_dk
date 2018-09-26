@@ -177,41 +177,8 @@ Util.Objects["side_a"] = new function() {
 
 			// Audio player is ready
 			this.player.ready = function() {
-				// u.bug("player ready:", this);
+				// u.bug("player ready:", this.can_autoplay, this.can_autoplay_muted);
 
-
-
-				if(!this.can_autoplay) {
-					u.ac(this, "requires_action");
-					//						this.time_status.innerHTML = "Start";
-					this.bn_play = u.ae(this, "div", {class:"play", html:"Start"});
-					this.bn_play.player = this;
-					u.e.click(this.bn_play);
-					this.bn_play.clicked = function() {
-						this.player.loadAndPlay("/assets/side-a");
-						
-						u.a.transition(this, "all 2s ease-in-out");
-						u.ass(this, {
-							opacity: 0,
-						});
-						
-					}
-					
-					u.ass(this.bn_play, {
-						top: ((page.browser_h/4 * 3) - 10) + "px",
-						opacity: 0,
-						transform: "translate3d(0, 15px, 0)"
-					});
-					
-					u.a.transition(this.bn_play, "all 2s ease-in-out");
-					u.ass(this.bn_play, {
-						opacity: 1,
-						transform: "translate3d(0, 0, 0)"
-					});
-					
-					//						page.resized();
-				}
-				
 				// Run opening animation only once
 				this.loading = function(event) {
 					
@@ -221,31 +188,31 @@ Util.Objects["side_a"] = new function() {
 					
 					u.ac(this, "loading");
 				}
+
 				// Playback has started callback
 				this.playing = function(event) {
 					// u.bug("Playing", event);
-					
+
 					// Only needed once
 					delete this.playing;
 					
 					u.rc(this, "loading");
-					
+
 					// make this clear
 					this.is_playing = true;
-					
-					
+
 					// Apply new transition
 					u.a.transition(this.div.track_status, "all 0.5s ease-in-out");
 					u.ass(this.div.track_status, {
 						opacity: 1
 					});
-					
+
 					// Apply new transition
 					u.a.transition(this.div.time_status, "all 0.5s ease-in-out");
 					u.ass(this.div.time_status, {
 						opacity: 1
 					});
-					
+
 					// Apply new transition
 					u.a.transition(this.div.side_title, "all 0.5s ease-in-out");
 					u.ass(this.div.side_title, {
@@ -272,7 +239,7 @@ Util.Objects["side_a"] = new function() {
 					// Stop music on all interaction
 					t_addevents = u.t.setTimer(this.div, "addStopEvents", 5000);
 				}
-				
+
 				// Update track name and number based on timeupdates from the audio node
 				this.timeupdate = function(event) {
 					//u.bug("timeupdate", this.div.current_track_i, this.div.current_track, this.currentTime);
@@ -325,9 +292,41 @@ Util.Objects["side_a"] = new function() {
 					this.div.updateCanvas(this.currentTime);
 					
 				}
-				
-				this.loadAndPlay("/assets/side-a");
-				
+
+
+				if(!this.can_autoplay) {
+					u.ac(this.div, "requires_action");
+
+					this.bn_play = u.ae(this.div, "div", {class:"play", html:"Start"});
+					this.bn_play.player = this;
+					u.e.click(this.bn_play);
+					this.bn_play.clicked = function() {
+						this.player.loadAndPlay("/assets/side-a");
+
+						u.a.transition(this, "all 2s ease-in-out");
+						u.ass(this, {
+							opacity: 0,
+						});
+
+					}
+
+					u.ass(this.bn_play, {
+						top: ((page.browser_h/4 * 3) - 10) + "px",
+						opacity: 0,
+						transform: "translate3d(0, 15px, 0)"
+					});
+
+					u.a.transition(this.bn_play, "all 2s ease-in-out");
+					u.ass(this.bn_play, {
+						opacity: 1,
+						transform: "translate3d(0, 0, 0)"
+					});
+
+				}
+				else {
+					this.loadAndPlay("/assets/side-a");
+				}
+
 			}
 
 			this.addStopEvents = function(event) {
