@@ -35,19 +35,19 @@ Util.Objects["letter"] = new function() {
 
 					for(var i = this.current_front_node_i; i < this.nodes.length; i++) {
 						// Next node in view
-						console.log("NEW NODE ", i, this.nodes[i], event.timeStamp, "Offset ", this.nodes[i].offsetTop);
+						// u.bug("NEW NODE ", i, this.nodes[i], event.timeStamp, "Offset ", this.nodes[i].offsetTop);
 						if(this.nodes[i].offsetTop - page.browser_h + (page.browser_h * 0.25) < this.scrollTop) {
-							console.log('offset', page.browser_h * 0.25);
-							console.log("NODE ", i, "is shown");
+							// u.bug('offset', page.browser_h * 0.25);
+							// u.bug("NODE ", i, "is shown");
 							// this.current_front_node = this.nodes[this.current_front_node_i++];
 
 								if(event.timeStamp - this.last_show_time < 1000) {
 									delay = 1000 - (event.timeStamp - this.last_show_time);
-									console.log("WITH A DELAY OF 1000ms - ", event.timeStamp, " - ", this.last_show_time, " = ", delay);
+									// u.bug("WITH A DELAY OF 1000ms - ", event.timeStamp, " - ", this.last_show_time, " = ", delay);
 								}
 								else {
 									delay = 0;
-									console.log("WITH A DELAY OF ", delay);
+									// u.bug("WITH A DELAY OF ", delay);
 								}
 								
 								u.a.transition(this.nodes[i], "all 2s ease-in-out " + delay + "ms");

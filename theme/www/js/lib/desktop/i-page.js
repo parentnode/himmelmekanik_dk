@@ -1,7 +1,7 @@
 Util.Objects["page"] = new function() {
 	this.init = function(page) {
 
-		
+
 		// header reference
 		page.hN = u.qs("#header");
 
