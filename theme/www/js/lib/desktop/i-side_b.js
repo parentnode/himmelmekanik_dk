@@ -144,7 +144,6 @@ Util.Objects["side_b"] = new function() {
 
 			u.ass(this, {display:"block"});
 			this.resized();
-			// u.a.transition(this, "all 1s ease-in");
 			u.ass(this, {opacity:1});
 
 
@@ -178,38 +177,7 @@ Util.Objects["side_b"] = new function() {
 
 			// Audio player is ready
 			this.player.ready = function() {
-				// u.bug("player ready:", this);
-
-				if(!this.can_autoplay) {
-					u.ac(this, "requires_action");
-//						this.time_status.innerHTML = "Start";
-					this.bn_play = u.ae(this, "div", {class:"play", html:"Start"});
-					this.bn_play.player = this;
-					u.e.click(this.bn_play);
-					this.bn_play.clicked = function() {
-						this.player.loadAndPlay("/assets/side-b");
-
-						u.a.transition(this, "all 2s ease-in-out");
-						u.ass(this, {
-							opacity: 0,
-						});
-
-					}
-
-					u.ass(this.bn_play, {
-						top: ((page.browser_h/4 * 3) - 10) + "px",
-						opacity: 0,
-						transform: "translate3d(0, 15px, 0)"
-					});
-
-					u.a.transition(this.bn_play, "all 2s ease-in-out");
-					u.ass(this.bn_play, {
-						opacity: 1,
-						transform: "translate3d(0, 0, 0)"
-					});
-					
-//						page.resized();
-				}
+				// u.bug("player ready:", this.can_autoplay, this.can_autoplay_muted);
 
 				// Run opening animation only once
 				this.loading = function(event) {
@@ -220,6 +188,7 @@ Util.Objects["side_b"] = new function() {
 
 					u.ac(this, "loading");
 				}
+
 				// Playback has started callback
 				this.playing = function(event) {
 					// u.bug("Playing", event);
@@ -231,8 +200,7 @@ Util.Objects["side_b"] = new function() {
 
 					// make this clear
 					this.is_playing = true;
-
-					
+			
 					// Apply new transition
 					u.a.transition(this.div.track_status, "all 0.5s ease-in-out");
 					u.ass(this.div.track_status, {
@@ -274,7 +242,7 @@ Util.Objects["side_b"] = new function() {
 
 				// Update track name and number based on timeupdates from the audio node
 				this.timeupdate = function(event) {
-					// u.bug("timeupdate", this.div.current_track_i, this.div.current_track, this.currentTime);
+					//u.bug("timeupdate", this.div.current_track_i, this.div.current_track, this.currentTime);
 
 					// first track
 					if(this.div.current_track_i === undefined) {
@@ -325,7 +293,39 @@ Util.Objects["side_b"] = new function() {
 
 				}
 
-				this.loadAndPlay("/assets/side-b");
+
+				if(!this.can_autoplay) {
+					u.ac(this.div, "requires_action");
+
+					this.bn_play = u.ae(this.div, "div", {class:"play", html:"Start"});
+					this.bn_play.player = this;
+					u.e.click(this.bn_play);
+					this.bn_play.clicked = function() {
+						this.player.loadAndPlay("/assets/side-a");
+
+						u.a.transition(this, "all 2s ease-in-out");
+						u.ass(this, {
+							opacity: 0,
+						});
+
+					}
+
+					u.ass(this.bn_play, {
+						top: ((page.browser_h/4 * 3) - 10) + "px",
+						opacity: 0,
+						transform: "translate3d(0, 15px, 0)"
+					});
+
+					u.a.transition(this.bn_play, "all 2s ease-in-out");
+					u.ass(this.bn_play, {
+						opacity: 1,
+						transform: "translate3d(0, 0, 0)"
+					});
+
+				}
+				else {
+					this.loadAndPlay("/assets/side-a");
+				}
 
 			}
 
@@ -461,9 +461,13 @@ Util.Objects["side_b"] = new function() {
 					u.a.transition(this.time_status, "all 0.5s ease-in-out");
 					u.ass(this.time_status, {
 						opacity: 0,
-						// transform: "translate3d(0, -15px, 0)"
+						// transform: "translate3d(0, 15px, 0)"
 
 					})
+
+
+
+
 					// Remove stop events
 					u.e.removeWindowEvent(this, "wheel", this.wheel_event_id);
 					u.e.removeWindowEvent(this, "mousemove", this.mousemove_event_id);
@@ -555,14 +559,13 @@ Util.Objects["side_b"] = new function() {
 			u.ae(this, this.player);
 			u.ae(this, this.stopplayer);
 
-
-
 		}
 		
 		// Destroy side B
 		div.destroy = function() {
 			// u.bug("DESTROY", this)
-
+	
+			// Fading elements and div out
 			u.a.transition(this.song_title, "all 1.5s ease-in-out");
 			u.ass(this.song_title, {
 				opacity:0, 
@@ -571,11 +574,13 @@ Util.Objects["side_b"] = new function() {
 			u.a.transition(this, "all 1s ease-in-out");
 			u.ass(this, {opacity:0});
 
+
 			// Remove stop events
 			u.e.removeWindowEvent(this, "wheel", this.wheel_event_id);
 			u.e.removeWindowEvent(this, "mousemove", this.mousemove_event_id);
 			u.e.removeWindowEvent(this, "blur", this.blur_event_id);
 			u.e.removeWindowEvent(this, "keydown", this.key_event_id);
+
 
 			u.t.setTimer(this, "finalize", 1700);
 			this.finalize = function() {
@@ -588,6 +593,7 @@ Util.Objects["side_b"] = new function() {
 				page.cN.scene.controller();
 			}
 
+			
 		}
 
 		// div is ready
