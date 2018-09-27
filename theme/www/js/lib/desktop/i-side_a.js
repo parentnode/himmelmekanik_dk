@@ -202,25 +202,25 @@ Util.Objects["side_a"] = new function() {
 					this.is_playing = true;
 
 					// Apply new transition
-					u.a.transition(this.div.track_status, "all 0.5s ease-in-out");
+					u.a.transition(this.div.track_status, "all 1.5s ease-in-out 1.5s");
 					u.ass(this.div.track_status, {
 						opacity: 1
 					});
 
 					// Apply new transition
-					u.a.transition(this.div.time_status, "all 0.5s ease-in-out");
+					u.a.transition(this.div.time_status, "all 1.5s ease-in-out 1.5s");
 					u.ass(this.div.time_status, {
 						opacity: 1
 					});
 
 					// Apply new transition
-					u.a.transition(this.div.side_title, "all 0.5s ease-in-out");
+					u.a.transition(this.div.side_title, "all 1.5s ease-in-out 1.5s");
 					u.ass(this.div.side_title, {
 						opacity: 1
 					});
 					
 					// Apply new transition
-					u.a.transition(this.div.song_title, "all 0.5s ease-in-out");
+					u.a.transition(this.div.song_title, "all 1.5s ease-in-out 1.5s");
 					u.ass(this.div.song_title, {
 						opacity: 1
 					});
@@ -303,12 +303,12 @@ Util.Objects["side_a"] = new function() {
 					this.bn_play.clicked = function() {
 						this.player.loadAndPlay("/assets/side-a");
 
-						u.a.transition(this, "all 2s ease-in-out");
+						u.a.transition(this, "all 1.5s ease-in-out");
 						u.ass(this, {
 							opacity: 0,
 						});
-
-					}
+					
+					};
 
 					u.ass(this.bn_play, {
 						top: ((page.browser_h/4 * 3) - 10) + "px",
@@ -316,7 +316,7 @@ Util.Objects["side_a"] = new function() {
 						transform: "translate3d(0, 15px, 0)"
 					});
 
-					u.a.transition(this.bn_play, "all 2s ease-in-out");
+					u.a.transition(this.bn_play, "all 1.5s ease-in-out");
 					u.ass(this.bn_play, {
 						opacity: 1,
 						transform: "translate3d(0, 0, 0)"
