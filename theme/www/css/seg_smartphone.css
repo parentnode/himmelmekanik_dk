@@ -78,7 +78,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	#content .scene p {width: 800px}
 }
 #content .scene h1,
-#content .scene h2 {color: #f0bd18; width: 85%;}
+#content .scene h2 {color: #082E4C; width: 85%;}
 #content .scene div.audioplayer {width: 50px; height: 50px;}
 #content .scene div.circle {
 	position: absolute;
@@ -90,7 +90,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	transform: rotate(-90deg);
 }
 #content .scene p {
-	font-family: "Kalam Bold", Verdana, Arial, sans-serif; color: #000000;
+	font-family: "Kalam Bold", Verdana, Arial, sans-serif; color: #082E4C;
 	-webkit-text-size-adjust: none;
 	-webkit-font-smoothing: antialiased;
 }
