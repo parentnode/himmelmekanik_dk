@@ -118,6 +118,10 @@ Util.Objects["letter"] = new function() {
 
 				this.wrapper = u.wc(this, "div");
 
+				//get references to language selector links
+				this.inactive_language = u.qs("#content .scene div.letter ul.language_selector li.inactive.language");
+				this.active_language = u.qs("#content .scene div.letter ul.language_selector li.active.language");
+
 				// get reference to headline
 				this.h1 = u.qs("h1", this);
 
@@ -194,6 +198,29 @@ Util.Objects["letter"] = new function() {
 			// Map current show progress
 			this.current_front_node = this.nodes[this.current_front_node_i++];
 
+			// Language selector hovering 
+			u.e.hover(this.inactive_language);
+			
+			this.inactive_language.over = function(event) {
+				u.ass(div.inactive_language, {
+					"border-bottom":"1px solid"
+				})
+
+				u.ass(div.active_language, {
+					"border-bottom":0
+				})
+			}
+			
+			this.inactive_language.out = function(event) {
+				u.ass(div.active_language, {
+					"border-bottom":"1px solid"
+				})
+
+				u.ass(div.inactive_language, {
+					"border-bottom":0
+				})
+			}
+			
 			// Show Headline
 			u.a.transition(this.current_front_node, "all 2s ease-in-out");
 			u.ass(this.current_front_node, {

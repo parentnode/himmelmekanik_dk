@@ -14,7 +14,7 @@ $page->bodyClass("front");
 $page->pageTitle("Himmelmekanik");
 
 $page->page(array(
-	"templates" => "pages/front.php"
+	"templates" => "pages/front_en.php"
 	)
 );
 exit();

@@ -1,6 +1,6 @@
 /* LETTER */
 #content .scene div.letter {opacity: 0; overflow-y: auto; 
-	/* position: absolute; */
+	position: relative;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -31,4 +31,27 @@
 
 #content .scene div.letter div.cloud {
 	opacity: 0;
+}
+
+#content .scene div.letter ul.language_selector {
+	position: absolute;
+	right: 3%;
+	top: 3%;
+
+}
+
+#content .scene div.letter ul.language_selector li {
+	display: inline-block;
+	padding: 0 0.2em;
+	padding-bottom: 3px;
+}
+
+#content .scene div.letter ul.language_selector li.active.language {
+	border-bottom: 1px solid;
+	color: #082e4c;
+}
+
+#content .scene div.letter ul.language_selector li.inactive.language a {	
+	text-decoration: none;
+	color: #253a47;
 }

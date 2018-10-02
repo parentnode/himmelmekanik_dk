@@ -26,25 +26,26 @@
 		</ul>
 
 		<ul class="language_selector">
-			<li class = "active language">DK</li>
-			<li class = "inactive language"><a href="/en">EN</a></li>
+			<li class = "inactive language"><a href="/">DK</a></li>
+			<li class = "active language">EN</li>
 		</ul>
 
 		<div class="articlebody" itemprop="articleBody">
 			<p>
-				Intet menneske kan lide at blive forstyrret. Så simpelt er det vel. Alligevel er vi ved at glemme det uforstyrrede øjeblik; vi lever i det evige nu, hvor alt sker, hele tiden. Jeg gør det selv. Jeg vil gerne gøre det mindre. 
+				No one likes to be disturbed. It's that simple. Nevertheless, we are forgetting the undisturbed moment; We live in the eternal now where everything happens all the time. I do too, and I’d like to do it less.
 			</p>
 			<p>
-				Derfor er jeg her. Sammen med dig, og min nye plade, ‘Himmelmekanik’. Frugten af flere års arbejde, kræfter, penge, blod, sved, spyt, snot og tårer. Alt sammen for at skabe et pusterum, en lytteoplevelse, en mulighed for fordybelse.
+				That's why I'm here. Along with you and my new album, 'Himmelmekanik’'. The fruit of years of effort, blood, sweat and tears. All aimed at creating a respite, a listening experience, an opportunity to immerse in music.
 			</p>
 			<p>
-				Lad os derfor sammen, nu, skabe et uforstyrret øjeblik, som ingen for altid vil kunne tage fra os.
+				Let’s create an undisturbed moment together. Right here, right now. A moment no one can ever take from us.
 			</p>
 			<p>
-				Når du scroller forbi denne tekst starter musikken. Hvis du bevæger din mus, din cursor eller klikker på noget, så stopper musikken. Sådan er reglerne. Læn dig derfor tilbage, lyt og nyd et langstrakt øjeblik uden forstyrrelser.
+				When you scroll past this text, the music starts. If you move your mouse or click on something, the music stops. That's the rules. Therefore, lie back, listen and enjoy a moment without disturbance.
+
 			</p>
 			<p>
-				Fred og Kærlighed<br />
+				Peace and Love<br />
 				Marc Facchini
 			</p>
 		</div>
