@@ -576,7 +576,7 @@ Util.Objects["letter"] = new function() {
 
 			// Fade in the shuffled clouds (CSS transition)
 			for (i = 0; i < clouds_shuffled.length; i++) {				
-				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*75 + "ms");
+				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*125 + "ms");
 				u.ass(clouds_shuffled[i], {
 					"opacity":1
 				})
