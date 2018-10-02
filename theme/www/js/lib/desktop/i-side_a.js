@@ -303,11 +303,18 @@ Util.Objects["side_a"] = new function() {
 					this.bn_play.clicked = function() {
 						this.player.loadAndPlay("/assets/side-a");
 
-						u.a.transition(this, "all 1.5s ease-in-out");
+						u.a.transition(this, "all 1.5s ease-in-out", removeButton);
 						u.ass(this, {
 							opacity: 0,
 						});
 					
+						function removeButton() {
+							// Remove button from DOM
+							this.parentNode.removeChild(this);
+						};
+
+						delete this.clicked; // Prevent multiple clicks
+
 					};
 
 					u.ass(this.bn_play, {
@@ -438,10 +445,17 @@ Util.Objects["side_a"] = new function() {
 					this.bn_play.clicked = function(event) {
 						page.cN.scene.side_a.playAgain(event);
 
-						u.a.transition(this, "all 1.5s ease-in-out");
+						u.a.transition(this, "all 1.5s ease-in-out", removeButton);
 						u.ass(this, {
 							opacity: 0,
 						});
+
+						function removeButton() {
+							// Remove button from DOM
+							this.parentNode.removeChild(this);
+						};
+
+						delete this.clicked; // Prevent multiple clicks
 
 					}
 
