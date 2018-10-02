@@ -6115,10 +6115,14 @@ Util.Objects["side_a"] = new function() {
 					u.e.click(this.bn_play);
 					this.bn_play.clicked = function() {
 						this.player.loadAndPlay("/assets/side-a");
-						u.a.transition(this, "all 1.5s ease-in-out");
+						u.a.transition(this, "all 1.5s ease-in-out", removeButton);
 						u.ass(this, {
 							opacity: 0,
 						});
+						function removeButton() {
+							this.parentNode.removeChild(this);
+						};
+						delete this.clicked; 
 					};
 					u.ass(this.bn_play, {
 						top: ((page.browser_h/4 * 3) - 10) + "px",
@@ -6206,10 +6210,14 @@ Util.Objects["side_a"] = new function() {
 					u.e.click(this.bn_play);
 					this.bn_play.clicked = function(event) {
 						page.cN.scene.side_a.playAgain(event);
-						u.a.transition(this, "all 1.5s ease-in-out");
+						u.a.transition(this, "all 1.5s ease-in-out", removeButton);
 						u.ass(this, {
 							opacity: 0,
 						});
+						function removeButton() {
+							this.parentNode.removeChild(this);
+						};
+						delete this.clicked; 
 					}
 					u.ass(this.bn_play, {
 						top: ((page.browser_h/4 * 3) - 10) + "px",
@@ -6593,10 +6601,14 @@ Util.Objects["side_b"] = new function() {
 					u.e.click(this.bn_play);
 					this.bn_play.clicked = function() {
 						this.player.loadAndPlay("/assets/side-a");
-						u.a.transition(this, "all 2s ease-in-out");
+						u.a.transition(this, "all 2s ease-in-out", removeButton);
 						u.ass(this, {
 							opacity: 0,
 						});
+						function removeButton() {
+							this.parentNode.removeChild(this);
+						};
+						delete this.clicked; 
 					}
 					u.ass(this.bn_play, {
 						top: ((page.browser_h/4 * 3) - 10) + "px",
@@ -6684,10 +6696,14 @@ Util.Objects["side_b"] = new function() {
 					u.e.click(this.bn_play);
 					this.bn_play.clicked = function(event) {
 						page.cN.scene.side_b.playAgain(event);
-						u.a.transition(this, "all 1.5s ease-in-out");
+						u.a.transition(this, "all 1.5s ease-in-out", removeButton);
 						u.ass(this, {
 							opacity: 0,
 						});
+						function removeButton() {
+							this.parentNode.removeChild(this);
+						};
+						delete this.clicked; 
 					}
 					u.ass(this.bn_play, {
 						top: ((page.browser_h/4 * 3) - 10) + "px",
