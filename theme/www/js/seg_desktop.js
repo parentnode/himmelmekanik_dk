@@ -5562,6 +5562,9 @@ Util.Objects["letter"] = new function() {
 			if(!this.is_ready) {
 				u.rc(this, "i:letter");
 				this.wrapper = u.wc(this, "div");
+				this.language_selector = u.qs("ul.language_selector")
+				this.inactive_language = u.qs("ul.language_selector li.inactive.language");
+				this.active_language = u.qs("ul.language_selector li.active.language");
 				this.h1 = u.qs("h1", this);
 				this.nodes = u.qsa("h1,p", this);
 				var i, node;
@@ -5607,6 +5610,28 @@ Util.Objects["letter"] = new function() {
 			u.e.addEvent(this, "scroll", this.scrolled);
 			this.current_front_node_i = 0;
 			this.current_front_node = this.nodes[this.current_front_node_i++];
+			u.a.transition(this.language_selector, "all 2s ease-in-out");
+			u.ass(this.language_selector, {
+				opacity: 1,
+				transform: "translate3D(0, 0, 0)"
+			});
+			u.e.hover(this.inactive_language);
+			this.inactive_language.over = function(event) {
+				u.ass(div.inactive_language, {
+					"border-bottom":"1px solid"
+				})
+				u.ass(div.active_language, {
+					"border-bottom":0
+				})
+			}
+			this.inactive_language.out = function(event) {
+				u.ass(div.active_language, {
+					"border-bottom":"1px solid"
+				})
+				u.ass(div.inactive_language, {
+					"border-bottom":0
+				})
+			}
 			u.a.transition(this.current_front_node, "all 2s ease-in-out");
 			u.ass(this.current_front_node, {
 				opacity: 1,
@@ -5633,7 +5658,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 2 + "px",
+				"height":this.offsetHeight * 3 + "px",
 				"z-index":"-10"
 			});
 			u.ass(this.clouds_mid, {
@@ -5641,7 +5666,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 2 + "px",
+				"height":this.offsetHeight * 3 + "px",
 				"z-index":"-20"
 			});
 			u.ass(this.clouds_back, {
@@ -5649,7 +5674,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 2 + "px",
+				"height":this.offsetHeight * 3 + "px",
 				"z-index":"-30"
 			}) 
 			this.layer_names = ["front", "mid", "back"];
@@ -5880,7 +5905,7 @@ Util.Objects["letter"] = new function() {
 			}
 			clouds_shuffled = shuffle(clouds);
 			for (i = 0; i < clouds_shuffled.length; i++) {				
-				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*75 + "ms");
+				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*125 + "ms");
 				u.ass(clouds_shuffled[i], {
 					"opacity":1
 				})

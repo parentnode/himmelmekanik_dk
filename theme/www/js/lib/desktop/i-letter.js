@@ -118,9 +118,10 @@ Util.Objects["letter"] = new function() {
 
 				this.wrapper = u.wc(this, "div");
 
-				//get references to language selector links
-				this.inactive_language = u.qs("#content .scene div.letter ul.language_selector li.inactive.language");
-				this.active_language = u.qs("#content .scene div.letter ul.language_selector li.active.language");
+				//get reference to language selector + links
+				this.language_selector = u.qs("ul.language_selector")
+				this.inactive_language = u.qs("ul.language_selector li.inactive.language");
+				this.active_language = u.qs("ul.language_selector li.active.language");
 
 				// get reference to headline
 				this.h1 = u.qs("h1", this);
@@ -198,7 +199,13 @@ Util.Objects["letter"] = new function() {
 			// Map current show progress
 			this.current_front_node = this.nodes[this.current_front_node_i++];
 
-			// Language selector hovering 
+			// Show language selector and setup hovering behavior
+			u.a.transition(this.language_selector, "all 2s ease-in-out");
+			u.ass(this.language_selector, {
+				opacity: 1,
+				transform: "translate3D(0, 0, 0)"
+			});
+			
 			u.e.hover(this.inactive_language);
 			
 			this.inactive_language.over = function(event) {
