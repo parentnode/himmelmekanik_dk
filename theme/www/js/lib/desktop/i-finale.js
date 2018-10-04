@@ -57,7 +57,7 @@ Util.Objects["finale"] = new function() {
 				this.ask_question = u.qs(".scene .finale .question", this);
 				u.e.click(this.ask_question);
 				this.ask_question.clicked = function() {
-					location.href = "mailto:marc@fachini.dk";
+					location.href = "mailto:marc@marcfacchini.dk";
 				}
 
 				// Setting up clouds
