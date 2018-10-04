@@ -45,7 +45,7 @@
 
 			</p>
 			<p>
-				Peace and Love<br />
+				Peace and love<br />
 				Marc Facchini
 			</p>
 		</div>
@@ -65,8 +65,8 @@
 	</div>
 
 	<div class="intermezzo i:intermezzo">
-		<p>‘Himmelmekanik’ er mixet som en LP, derfor vender vi lige pladen.</p>
-		<p>Det giver dig lige 10 sekunder til at sætte en tanke i gang.</p>
+		<p>‘Himmelmekanik’ is mixed as a vinyl record. Therefore, we’ll be putting on side B.</p>
+		<p>This gives you 10 seconds to have a random thought.</p>
 	</div>
 
 	<div class="side side_b i:side_b">
@@ -84,14 +84,13 @@
 	</div>
 
 	<div class="finale i:finale">
-		<p>Tak fordi du tog dig tid til at lytte med.</p>
+		<p>Thanks for spending the time and listening all the way to the end.</p>
 		<p>
-			<span class="listen">Lyt igen</span> eller <span class="question">stil mig et spørgsmål</span>, <br />
-			hvis du har lyst.
+			<span class="listen">Give it another spin</span>, or <span class="question">ask me a question</span>, <br />
+			if you like.
 		</p>
 		<p>
-			Bh<br />
-			Fred og Kærlighed<br />
+			Peace and love<br />
 			Marc Facchini
 		</p>
 	</div>
