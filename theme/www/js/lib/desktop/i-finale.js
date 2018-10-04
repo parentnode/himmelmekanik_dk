@@ -53,6 +53,13 @@ Util.Objects["finale"] = new function() {
 					location.reload(true);
 				}
 
+				// Setting up "ask me a question"
+				this.ask_question = u.qs(".scene .finale .question", this);
+				u.e.click(this.ask_question);
+				this.ask_question.clicked = function() {
+					location.href = "mailto:marc@fachini.dk";
+				}
+
 				// Setting up clouds
 				this.addCloud = function(image, classname) {
 					var cloud = u.ae(this, "div", {

@@ -6826,6 +6826,11 @@ Util.Objects["finale"] = new function() {
 				this.listen_again.clicked = function() {
 					location.reload(true);
 				}
+				this.ask_question = u.qs(".scene .finale .question", this);
+				u.e.click(this.ask_question);
+				this.ask_question.clicked = function() {
+					location.href = "mailto:marc@fachini.dk";
+				}
 				this.addCloud = function(image, classname) {
 					var cloud = u.ae(this, "div", {
 						class: classname
