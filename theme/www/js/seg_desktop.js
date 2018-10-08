@@ -5980,7 +5980,7 @@ Util.Objects["side_a"] = new function() {
 				}
 				if(this.time_status) {
 					u.ass(this.time_status, {
-						top: ((page.browser_h/4 * 3) - 10) + "px"
+						top: ((page.browser_h/4 * 3) - 30) + "px"
 					});
 				}
 				if(this.player && this.player.bn_play) {
