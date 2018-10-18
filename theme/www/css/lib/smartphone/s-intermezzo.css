@@ -1,0 +1,84 @@
+/* INTERMEZZO */
+#content .scene div.intermezzo {opacity: 0; height: 100%;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+#content .scene div.intermezzo div.table {display: table; width: 100%; height: 100%;}
+#content .scene div.intermezzo div.cell {display: table-cell; vertical-align: middle;}
+
+#content .scene div.intermezzo p {z-index: 15; padding-top: 20px; padding-bottom: 20px;}
+
+/* Clouds */
+#content .scene .intermezzo .cloud {
+	z-index: -1;
+	position: absolute;
+}
+#content .scene .intermezzo .cloud.left {
+	left: 0;
+}
+#content .scene .intermezzo .cloud.right {
+	right: 0;
+}
+#content .scene .intermezzo .cloud.top {
+	top: 0;
+}
+#content .scene .intermezzo .cloud.middle {
+	top: 30%;
+}
+#content .scene .intermezzo .cloud.bottom {
+	bottom: 0;
+}
+
+
+#content .scene .intermezzo .cloud img {
+	animation-name: cloudUpDown;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+
+#content .scene .intermezzo .cloud.left.top img {
+	animation-delay: 1.6s;
+	animation-duration: 5s;
+
+}
+#content .scene .intermezzo .cloud.left.middle img {
+	animation-delay: 1.2s;
+	animation-duration: 7s;
+
+}
+#content .scene .intermezzo .cloud.left.bottom img {
+	animation-delay: 1.8s;
+	animation-duration: 6s;
+
+}
+#content .scene .intermezzo .cloud.right.top img {
+	animation-delay: 0.8s;
+	animation-duration: 6.5s;
+
+}
+#content .scene .intermezzo .cloud.right.middle img {
+	animation-delay: 0.6s;
+	animation-duration: 5.5s;
+
+}
+#content .scene .intermezzo .cloud.right.bottom img {
+	animation-delay: 1s;
+	animation-duration: 7.5s;
+
+}
+
+@keyframes cloudUpDown {
+	from {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-25px);
+
+	}
+	to {
+		transform: translateY(0px);
+	}
+}

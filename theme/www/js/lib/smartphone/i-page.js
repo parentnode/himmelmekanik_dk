@@ -1,15 +1,12 @@
 Util.Objects["page"] = new function() {
 	this.init = function(page) {
 
+
 		// header reference
 		page.hN = u.qs("#header");
 
 		// content reference
 		page.cN = u.qs("#content", page);
-
-		// navigation reference
-		page.nN = u.qs("#navigation", page);
-		page.nN = u.ie(page.hN, page.nN);
 
 		// footer reference
 		page.fN = u.qs("#footer");
@@ -17,56 +14,78 @@ Util.Objects["page"] = new function() {
 
 		// global resize handler 
 		page.resized = function() {
-//			u.bug("page.resized:" + u.nodeId(this));
+			// u.bug("page.resized", this);
+
+			this.browser_h = u.browserH();
+			this.browser_w = u.browserW();
+
+			u.ass(this.cN, {
+				height: this.browser_h + "px"
+			});
 
 			// forward scroll event to current scene
-			if(page.cN && page.cN.scene && typeof(page.cN.scene.resized) == "function") {
-				page.cN.scene.resized();
+			if(this.cN && this.cN.scene && typeof(this.cN.scene.resized) == "function") {
+				this.cN.scene.resized();
 			}
 		}
 
 		// global scroll handler 
 		page.scrolled = function() {
-//			u.bug("page.scrolled:" + u.nodeId(this))
+			// u.bug("page.scrolled:", this);
+
+			this.scroll_y = u.scrollY();
 
 			// forward scroll event to current scene
-			if(page.cN && page.cN.scene && typeof(page.cN.scene.scrolled) == "function") {
-				page.cN.scene.scrolled();
+			if(this.cN && this.cN.scene && typeof(this.cN.scene.scrolled) == "function") {
+				this.cN.scene.scrolled();
 			}
 		}
 
 		// Page is ready
 		page.ready = function() {
-			u.bug("page.ready:" + u.nodeId(this));
+			// u.bug("page.ready:", this);
 
 			// page is ready to be shown - only initalize if not already shown
 			if(!this.is_ready) {
 
-				// page is ready
 				this.is_ready = true;
+				u.rc(this, "i:page");
+
+
+				// Map scene reference
+				this.cN.scene = u.qs(".scene", this);
 
 				// set resize handler
-				u.e.addEvent(window, "resize", page.resized);
+				u.e.addWindowEvent(this, "resize", "resized");
 				// set scroll handler
-				u.e.addEvent(window, "scroll", page.scrolled);
+				u.e.addWindowEvent(this, "scroll", "scrolled");
 
-				this.initHeader();
+
+				// initial page size recalculation
+				this.resized();
+
+
+				// Load scene, when font's are ready
+				this.fontsLoaded = function() {
+					u.bug("fontsLoaded");
+
+
+					// Initialize scene
+					u.o.front.init(page.cN.scene);
+
+				}
+
+				// Preload font
+				u.fontsReady(this, 
+					{"family":"GT America", "weight":900}
+				);
+
 			}
 
-		}
-
-		// initialize header
-		page.initHeader = function() {
-			var frontpage_link = u.qs("li.front a", this.nN);
-			if(frontpage_link) {
-				var logo = u.ae(this.hN, "a", {"class":"logo", "href":frontpage_link.href, "html":frontpage_link.innerHTML});
-				u.ce(logo, {"type":"link"});
-			}
 		}
 
 		// ready to start page builing process
 		page.ready();
 	}
 }
-
-u.e.addDOMReadyEvent(u.init);
+u.e.addDOMReadyEvent(function() {u.o.page.init(page)});
