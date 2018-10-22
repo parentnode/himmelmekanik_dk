@@ -48,7 +48,7 @@ li {font-size: 13px; line-height: 1.25em;}
 dl {font-size: 0;} 
 dt, 
 dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.25em;}
-#page {position: relative; min-height: 100%; min-width: 600px;}
+#page {position: relative; min-height: 100%; min-width: 100%;}
 
 
 /*s-header.css*/
@@ -70,15 +70,15 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .scene h4,
 #content .scene h5,
 #content .scene h6,
-#content .scene p {width: 65%; margin: 0 auto; text-align: center;}
+#content .scene p {margin: 0 auto; text-align: center;}
 @media screen and (max-width: 600px) {
-	#content .scene p {width: 370px}
+	#content .scene h1 {padding: 0;}
 }
 @media screen and (min-width: 1200px) {
 	#content .scene p {width: 800px}
 }
 #content .scene h1,
-#content .scene h2 {color: #082E4C; width: 85%;}
+#content .scene h2 {color: #082E4C;}
 #content .scene div.audioplayer {width: 50px; height: 50px;}
 #content .scene div.circle {
 	position: absolute;
@@ -209,4 +209,293 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .field div.hint {z-index: 9; border: 1px solid #007633; color: #007633; background: #d0f4e0;}
 #content .field.focus div.hint,
 #content .field.hover div.hint {display: block;}
+
+
+/*s-hovers.css*/
+#header .logo:hover,
+#navigation ul li:hover {text-decoration: none;}
+#content .scene a:hover {text-decoration: underline;}
+#content ul.actions input.button:hover,
+#content ul.actions a.button:hover {background-color: #bebebe;}
+#content ul.actions input.button.primary:hover,
+#content ul.actions a.button.primary:hover {background-color: #313942;}
+#content ul.actions input.button.secondary:hover,
+#content ul.actions a.button.secondary:hover {background-color: #313942;}
+
+
+/*s-letter.css*/
+#content .scene div.letter {opacity: 0; overflow-y: auto; 
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+#content .scene div.letter ul.info {display: none;}
+#content .scene div.letter div.articlebody {padding: 100px 0;}
+#content .scene div.letter h1 span,
+#content .scene div.letter p span {display: inline-block;}
+#content .scene div.letter div.center {
+	width: 640px;
+	margin-left: -320px;
+	text-align: center;
+}
+#content .scene div.letter div.center img {
+	display: inline-block;
+}
+#content .scene div.letter div.clouds {
+	overflow: hidden;
+}
+#content .scene div.letter div.cloud {
+	opacity: 0;
+}
+#content .scene div.letter ul.language_selector {
+	position: absolute;
+	right: 3%;
+	top: 3%;
+	opacity: 0;
+}
+#content .scene div.letter ul.language_selector li {
+	display: inline-block;
+	padding: 0 0.2em;
+	padding-bottom: 3px;
+}
+#content .scene div.letter ul.language_selector li.active.language {
+	border-bottom: 1px solid;
+	color: #082e4c;
+}
+#content .scene div.letter ul.language_selector li.inactive.language a {	
+	text-decoration: none;
+	color: #253a47;
+}
+
+/*s-sides.css*/
+#content .scene div.side {position: relative; opacity: 0; height: 100%;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+#content .scene div.side canvas {width: 100%;}
+#content .scene div.side h2.song_title {position: absolute; font-size: 70px; color: #082E4C; opacity: 0; left: 0; width: 100%; padding: 0; text-align: center;}
+#content .scene div.side h3.side_title,
+#content .scene div.side h3.track_status,
+#content .scene div.side h3.time_status {position: absolute; opacity: 0; font-size: 14px; color: #082E4C; padding: 0; left: 0; width: 100%; text-align: center;}
+#content .scene div.side.loading h3.time_status {text-indent: -9999px; height: 30px;
+	background: transparent url(/img/gx_loader.gif) no-repeat center center;
+	background-size: 30px auto;
+}
+#content .scene div.side.requires_action div.play {position: absolute; opacity: 0; font-size: 20px; background: #f0bd18; color: #ffffff; padding: 5px 10px; border-radius: 5px; display: inline-block; width: 120px;
+	text-transform: uppercase; left: 50%; margin-left: -70px; text-align: center; cursor: pointer;
+}
+#content .scene div.side ul {
+	display: none;
+}
+#content .scene .side .cloud {
+	z-index: -10;
+	position: absolute;
+}
+#content .scene .side .cloud.left {
+	left: 0;
+}
+#content .scene .side .cloud.right {
+	right: 0;
+}
+#content .scene .side .cloud.top {
+	top: 0;
+}
+#content .scene .side .cloud.middle {
+	top: 30%;
+}
+#content .scene .side .cloud.bottom {
+	bottom: 0;
+}
+#content .scene .side .cloud img {
+	animation-name: cloudUpDown;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+#content .scene .side .cloud.left.top img {
+	animation-delay: 1.6s;
+	animation-duration: 5s;
+}
+#content .scene .side .cloud.left.middle img {
+	animation-delay: 1.2s;
+	animation-duration: 7s;
+}
+#content .scene .side .cloud.left.bottom img {
+	animation-delay: 1.8s;
+	animation-duration: 6s;
+}
+#content .scene .side .cloud.right.top img {
+	animation-delay: 0.8s;
+	animation-duration: 6.5s;
+}
+#content .scene .side .cloud.right.middle img {
+	animation-delay: 0.6s;
+	animation-duration: 5.5s;
+}
+#content .scene .side .cloud.right.bottom img {
+	animation-delay: 1s;
+	animation-duration: 7.5s;
+}
+@keyframes cloudUpDown {
+	from {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-25px);
+	}
+	to {
+		transform: translateY(0px);
+	}
+}
+
+
+/*s-intermezzo.css*/
+#content .scene div.intermezzo {opacity: 0; height: 100%;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+#content .scene div.intermezzo div.table {display: table; width: 100%; height: 100%;}
+#content .scene div.intermezzo div.cell {display: table-cell; vertical-align: middle;}
+#content .scene div.intermezzo p {z-index: 15; padding-top: 20px; padding-bottom: 20px;}
+#content .scene .intermezzo .cloud {
+	z-index: -1;
+	position: absolute;
+}
+#content .scene .intermezzo .cloud.left {
+	left: 0;
+}
+#content .scene .intermezzo .cloud.right {
+	right: 0;
+}
+#content .scene .intermezzo .cloud.top {
+	top: 0;
+}
+#content .scene .intermezzo .cloud.middle {
+	top: 30%;
+}
+#content .scene .intermezzo .cloud.bottom {
+	bottom: 0;
+}
+#content .scene .intermezzo .cloud img {
+	animation-name: cloudUpDown;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+#content .scene .intermezzo .cloud.left.top img {
+	animation-delay: 1.6s;
+	animation-duration: 5s;
+}
+#content .scene .intermezzo .cloud.left.middle img {
+	animation-delay: 1.2s;
+	animation-duration: 7s;
+}
+#content .scene .intermezzo .cloud.left.bottom img {
+	animation-delay: 1.8s;
+	animation-duration: 6s;
+}
+#content .scene .intermezzo .cloud.right.top img {
+	animation-delay: 0.8s;
+	animation-duration: 6.5s;
+}
+#content .scene .intermezzo .cloud.right.middle img {
+	animation-delay: 0.6s;
+	animation-duration: 5.5s;
+}
+#content .scene .intermezzo .cloud.right.bottom img {
+	animation-delay: 1s;
+	animation-duration: 7.5s;
+}
+@keyframes cloudUpDown {
+	from {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-25px);
+	}
+	to {
+		transform: translateY(0px);
+	}
+}
+
+
+/*s-finale.css*/
+#content .scene div.finale {
+	opacity: 0; 
+	height: 100%;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+#content .scene div.finale div.table {display: table; width: 100%; height: 100%;}
+#content .scene div.finale div.cell {display: table-cell; vertical-align: middle;}
+#content .scene div.finale p {padding-top: 20px; padding-bottom: 20px;}
+#content .scene div.finale p span {text-decoration: underline; cursor: pointer;}
+#content .scene .finale .cloud {
+	z-index: -1;
+	position: absolute;
+}
+#content .scene .finale .cloud.left {
+	left: 0;
+}
+#content .scene .finale .cloud.right {
+	right: 0;
+}
+#content .scene .finale .cloud.top {
+	top: 0;
+}
+#content .scene .finale .cloud.middle {
+	top: 30%;
+}
+#content .scene .finale .cloud.bottom {
+	bottom: 0;
+}
+#content .scene .finale .cloud img {
+	animation-name: cloudUpDown;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+}
+#content .scene .finale .cloud.left.top img {
+	animation-delay: 1.6s;
+	animation-duration: 5s;
+}
+#content .scene .finale .cloud.left.middle img {
+	animation-delay: 1.2s;
+	animation-duration: 7s;
+}
+#content .scene .finale .cloud.left.bottom img {
+	animation-delay: 1.8s;
+	animation-duration: 6s;
+}
+#content .scene .finale .cloud.right.top img {
+	animation-delay: 0.8s;
+	animation-duration: 6.5s;
+}
+#content .scene .finale .cloud.right.middle img {
+	animation-delay: 0.6s;
+	animation-duration: 5.5s;
+}
+#content .scene .finale .cloud.right.bottom img {
+	animation-delay: 1s;
+	animation-duration: 7.5s;
+}
+@keyframes cloudUpDown {
+	from {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-25px);
+	}
+	to {
+		transform: translateY(0px);
+	}
+}
 
