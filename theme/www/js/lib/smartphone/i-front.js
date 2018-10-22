@@ -117,11 +117,11 @@ Util.Objects["front"] = new function() {
 					// "max_height":1400,
 					"unit":"px",
 					"h1":{
-						"min_size":40,
+						"min_size":30,
 						"max_size":110
 					},
 					"h2":{
-						"min_size":30,
+						"min_size":24,
 						"max_size":60
 					},
 					"h3":{
@@ -129,7 +129,7 @@ Util.Objects["front"] = new function() {
 						"max_size":18
 					},
 					"p":{
-						"min_size":14,
+						"min_size":20,
 						"max_size":32
 					},
 				});
@@ -160,8 +160,8 @@ Util.Objects["front"] = new function() {
 		scene.controller = function() {
 
 			if(this.is_ready) {
-				// this.letter.is_done = true;
-				// this.side_a.is_done = true;
+				this.letter.is_done = true;
+				this.side_a.is_done = true;
 				// this.intermezzo.is_done = true;
 				// this.side_b.is_done = true;
 

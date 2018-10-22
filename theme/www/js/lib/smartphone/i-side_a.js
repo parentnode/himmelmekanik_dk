@@ -42,23 +42,23 @@ Util.Objects["side_a"] = new function() {
 				}
 				if(this.side_title) {
 					u.ass(this.side_title, {
-						top: (page.browser_h/4 + 10) + "px"
+						top: (page.browser_h/3 + 15) + "px"
 					});
 				}
 				if(this.track_status) {
 					u.ass(this.track_status, {
-						top: (page.browser_h/4 - 10) + "px"
+						top: (page.browser_h/3 - 5) + "px"
 					});
 				}
 				if(this.time_status) {
 					u.ass(this.time_status, {
-						top: ((page.browser_h/4 * 3) - 30) + "px"
+						top: ((page.browser_h/5 * 3) + 10) + "px"
 					});
 				}
 
 				if(this.player && this.player.bn_play) {
 					u.ass(this.player.bn_play, {
-						top: ((page.browser_h/4 * 3) - 10) + "px"
+						top: ((page.browser_h/5 * 3) - 10) + "px",
 					});
 				}
 
@@ -318,7 +318,7 @@ Util.Objects["side_a"] = new function() {
 					};
 
 					u.ass(this.bn_play, {
-						top: ((page.browser_h/4 * 3) - 10) + "px",
+						top: ((page.browser_h/5 * 3) - 10) + "px",
 						opacity: 0,
 						transform: "translate3d(0, 15px, 0)"
 					});
@@ -460,7 +460,7 @@ Util.Objects["side_a"] = new function() {
 					}
 
 					u.ass(this.bn_play, {
-						top: ((page.browser_h/4 * 3) - 10) + "px",
+						top: ((page.browser_h/5 * 3) - 10) + "px",
 						opacity: 0,
 						transform: "translate3d(0, 15px, 0)"
 					});
