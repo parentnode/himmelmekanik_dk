@@ -265,7 +265,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 3.5 + "px",
+				"height":this.offsetHeight * 4 + "px",
 				"z-index":"-10"
 			});
 
@@ -274,7 +274,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 3.5 + "px",
+				"height":this.offsetHeight * 4 + "px",
 				"z-index":"-20"
 			});
 
@@ -283,7 +283,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 3.5 + "px",
+				"height":this.offsetHeight * 4 + "px",
 				"z-index":"-30"
 			}) 
 			
