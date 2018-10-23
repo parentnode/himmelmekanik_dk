@@ -43,6 +43,7 @@
 
 #content .scene div.letter ul.language_selector li {
 	display: inline-block;
+	margin-right: 10px;
 	padding: 0 0.2em;
 	padding-bottom: 3px;
 }
@@ -52,7 +53,7 @@
 	color: #082e4c;
 }
 
-#content .scene div.letter ul.language_selector li.inactive.language a {	
+#content .scene div.letter ul.language_selector li.inactive.language a {
 	text-decoration: none;
 	color: #253a47;
 }

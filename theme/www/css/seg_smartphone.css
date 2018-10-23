@@ -257,6 +257,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 }
 #content .scene div.letter ul.language_selector li {
 	display: inline-block;
+	margin-right: 10px;
 	padding: 0 0.2em;
 	padding-bottom: 3px;
 }
@@ -264,7 +265,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	border-bottom: 1px solid;
 	color: #082e4c;
 }
-#content .scene div.letter ul.language_selector li.inactive.language a {	
+#content .scene div.letter ul.language_selector li.inactive.language a {
 	text-decoration: none;
 	color: #253a47;
 }
