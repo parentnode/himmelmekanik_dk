@@ -111,17 +111,17 @@ Util.Objects["front"] = new function() {
 
 				// Apply global text scaling
 				u.textscaler(this, {
-					"min_width":600,
+					"min_width":320,
 					"max_width":1600,
 					// "min_height":640,
 					// "max_height":1400,
 					"unit":"px",
 					"h1":{
-						"min_size":30,
+						"min_size":22,
 						"max_size":110
 					},
 					"h2":{
-						"min_size":24,
+						"min_size":18,
 						"max_size":60
 					},
 					"h3":{
@@ -129,7 +129,7 @@ Util.Objects["front"] = new function() {
 						"max_size":18
 					},
 					"p":{
-						"min_size":20,
+						"min_size":14,
 						"max_size":32
 					},
 				});

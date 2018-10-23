@@ -1,0 +1,5 @@
+/* LETTER */
+#content .scene div.letter {
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
