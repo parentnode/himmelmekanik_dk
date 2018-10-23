@@ -334,6 +334,7 @@ Util.Objects["letter"] = new function() {
 			// Left column loop
 			current_ypos = top_ypos;
 			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
+				console.log(current_ypos)
 				current_layer = this.layer_names[Math.round(u.random(0,2))];
 				current_layer_cloud_gx = this.clouds_gx[current_layer];
 
@@ -407,7 +408,7 @@ Util.Objects["letter"] = new function() {
 				}
 				
 				clouds.push(this["div_left_cloud_" + i]);
-				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 160;
+				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) + 60;
 			}
 			
 			// Right column loop
@@ -488,7 +489,7 @@ Util.Objects["letter"] = new function() {
 				
 
 				clouds.push(this["div_right_cloud_" + i]);
-				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 160;
+				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303))+ 60;
 			}
 
 			// Center column loop

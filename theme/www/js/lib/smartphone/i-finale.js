@@ -123,13 +123,13 @@ Util.Objects["finale"] = new function() {
 			u.a.transition(this.cloud_right_middle, "all " + transition_time * 1.3 + "s ease-in-out");
 			u.a.transition(this.cloud_right_bottom, "all " + transition_time + "s ease-in-out");
 
-			u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 150), 0);
-			u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
-			u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 200), 0);
+			u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 200), 0);
+			u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 450), 0);
+			u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 400), 0);
 
-			u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 150), 0);
-			u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 300), 0);
-			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 200), 0);
+			u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 200), 0);
+			u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 350), 0);
+			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 300), 0);
 
 			this.is_active = true;	
 

@@ -428,13 +428,13 @@ Util.Objects["side_a"] = new function() {
 					u.a.transition(this.cloud_right_middle, "all .2s ease-in-out");
 					u.a.transition(this.cloud_right_bottom, "all .3s ease-in-out");
 
-					u.a.translate(this.cloud_left_top, page.browser_w/4-150, 0);
-					u.a.translate(this.cloud_left_middle, page.browser_w/4-400, 0);
-					u.a.translate(this.cloud_left_bottom, page.browser_w/4-200, 0);
-
-					u.a.translate(this.cloud_right_top, -page.browser_w/4+150, 0);
-					u.a.translate(this.cloud_right_middle, -page.browser_w/4+300, 0);
-					u.a.translate(this.cloud_right_bottom, -page.browser_w/4+200, 0);
+					u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 200), 0);
+					u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 450), 0);
+					u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 400), 0);
+		
+					u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 200), 0);
+					u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 350), 0);
+					u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 300), 0);
 
 					//Show start button
 					u.ac(this, "requires_action");
