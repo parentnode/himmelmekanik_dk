@@ -1,5 +1,5 @@
 
-/*seg_smartphone_include.css*/
+/*seg_tablet_include.css*/
 
 /*s-fonts.css*/
 @font-face {
@@ -44,11 +44,11 @@ h3 {padding: 0 50px 10px; font-size: 20px; line-height: 1.25em;}
 p {padding: 0 50px 40px; font-size: 22px; line-height: 1.6em;} 
 ul,
 ol {font-size: 0;}
-li {font-size: 18px; line-height: 1.25em;}
+li {font-size: 13px; line-height: 1.25em;}
 dl {font-size: 0;} 
 dt, 
 dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.25em;}
-#page {position: relative; min-height: 100%; min-width: 100%;}
+#page {position: relative; min-height: 100%; min-width: 600px;}
 
 
 /*s-header.css*/
@@ -70,15 +70,15 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .scene h4,
 #content .scene h5,
 #content .scene h6,
-#content .scene p {margin: 0 auto; text-align: center;}
+#content .scene p {width: 65%; margin: 0 auto; text-align: center;}
 @media screen and (max-width: 600px) {
-	#content .scene h1 {padding: 0;}
+	#content .scene p {width: 370px}
 }
 @media screen and (min-width: 1200px) {
 	#content .scene p {width: 800px}
 }
 #content .scene h1,
-#content .scene h2 {color: #082E4C;}
+#content .scene h2 {color: #082E4C; width: 85%;}
 #content .scene div.audioplayer {width: 50px; height: 50px;}
 #content .scene div.circle {
 	position: absolute;
@@ -224,14 +224,18 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 
 
 /*s-letter.css*/
+#content .scene div.letter {
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+/*s-letter.css*/
 #content .scene div.letter {opacity: 0; overflow-y: auto; 
 	position: relative;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch;
 }
 #content .scene div.letter ul.info {display: none;}
 #content .scene div.letter div.articlebody {padding: 100px 0;}
@@ -259,7 +263,6 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 }
 #content .scene div.letter ul.language_selector li {
 	display: inline-block;
-	margin-right: 10px;
 	padding: 0 0.2em;
 	padding-bottom: 3px;
 }
@@ -267,7 +270,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	border-bottom: 1px solid;
 	color: #082e4c;
 }
-#content .scene div.letter ul.language_selector li.inactive.language a {
+#content .scene div.letter ul.language_selector li.inactive.language a {	
 	text-decoration: none;
 	color: #253a47;
 }
@@ -290,7 +293,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	background-size: 30px auto;
 }
 #content .scene div.side.requires_action div.play {position: absolute; opacity: 0; font-size: 20px; background: #f0bd18; color: #ffffff; padding: 5px 10px; border-radius: 5px; display: inline-block; width: 120px;
-	text-transform: uppercase; left: 50%; margin-left: -70px; text-align: center; cursor: pointer;
+	text-transform: uppercase; left: 50%; margin-left: -60px; text-align: center; cursor: pointer;
 }
 #content .scene div.side ul {
 	display: none;

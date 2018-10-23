@@ -5434,15 +5434,15 @@ Util.Objects["front"] = new function() {
 				this.finale = u.qs("div.finale", this);
 				u.o.finale.init(this.finale);
 				u.textscaler(this, {
-					"min_width":600,
+					"min_width":320,
 					"max_width":1600,
 					"unit":"px",
 					"h1":{
-						"min_size":30,
+						"min_size":22,
 						"max_size":110
 					},
 					"h2":{
-						"min_size":24,
+						"min_size":18,
 						"max_size":60
 					},
 					"h3":{
@@ -5450,7 +5450,7 @@ Util.Objects["front"] = new function() {
 						"max_size":18
 					},
 					"p":{
-						"min_size":20,
+						"min_size":14,
 						"max_size":32
 					},
 				});
@@ -5776,7 +5776,7 @@ Util.Objects["letter"] = new function() {
 					})
 				}
 				clouds.push(this["div_left_cloud_" + i]);
-				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) + 60;
+				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) + 160;
 			}
 			current_ypos = top_ypos;
 			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
@@ -5837,7 +5837,7 @@ Util.Objects["letter"] = new function() {
 					})
 				}
 				clouds.push(this["div_right_cloud_" + i]);
-				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303))+ 60;
+				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303))+ 160;
 			}
 			current_ypos = top_ypos;
 			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
@@ -5891,7 +5891,7 @@ Util.Objects["letter"] = new function() {
 					"margin-left":Math.round(u.random(-300,300)) + "px"
 				}) 
 				clouds.push(this["div_center_cloud_" + i]);
-				current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight + Math.round(u.random(0, 150)-60);
+				current_ypos = current_ypos + this["div_center_cloud_" + i].offsetHeight + Math.round(u.random(0, 150)+60);
 			}
 			function shuffle(array) {
 				var currentIndex = array.length, temporaryValue, randomIndex;
