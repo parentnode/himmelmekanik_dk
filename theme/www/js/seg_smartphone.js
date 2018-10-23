@@ -5462,8 +5462,6 @@ Util.Objects["front"] = new function() {
 		}
 		scene.controller = function() {
 			if(this.is_ready) {
-				this.letter.is_done = true;
-				this.side_a.is_done = true;
 				if(this.letter.is_ready && !this.letter.is_active && !this.letter.is_done) {
 					this.letter.build();
 				}
@@ -5660,7 +5658,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 3.5 + "px",
+				"height":this.offsetHeight * 4 + "px",
 				"z-index":"-10"
 			});
 			u.ass(this.clouds_mid, {
@@ -5668,7 +5666,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 3.5 + "px",
+				"height":this.offsetHeight * 4 + "px",
 				"z-index":"-20"
 			});
 			u.ass(this.clouds_back, {
@@ -5676,7 +5674,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 3.5 + "px",
+				"height":this.offsetHeight * 4 + "px",
 				"z-index":"-30"
 			}) 
 			this.layer_names = ["front", "mid", "back"];
@@ -5720,6 +5718,7 @@ Util.Objects["letter"] = new function() {
 			var cloud_distance 
 			current_ypos = top_ypos;
 			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
+				console.log(current_ypos)
 				current_layer = this.layer_names[Math.round(u.random(0,2))];
 				current_layer_cloud_gx = this.clouds_gx[current_layer];
 				if (current_layer == "front") {
@@ -5777,7 +5776,7 @@ Util.Objects["letter"] = new function() {
 					})
 				}
 				clouds.push(this["div_left_cloud_" + i]);
-				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 160;
+				current_ypos = current_ypos + this["div_left_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) + 60;
 			}
 			current_ypos = top_ypos;
 			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
@@ -5838,7 +5837,7 @@ Util.Objects["letter"] = new function() {
 					})
 				}
 				clouds.push(this["div_right_cloud_" + i]);
-				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303)) - 160;
+				current_ypos = current_ypos + this["div_right_cloud_" + i].offsetHeight + Math.round(u.random(0,303))+ 60;
 			}
 			current_ypos = top_ypos;
 			for (i = 0; current_ypos < this.clouds_front.offsetHeight; i++) {
@@ -6200,12 +6199,12 @@ Util.Objects["side_a"] = new function() {
 					u.a.transition(this.cloud_right_top, "all .4s ease-in-out");
 					u.a.transition(this.cloud_right_middle, "all .2s ease-in-out");
 					u.a.transition(this.cloud_right_bottom, "all .3s ease-in-out");
-					u.a.translate(this.cloud_left_top, page.browser_w/4-150, 0);
-					u.a.translate(this.cloud_left_middle, page.browser_w/4-400, 0);
-					u.a.translate(this.cloud_left_bottom, page.browser_w/4-200, 0);
-					u.a.translate(this.cloud_right_top, -page.browser_w/4+150, 0);
-					u.a.translate(this.cloud_right_middle, -page.browser_w/4+300, 0);
-					u.a.translate(this.cloud_right_bottom, -page.browser_w/4+200, 0);
+					u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 200), 0);
+					u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 450), 0);
+					u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 400), 0);
+					u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 200), 0);
+					u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 350), 0);
+					u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 300), 0);
 					u.ac(this, "requires_action");
 					this.bn_play = u.ae(this, "div", {class:"play", html:"Start"});
 					this.bn_play.player = this;
@@ -6379,12 +6378,12 @@ Util.Objects["intermezzo"] = new function() {
 			u.a.transition(this.cloud_right_top, "all " + transition_time * 1.4 + "s ease-in-out");
 			u.a.transition(this.cloud_right_middle, "all " + transition_time * 1.3 + "s ease-in-out");
 			u.a.transition(this.cloud_right_bottom, "all " + transition_time + "s ease-in-out");
-			u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 150), 0);
-			u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
-			u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 200), 0);
-			u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 150), 0);
-			u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 300), 0);
-			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 200), 0);
+			u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 200), 0);
+			u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 450), 0);
+			u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 400), 0);
+			u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 200), 0);
+			u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 350), 0);
+			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 300), 0);
 			u.t.setTimer(this, this.destroy, 10000);
 			this.is_active = true;
 		}
@@ -6686,12 +6685,12 @@ Util.Objects["side_b"] = new function() {
 					u.a.transition(this.cloud_right_top, "all .4s ease-in-out");
 					u.a.transition(this.cloud_right_middle, "all .2s ease-in-out");
 					u.a.transition(this.cloud_right_bottom, "all .3s ease-in-out");
-					u.a.translate(this.cloud_left_top, page.browser_w/4-150, 0);
-					u.a.translate(this.cloud_left_middle, page.browser_w/4-400, 0);
-					u.a.translate(this.cloud_left_bottom, page.browser_w/4-200, 0);
-					u.a.translate(this.cloud_right_top, -page.browser_w/4+150, 0);
-					u.a.translate(this.cloud_right_middle, -page.browser_w/4+300, 0);
-					u.a.translate(this.cloud_right_bottom, -page.browser_w/4+200, 0);
+					u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 200), 0);
+					u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 450), 0);
+					u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 400), 0);
+					u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 200), 0);
+					u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 350), 0);
+					u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 300), 0);
 					u.ac(this, "requires_action");
 					this.bn_play = u.ae(this, "div", {class:"play", html:"Start"});
 					this.bn_play.player = this;
@@ -6874,12 +6873,12 @@ Util.Objects["finale"] = new function() {
 			u.a.transition(this.cloud_right_top, "all " + transition_time * 1.4 + "s ease-in-out");
 			u.a.transition(this.cloud_right_middle, "all " + transition_time * 1.3 + "s ease-in-out");
 			u.a.transition(this.cloud_right_bottom, "all " + transition_time + "s ease-in-out");
-			u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 150), 0);
-			u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 400), 0);
-			u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 200), 0);
-			u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 150), 0);
-			u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 300), 0);
-			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 200), 0);
+			u.a.translate(this.cloud_left_top, (page.browser_w / 4 - 200), 0);
+			u.a.translate(this.cloud_left_middle, (page.browser_w / 4 - 450), 0);
+			u.a.translate(this.cloud_left_bottom, (page.browser_w / 4 - 400), 0);
+			u.a.translate(this.cloud_right_top, (- page.browser_w / 4 + 200), 0);
+			u.a.translate(this.cloud_right_middle, (- page.browser_w / 4 + 350), 0);
+			u.a.translate(this.cloud_right_bottom, (- page.browser_w / 4 + 300), 0);
 			this.is_active = true;	
 		}
 		div.destroy = function() {
