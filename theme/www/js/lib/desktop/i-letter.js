@@ -78,6 +78,10 @@ Util.Objects["letter"] = new function() {
 				if (progress >= 0.999) {
 					progress = 1;						
 				}
+				// Mac backscroll draw fix
+				if(progress < 0) { 
+					progress = 0;
+				}
 
 				var current_degree = Math.PI * progress;
 
