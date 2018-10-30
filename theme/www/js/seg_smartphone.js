@@ -5545,6 +5545,9 @@ Util.Objects["letter"] = new function() {
 				if (progress >= 0.999) {
 					progress = 1;						
 				}
+				if(progress < 0) { 
+					progress = 0;
+				}
 				var current_degree = Math.PI * progress;
 				page.cN.scene.circle.ctx.clearRect(0, 0, page.browser_w, page.browser_h);
 				page.cN.scene.circle.ctx.beginPath();
