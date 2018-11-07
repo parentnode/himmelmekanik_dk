@@ -63,6 +63,7 @@ Util.Objects["letter"] = new function() {
 
 				}
 
+				// "Parallax" scrolling of cloud layers
 				this.clouds_front.style.top = -(this.scrollTop * 0.5) + "px";
 				this.clouds_mid.style.top = -(this.scrollTop * 0.4) + "px";
 				this.clouds_back.style.top = -(this.scrollTop * 0.3) + "px";
@@ -264,12 +265,14 @@ Util.Objects["letter"] = new function() {
 				"class":"clouds back",
 			})
 
+			var cloud_layers_height = this.scrollHeight * 2 + "px";
+
 			u.ass(this.clouds_front, {
 				"position":"absolute",
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 3.5 + "px",
+				"height": cloud_layers_height,
 				"z-index":"-10"
 			});
 
@@ -278,7 +281,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 3.5 + "px",
+				"height": cloud_layers_height,
 				"z-index":"-20"
 			});
 
@@ -287,7 +290,7 @@ Util.Objects["letter"] = new function() {
 				"top":"0",
 				"left":"0",
 				"width":"100%",
-				"height":this.offsetHeight * 3.5 + "px",
+				"height": cloud_layers_height,
 				"z-index":"-30"
 			}) 
 			
@@ -587,7 +590,7 @@ Util.Objects["letter"] = new function() {
 
 			// Fade in the shuffled clouds (CSS transition)
 			for (i = 0; i < clouds_shuffled.length; i++) {				
-				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*70 + "ms");
+				u.a.transition(clouds_shuffled[i], "all 1.8s ease-in " + i*40 + "ms");
 				u.ass(clouds_shuffled[i], {
 					"opacity":1
 				})
