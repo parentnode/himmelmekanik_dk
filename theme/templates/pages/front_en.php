@@ -1,3 +1,7 @@
+<?
+	$this->pageDescription("Himmelmekanik blablabla");
+?>
+
 <div class="scene front i:front" itemscope itemtype="http://schema.org/Article">
 
 	<div class="cookie-notice">
