@@ -1,6 +1,6 @@
 Util.Objects["page"] = new function() {
 	this.init = function(page) {
-
+		// u.bug_console_only = false;
 
 		// header reference
 		page.hN = u.qs("#header");
