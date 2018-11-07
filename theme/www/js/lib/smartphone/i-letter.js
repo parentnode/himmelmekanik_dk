@@ -165,7 +165,18 @@ Util.Objects["letter"] = new function() {
 					"/img/gx_cloud_back4.png"
 				])
 
-
+				// Check if cookie has been accepted
+				var cookie_notice = u.qs(".cookie-notice")
+				if(typeof(window.localStorage) != "object" || !window.localStorage.cookie_accept) {
+					var cookie_accept = u.qs('.cookie-accept');
+					cookie_accept.addEventListener("click", function() {
+						window.localStorage.cookie_accept = true;
+						cookie_notice.style.display = 'none';
+					});
+				}
+				else {
+					cookie_notice.style.display = 'none';
+				}
 
 				// Letter is now ready to be shown (content is hidden)
 				u.ass(this, {
