@@ -1,5 +1,11 @@
 <div class="scene front i:front" itemscope itemtype="http://schema.org/Article">
 
+	<div class="cookie-notice">
+		<p class="cookie-text">We use cookies</p>
+		<a href="/cookies_en">Read more here</a>
+		<p class="cookie-accept">Ok</p>
+	</div>
+
 	<div class="letter i:letter">
 		<h1 itemprop="headline">Himmelmekanik</h1>
 
