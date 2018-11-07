@@ -1,5 +1,5 @@
 <?
-	$this->pageDescription("Himmelmekanik blablabla");
+	$this->pageDescription("'Himmelmekanik' is the new album from Danish songwriter Marc Facchini. A respite, a listening experience, an opportunity for immersion. Listen here, and let’s create an undisturbed moment together.");
 ?>
 
 <div class="scene front i:front" itemscope itemtype="http://schema.org/Article">
