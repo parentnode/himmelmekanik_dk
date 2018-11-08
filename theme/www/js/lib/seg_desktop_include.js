@@ -12,6 +12,7 @@ document.write('<script type="text/javascript" src="/js/lib/desktop/i-intermezzo
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-side_b.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/desktop/i-finale.js"></script>');
 
+document.write('<script type="text/javascript" src="/js/lib/desktop/i-cookies.js"></script>');
 
 document.write('<script type="text/javascript" src="/js/lib/u-settings.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/v0_9_2-himmelmekanik_dk/src/u-googleanalytics.js"></script>');

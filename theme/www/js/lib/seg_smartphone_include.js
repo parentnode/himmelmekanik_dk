@@ -12,6 +12,7 @@ document.write('<script type="text/javascript" src="/js/lib/smartphone/i-interme
 document.write('<script type="text/javascript" src="/js/lib/smartphone/i-side_b.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/smartphone/i-finale.js"></script>');
 
+document.write('<script type="text/javascript" src="/js/lib/desktop/i-cookies.js"></script>');
 
 document.write('<script type="text/javascript" src="/js/lib/u-settings.js"></script>');
 document.write('<script type="text/javascript" src="/js/manipulator/v0_9_2-himmelmekanik_dk/src/u-googleanalytics.js"></script>');

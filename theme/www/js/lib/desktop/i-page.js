@@ -72,7 +72,12 @@ Util.Objects["page"] = new function() {
 
 
 					// Initialize scene
-					u.o.front.init(page.cN.scene);
+					if (u.hc(this.cN.scene, "front") ) {
+						u.o.front.init(page.cN.scene);
+					}
+					else {
+						u.o.cookies.init(page.cN.scene);
+					}
 
 				}
 

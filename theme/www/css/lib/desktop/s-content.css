@@ -68,21 +68,23 @@
 }
 
 #content .scene .cookie-notice .cookie-accept {
-	right: 205px;
+	right: 195px;
 	bottom: 80px;
 
-	font-size: 20px;
+	font-family: "GT America", Verdana, Arial, sans-serif;
+
+	font-size: 18px !important;
 	background: #f0bd18;
 	color: #ffffff;
 	border-radius: 5px;
 	width: 60px;
-	height: 28px;
+	height: 26px;
 	cursor: pointer;
 }
 
 #content .scene .cookie-notice a {
 	position: absolute;
-	right: 45px;
+	right: 55px;
 	bottom: 85px;
 	color: #887c20;
 	border-bottom: 1px solid #887c20;
@@ -90,4 +92,25 @@
 }
 #content .scene .cookie-notice a:hover {
 	text-decoration: none;
+}
+
+/* Cookie notice page */
+#cookies {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+#cookies .button p {
+	font-family: "GT America", Verdana, Arial, sans-serif;
+	padding: 5px 10px;
+	margin: 0 auto;
+
+	background: #f0bd18;
+	color: #ffffff;
+	border-radius: 5px;
+	width: fit-content;
+	height: fit-content;
+	text-transform: uppercase;
+	cursor: pointer;
 }

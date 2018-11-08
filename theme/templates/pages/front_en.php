@@ -6,8 +6,8 @@
 
 	<div class="cookie-notice">
 		<p class="cookie-text">We use cookies</p>
-		<a href="/cookies_en">Read more here</a>
-		<p class="cookie-accept">Ok</p>
+		<a href="/cookies_en">Read more</a>
+		<p class="cookie-accept">OK</p>
 	</div>
 
 	<div class="letter i:letter">

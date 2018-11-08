@@ -5364,7 +5364,12 @@ Util.Objects["page"] = new function() {
 				this.resized();
 				this.fontsLoaded = function() {
 					u.bug("fontsLoaded");
-					u.o.front.init(page.cN.scene);
+					if (u.hc(this.cN.scene, "front") ) {
+						u.o.front.init(page.cN.scene);
+					}
+					else {
+						u.o.cookies.init(page.cN.scene);
+					}
 				}
 				u.fontsReady(this, 
 					{"family":"GT America", "weight":900}
@@ -5598,6 +5603,17 @@ Util.Objects["letter"] = new function() {
 					"/img/gx_cloud_back3.png", 
 					"/img/gx_cloud_back4.png"
 				])
+				var cookie_notice = u.qs(".cookie-notice")
+				if(typeof(window.localStorage) != "object" || !window.localStorage.cookie_accept) {
+					var cookie_accept = u.qs('.cookie-accept');
+					cookie_accept.addEventListener("click", function() {
+						window.localStorage.cookie_accept = true;
+						cookie_notice.style.display = 'none';
+					});
+				}
+				else {
+					cookie_notice.style.display = 'none';
+				}
 				u.ass(this, {
 					opacity: 1,
 				});
@@ -6890,6 +6906,31 @@ Util.Objects["finale"] = new function() {
 			page.cN.scene.controller();
 		}
 		div.ready();
+	}
+}
+
+
+/*i-cookies.js*/
+Util.Objects["cookies"] = new function() {
+	this.init = function(scene) {
+		scene.resized = function() {
+		}
+		scene.scrolled = function() {
+		}
+		scene.ready = function() {
+			console.log("hello");
+			var button = u.qs('.button');
+			button.addEventListener("click", function() {
+				window.localStorage.cookie_accept = true;
+				if (location.href.match(/cookies_en/)) {
+					location.href = "/en";
+				}
+				else {
+					location.href = "/";
+				}
+			});
+		}
+		scene.ready();
 	}
 }
 
