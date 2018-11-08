@@ -62,17 +62,32 @@
 }
 
 #content .scene .cookie-notice .cookie-text {
-	top: 135px;
-	right: 40px;
+	font-family: "GT America", Verdana, Arial, sans-serif;
+	top: 150px;
+	right: 25px;
 }
 
 #content .scene .cookie-notice .cookie-accept {
-	right: 95px;
-	bottom: 60px;
+	right: 205px;
+	bottom: 80px;
+
+	font-size: 20px;
+	background: #f0bd18;
+	color: #ffffff;
+	border-radius: 5px;
+	width: 60px;
+	height: 28px;
+	cursor: pointer;
 }
 
 #content .scene .cookie-notice a {
 	position: absolute;
-	right: 40px;
-	bottom: 105px;
+	right: 45px;
+	bottom: 85px;
+	color: #887c20;
+	border-bottom: 1px solid #887c20;
+	text-decoration: none;
+}
+#content .scene .cookie-notice a:hover {
+	text-decoration: none;
 }

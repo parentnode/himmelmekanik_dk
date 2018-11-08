@@ -7,7 +7,7 @@
 	<div class="cookie-notice">
 		<p class="cookie-text">Vi bruger cookies</p>
 		<a href="/cookies">læs mere her</a>
-		<p class="cookie-accept">Ok</p>
+		<p class="cookie-accept">OK</p>
 	</div>
 
 	<div class="letter i:letter">
