@@ -59,7 +59,6 @@
 	position: absolute;
 	top: 155px;
 	right: 25px;
-	width: fit-content;
 	font-family: "GT America", Verdana, Arial, sans-serif;
 	font-size: 20px;
 	color: #082E4C;
@@ -68,7 +67,6 @@
 #content .scene .cookie-notice .cookie-accept {
 	position: absolute;
 	padding: 0;
-	width: fit-content;
 
 	right: 195px;
 	bottom: 80px;
@@ -111,8 +109,7 @@
 	background: #f0bd18;
 	color: #ffffff;
 	border-radius: 5px;
-	width: fit-content;
-	height: fit-content;
+	width: 165px;
 	text-transform: uppercase;
 	cursor: pointer;
 }

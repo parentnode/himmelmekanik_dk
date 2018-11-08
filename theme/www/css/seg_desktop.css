@@ -107,7 +107,6 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	position: absolute;
 	top: 155px;
 	right: 25px;
-	width: fit-content;
 	font-family: "GT America", Verdana, Arial, sans-serif;
 	font-size: 20px;
 	color: #082E4C;
@@ -115,7 +114,6 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .scene .cookie-notice .cookie-accept {
 	position: absolute;
 	padding: 0;
-	width: fit-content;
 	right: 195px;
 	bottom: 80px;
 	font-family: "GT America", Verdana, Arial, sans-serif;
@@ -150,8 +148,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	background: #f0bd18;
 	color: #ffffff;
 	border-radius: 5px;
-	width: fit-content;
-	height: fit-content;
+	width: 165px;
 	text-transform: uppercase;
 	cursor: pointer;
 }
