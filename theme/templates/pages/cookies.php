@@ -1,4 +1,4 @@
-<div class="scene">
+<div id="cookies" class="i:cookies scene">
 	<p>
 		Himmelmekanik.dk bruger cookies. 
 		En cookie er en lille tekstfil, der indeholder information, 
@@ -7,4 +7,5 @@
 		<a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/cookie-usage">Google Analytics</a>. 
 		Vi gemmer ingen personlige data.
 	</p>
+	<div class="button"><p>Acceptér</p></div>
 </div>

@@ -5,12 +5,6 @@
 
 <div class="scene front i:front" itemscope itemtype="http://schema.org/Article">
 
-	<div class="cookie-notice">
-		<p class="cookie-text">Vi bruger cookies</p>
-		<a href="/cookies">læs mere her</a>
-		<p class="cookie-accept">Ok</p>
-	</div>
-
 	<div class="letter i:letter">
 		<h1 itemprop="headline">Himmelmekanik</h1>
 
@@ -106,4 +100,10 @@
 		</p>
 	</div>
 
+	<div class="cookie-notice">
+		<h4 class="cookie-text">Vi bruger cookies</h4>
+		<a href="/cookies">læs mere</a>
+		<p class="cookie-accept">OK</p>
+	</div>
+	
 </div>
