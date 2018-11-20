@@ -94,7 +94,33 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	-webkit-text-size-adjust: none;
 	-webkit-font-smoothing: antialiased;
 }
-
+#content .scene .cookie-notice {
+	z-index: 10;
+	position: absolute;
+	right: 0;
+	bottom: 20px;
+	width: 397px;
+	height: 304px;
+	background: url(../../../img/gx_cloud_front_right4.png) center center no-repeat;
+}
+#content .scene .cookie-notice p {
+	position: absolute;
+	padding: 0;
+	width: fit-content;
+}
+#content .scene .cookie-notice .cookie-text {
+	top: 135px;
+	right: 40px;
+}
+#content .scene .cookie-notice .cookie-accept {
+	right: 95px;
+	bottom: 60px;
+}
+#content .scene .cookie-notice a {
+	position: absolute;
+	right: 40px;
+	bottom: 105px;
+}
 
 /*s-form.css*/
 #content {}

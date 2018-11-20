@@ -5598,6 +5598,17 @@ Util.Objects["letter"] = new function() {
 					"/img/gx_cloud_back3.png", 
 					"/img/gx_cloud_back4.png"
 				])
+				var cookie_notice = u.qs(".cookie-notice")
+				if(typeof(window.localStorage) != "object" || !window.localStorage.cookie_accept) {
+					var cookie_accept = u.qs('.cookie-accept');
+					cookie_accept.addEventListener("click", function() {
+						window.localStorage.cookie_accept = true;
+						cookie_notice.style.display = 'none';
+					});
+				}
+				else {
+					cookie_notice.style.display = 'none';
+				}
 				u.ass(this, {
 					opacity: 1,
 				});
