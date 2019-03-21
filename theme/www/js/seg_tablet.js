@@ -6620,7 +6620,7 @@ Util.Objects["side_b"] = new function() {
 					this.bn_play.player = this;
 					u.e.click(this.bn_play);
 					this.bn_play.clicked = function() {
-						this.player.loadAndPlay("/assets/side-a");
+						this.player.loadAndPlay("/assets/side-b");
 						u.a.transition(this, "all 2s ease-in-out", removeButton);
 						u.ass(this, {
 							opacity: 0,
@@ -6642,7 +6642,7 @@ Util.Objects["side_b"] = new function() {
 					});
 				}
 				else {
-					this.loadAndPlay("/assets/side-a");
+					this.loadAndPlay("/assets/side-b");
 				}
 			}
 			this.addStopEvents = function(event) {
