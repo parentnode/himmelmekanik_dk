@@ -294,7 +294,7 @@ u.fontsReady = function(node, fonts, _options) {
 		else {
 			// continue checking if max time has not been reached
 			if(this.start_time + this.max_time > new Date().getTime()) {
-				u.t.setTimer(this, "checkfonts", 30);
+				u.t.setTimer(this, "checkFontsFallback", 30);
 			}
 
 			// give up - max time has passed

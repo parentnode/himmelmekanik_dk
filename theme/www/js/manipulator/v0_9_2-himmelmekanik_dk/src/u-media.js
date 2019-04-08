@@ -857,15 +857,26 @@ u.detectMediaAutoplay = function(player) {
 
 			// switch to muted and try again
 			u.test_autoplay.muted = true;
-
 			var promise = u.test_autoplay.play();
 			if(promise && fun(promise.then)) {
 				promise.then(
-					u.test_autoplay.playing_muted.bind(u.test_autoplay)
+					function(){
+						u.t.resetTimer(window.u.test_autoplay.t_check);
+						u.test_autoplay.playing_muted();
+					}
 				).catch(
-					u.test_autoplay.notplaying_muted.bind(u.test_autoplay)
+					function() {
+						if (u.test_autoplay) {
+							u.t.resetTimer(u.test_autoplay.t_check)
+							u.test_autoplay.notplaying_muted();
+						}
+					}
 				);
 			}
+
+			u.test_autoplay.t_check = u.t.setTimer(u.test_autoplay, function(){
+				u.test_autoplay.pause();
+			}, 1000);
 		}
 		// autoplay muted test passed
 		u.test_autoplay.playing_muted = function() {
