@@ -1,8 +1,5 @@
-document.write('<script type="text/javascript" src="/js/manipulator/v0_9_2-himmelmekanik_dk/merged/seg_smartphone.js"></script>');
-document.write('<script type="text/javascript" src="/js/manipulator/v0_9_2-himmelmekanik_dk/src/beta-u-fontsready.js"></script>');
-
-// TEMP U-MEDIA INCLUDE, BUGGY promise resolve fix
-document.write('<script type="text/javascript" src="/js/manipulator/v0_9_2-himmelmekanik_dk/src/u-media.js"></script>');
+document.write('<script type="text/javascript" src="/js/manipulator/merged/seg_smartphone.js"></script>');
+document.write('<script type="text/javascript" src="/js/manipulator/src/beta-u-fontsready.js"></script>');
 
 document.write('<script type="text/javascript" src="/js/lib/smartphone/i-page.js"></script>');
 document.write('<script type="text/javascript" src="/js/lib/smartphone/i-front.js"></script>');
