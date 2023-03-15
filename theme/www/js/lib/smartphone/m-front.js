@@ -86,27 +86,27 @@ Util.Modules["front"] = new function() {
 
 				// LETTER
 				this.letter = u.qs("div.letter", this);
-				u.o.letter.init(this.letter);
+				u.m.letter.init(this.letter);
 				
 
 
 				// SIDE A
 				this.side_a = u.qs("div.side_a", this);
-				u.o.side_a.init(this.side_a);
+				u.m.side_a.init(this.side_a);
 
 				// INTERMEZZO
 				this.intermezzo = u.qs("div.intermezzo", this);
-				u.o.intermezzo.init(this.intermezzo);
+				u.m.intermezzo.init(this.intermezzo);
 
 
 				// SIDE B
 				this.side_b = u.qs("div.side_b", this);
-				u.o.side_b.init(this.side_b);
+				u.m.side_b.init(this.side_b);
 
 
 				// FINALE
 				this.finale = u.qs("div.finale", this);
-				u.o.finale.init(this.finale);
+				u.m.finale.init(this.finale);
 
 
 				// Apply global text scaling

@@ -73,10 +73,10 @@ Util.Modules["page"] = new function() {
 
 					// Initialize scene
 					if (u.hc(this.cN.scene, "front") ) {
-						u.o.front.init(page.cN.scene);
+						u.m.front.init(page.cN.scene);
 					}
 					else {
-						u.o.cookies.init(page.cN.scene);
+						u.m.cookies.init(page.cN.scene);
 					}
 
 				}
@@ -94,4 +94,4 @@ Util.Modules["page"] = new function() {
 		page.ready();
 	}
 }
-u.e.addDOMReadyEvent(function() {u.o.page.init(page)});
+u.e.addDOMReadyEvent(function() {u.m.page.init(page)});
