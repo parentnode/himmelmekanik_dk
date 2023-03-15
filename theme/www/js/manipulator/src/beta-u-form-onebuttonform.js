@@ -1,4 +1,4 @@
-Util.Objects["oneButtonForm"] = new function() {
+Util.Modules["oneButtonForm"] = new function() {
 	this.init = function(node) {
 //		u.bug("oneButtonForm:" + u.nodeId(node));
 

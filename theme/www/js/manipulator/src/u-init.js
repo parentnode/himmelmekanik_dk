@@ -1,4 +1,4 @@
-Util.Objects = u.o = new Object();
+Util.Modules = u.o = new Object();
 
 Util.init = function(scope) {
 
