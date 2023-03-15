@@ -1,20 +1,23 @@
+/*
+asset-builder @ 2023-03-15 20:37:16
+*/
 
 /*seg_desktop_include.css*/
 
 /*s-fonts.css*/
 @font-face {
 	font-family: 'GT America';
-	src: url('/css/fonts/GT-America-Expanded-Black.woff2') format('woff2'),
-	 	 url('/css/fonts/GT-America-Expanded-Black.woff') format('woff'),
-		 url('/css/fonts/GT-America-Expanded-Black.ttf') format('truetype');
+	src: url('fonts/GT-America-Expanded-Black.woff2') format('woff2'),
+	 	 url('fonts/GT-America-Expanded-Black.woff') format('woff'),
+		 url('fonts/GT-America-Expanded-Black.ttf') format('truetype');
 	font-weight: 900;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Kalam Bold';
-	src: url('/css/fonts/kalam-bold-webfont.woff2') format('woff2'),
-	 	 url('/css/fonts/kalam-bold-webfont.woff') format('woff'),
-		 url('/css/fonts/kalam-bold-webfont.ttf') format('truetype');
+	src: url('fonts/kalam-bold-webfont.woff2') format('woff2'),
+	 	 url('fonts/kalam-bold-webfont.woff') format('woff'),
+		 url('fonts/kalam-bold-webfont.ttf') format('truetype');
 	font-weight: 900;
 	font-style: normal;
 }
@@ -26,7 +29,7 @@
 	-webkit-font-smoothing: antialiased;
 }
 html {min-height: 100%;}
-body {background: #ffee88 url("/img/bg_gradient.jpg") no-repeat center center; margin: 0; overflow: hidden;}
+body {background: #ffee88 url("../img/bg_gradient.jpg") no-repeat center center; margin: 0; overflow: hidden;}
 h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dd, dt {padding: 0; margin: 0;}
 h1, h2, h3, h4, h5, h6, p, li, dd, dt, span, a {line-height: 1em; font-weight: 900;}
 ul {list-style: none;}
@@ -101,7 +104,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 	bottom: 20px;
 	width: 397px;
 	height: 304px;
-	background: url(../../../img/gx_cloud_front_right4.png) center center no-repeat;
+	background: url(../img/gx_cloud_front_right4.png) center center no-repeat;
 }
 #content .scene .cookie-notice .cookie-text {
 	position: absolute;
@@ -168,7 +171,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .field select option {padding: 5px 3px 2px 6px;}
 @media all and (-webkit-min-device-pixel-ratio:0) {
 	#content .field select {width: 380px; height: 31px; padding: 2px 3px 2px 7px; 
-		background: #ffffff url(/janitor/admin/img/bg_icons.png) no-repeat 360px -977px;
+		background: #ffffff url(../assets/janitor/admin/img/bg_icons.png) no-repeat 360px -977px;
 		-webkit-appearance: none;
 	}
 }
@@ -192,7 +195,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .field.files input[type=file] {opacity: 0; width: 360px; height: 49px; margin: 0; border: 0;}
 #content .field.files label {color: #333333; font-size: 14px; display: block; position: absolute; width: 120px; left: 50%; padding: 1px 4px 3px; margin: 16px 0 0 -60px; text-align: center; border-radius: 6px; background: #dedede;}
 #content .field.files.loading label {display: none;}
-#content .field.files.loading {background: transparent url(/janitor/admin/img/gx_loader.gif) no-repeat center center;}
+#content .field.files.loading {background: transparent url(../assets/janitor/admin/img/gx_loader.gif) no-repeat center center;}
 #content .field.focus input,
 #content .field.focus textarea {margin: 0;}
 #content .field.focus select {padding: 4px 3px 1px 0px;}
@@ -216,7 +219,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .field .pseudolabel {color: #aaaaaa;}
 #content .field .indicator {position: absolute; top: 4px; left: 435px; width: 25px; height: 25px;}
 #content .field.required .indicator { 
-	background: transparent url(/janitor/admin/img/bg_icons.png) no-repeat 0 -292px;
+	background: transparent url(../assets/janitor/admin/img/bg_icons.png) no-repeat 0 -292px;
 }
 #content .field.text.required .indicator {background-position: 0 -296px;}
 #content .field.radiobuttons .indicator,
@@ -340,7 +343,7 @@ dd {display: inline-block; vertical-align: top; font-size: 13px; line-height: 1.
 #content .scene div.side h3.track_status,
 #content .scene div.side h3.time_status {position: absolute; opacity: 0; font-size: 14px; color: #082E4C; padding: 0; left: 0; width: 100%; text-align: center;}
 #content .scene div.side.loading h3.time_status {text-indent: -9999px; height: 30px;
-	background: transparent url(/img/gx_loader.gif) no-repeat center center;
+	background: transparent url(../img/gx_loader.gif) no-repeat center center;
 	background-size: 30px auto;
 }
 #content .scene div.side.requires_action div.play {position: absolute; opacity: 0; font-size: 20px; background: #f0bd18; color: #ffffff; padding: 5px 10px; border-radius: 5px; display: inline-block; width: 120px;
