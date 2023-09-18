@@ -8,37 +8,34 @@
 header("Content-type: text/html; charset=UTF-8");
 error_reporting(E_ALL);
 
-/**
-* Site name
-*/
+define("VERSION", "0.7.9.2");
+define("UI_BUILD", "20230918-195556");
+
 define("SITE_UID", "HMMLMKNK");
 define("SITE_NAME", "himmelmekanik");
 define("SITE_URL", (isset($_SERVER["HTTPS"]) ? "https" : "http")."://".$_SERVER["SERVER_NAME"]);
 define("SITE_EMAIL", "martin@think.dk");
 
-/**
-* Optional constants
-*/
 define("DEFAULT_PAGE_DESCRIPTION", "");
+define("DEFAULT_PAGE_IMAGE", "/img/logo.png");
+
 define("DEFAULT_LANGUAGE_ISO", "EN");
 define("DEFAULT_COUNTRY_ISO", "DK");
+define("DEFAULT_CURRENCY_ISO", "DKK");
 
+define("SITE_LOGIN_URL", "/login");
 
-// ENABLE ITEMS MODEL
+define("SITE_SIGNUP", false);
+define("SITE_SIGNUP_URL", "/signup");
+
 define("SITE_ITEMS", true);
 
-//define("SITE_SIGNUP", "/signup");
-//define("SITE_SUBSCRIPTIONS", true);
-//define("SITE_MEMBERS", true);
+define("SITE_SHOP", false);
+define("SHOP_ORDER_NOTIFIES", "email@domain.tld");
 
-// Enable shop model
-//define("SITE_SHOP", true);
-//define("SHOP_ORDER_NOTIFIES", "email@domain.tld");
+define("SITE_SUBSCRIPTIONS", false);
 
-// Enable notifications (send collection email after N notifications)
+define("SITE_MEMBERS", false);
+
 define("SITE_COLLECT_NOTIFICATIONS", 50);
 
-// INSTALL MODE (DISABLES ALL SECURITY)
-//define("SITE_INSTALL", true);
-
-?>
